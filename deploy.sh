@@ -8,8 +8,9 @@ set -euo pipefail
 
 SSH_HOST="${KKKT_SSH_HOST:-31.97.176.48}"
 SSH_USER="${KKKT_SSH_USER:-chriss}"
-# >>> SET THIS to the site's document root on the server <<<
-REMOTE_DIR="${KKKT_REMOTE_DIR:-/home/chriss/domains/CHANGE-ME/public_html}"
+# Document root for kkkt.oweru.com. Override with KKKT_REMOTE_DIR if your
+# panel puts it elsewhere (check where works.oweru.com lives).
+REMOTE_DIR="${KKKT_REMOTE_DIR:-/home/chriss/domains/kkkt.oweru.com/public_html}"
 
 echo "==> Building"
 npm run build
