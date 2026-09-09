@@ -2,7 +2,7 @@ import { useState } from 'react'
 import PageHeader from '../components/PageHeader.jsx'
 import { Section, SectionTitle } from '../components/Section.jsx'
 import Icon from '../components/Icon.jsx'
-import { givingMethods, givingInPerson, givingPurposes } from '../data/site.js'
+import { useSite } from '../content.jsx'
 
 function CopyRow({ label, value }) {
   const [copied, setCopied] = useState(false)
@@ -34,6 +34,7 @@ function CopyRow({ label, value }) {
 }
 
 export default function Giving() {
+  const { givingMethods, givingInPerson, givingPurposes } = useSite()
   return (
     <>
       <PageHeader

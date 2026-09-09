@@ -2,9 +2,10 @@ import { Link } from 'react-router-dom'
 import PageHeader from '../components/PageHeader.jsx'
 import { Section, SectionTitle } from '../components/Section.jsx'
 import Icon from '../components/Icon.jsx'
-import { involveOptions } from '../data/site.js'
+import { useSite } from '../content.jsx'
 
 export default function Involve() {
+  const { involveOptions } = useSite()
   return (
     <>
       <PageHeader

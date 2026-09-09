@@ -3,6 +3,7 @@ import PageHeader from '../components/PageHeader.jsx'
 import { Section, SectionTitle } from '../components/Section.jsx'
 import Icon from '../components/Icon.jsx'
 import { Field, Select, TextArea, RadioCards, FileInput, FormPanel } from '../components/Form.jsx'
+import { postSubmission } from '../content.jsx'
 
 export default function UploadSermon() {
   return (
@@ -24,6 +25,7 @@ export default function UploadSermon() {
 
           <SectionTitle eyebrow="Fomu" title="Taarifa za hubiri" />
           <FormPanel
+            onSubmit={(data) => postSubmission("sermon_upload", data)}
             submitLabel="Pakia hubiri"
             successTitle="Hubiri limewasilishwa"
             successText="Msimamizi wa tovuti atalithibitisha na kulichapisha kwenye ukurasa wa Mahubiri."

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import Icon from '../components/Icon.jsx'
 import { homeLinks } from '../data/nav.js'
-import { church, services } from '../data/site.js'
+import { useSite } from '../content.jsx'
 
 // Faharasa ya viungo — ukurasa huu haujavutwa (no scroll).
 const destinations = homeLinks
@@ -20,6 +20,7 @@ function CornerMarks() {
 }
 
 export default function Home() {
+  const { church, services } = useSite()
   const sundays = services.filter((s) => s.day === 'Jumapili').slice(0, 2)
 
   return (

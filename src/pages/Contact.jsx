@@ -2,15 +2,32 @@ import { useState } from 'react'
 import PageHeader from '../components/PageHeader.jsx'
 import { Section, SectionTitle } from '../components/Section.jsx'
 import Icon from '../components/Icon.jsx'
-import { church } from '../data/site.js'
+import { useSite, postSubmission } from '../content.jsx'
 
 export default function Contact() {
+  const { church } = useSite()
   const [sent, setSent] = useState(false)
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState('')
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    // TODO: unganisha na huduma ya barua pepe / backend (mfano Formspree, EmailJS)
-    setSent(true)
+    setError('')
+    const f = Object.fromEntries(new FormData(e.currentTarget).entries())
+    try {
+      setBusy(true)
+      await postSubmission('contact', {
+        name: f.name,
+        email: f.email,
+        phone: f.phone,
+        message: f.message,
+      })
+      setSent(true)
+    } catch {
+      setError('Imeshindikana kutuma. Tafadhali jaribu tena.')
+    } finally {
+      setBusy(false)
+    }
   }
 
   const details = [
@@ -110,8 +127,13 @@ export default function Contact() {
                     className="w-full rounded-xl border border-navy-200 bg-cream px-4 py-3 text-navy-900 outline-none focus:border-gold-400 focus:ring-2 focus:ring-gold-200"
                   />
                 </div>
-                <button type="submit" className="btn-primary w-full">
-                  Tuma ujumbe
+                {error && <p className="text-sm text-red-600">{error}</p>}
+                <button
+                  type="submit"
+                  disabled={busy}
+                  className="btn-primary w-full disabled:opacity-60"
+                >
+                  {busy ? 'Inatuma…' : 'Tuma ujumbe'}
                 </button>
               </form>
             )}

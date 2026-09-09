@@ -1,9 +1,10 @@
 import PageHeader from '../components/PageHeader.jsx'
 import { Section, SectionTitle } from '../components/Section.jsx'
 import Icon from '../components/Icon.jsx'
-import { church, beliefs, values } from '../data/site.js'
+import { useSite } from '../content.jsx'
 
 export default function About() {
+  const { church, beliefs, values } = useSite()
   return (
     <>
       <PageHeader

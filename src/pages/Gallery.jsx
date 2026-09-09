@@ -2,9 +2,10 @@ import { useEffect, useMemo, useState } from 'react'
 import PageHeader from '../components/PageHeader.jsx'
 import { Section, SectionTitle } from '../components/Section.jsx'
 import Icon from '../components/Icon.jsx'
-import { galleryImages } from '../data/site.js'
+import { useSite } from '../content.jsx'
 
 export default function Gallery() {
+  const { galleryImages } = useSite()
   const [album, setAlbum] = useState('Zote')
   const [active, setActive] = useState(null) // index within `photos`
 

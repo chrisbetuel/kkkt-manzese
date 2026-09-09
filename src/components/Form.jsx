@@ -168,12 +168,28 @@ export function FormPanel({
   note,
 }) {
   const [done, setDone] = useState(false)
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState('')
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    const data = Object.fromEntries(new FormData(e.currentTarget).entries())
-    onSubmit?.(data)
-    setDone(true)
+    setError('')
+    const form = e.currentTarget
+    const data = Object.fromEntries(new FormData(form).entries())
+    // collect multi-value fields (checkbox groups) too
+    for (const key of new Set([...new FormData(form).keys()])) {
+      const all = new FormData(form).getAll(key)
+      if (all.length > 1) data[key] = all
+    }
+    try {
+      setBusy(true)
+      await onSubmit?.(data)
+      setDone(true)
+    } catch {
+      setError('Imeshindikana kutuma. Tafadhali jaribu tena.')
+    } finally {
+      setBusy(false)
+    }
   }
 
   if (done) {
@@ -207,8 +223,9 @@ export function FormPanel({
           {note}
         </p>
       )}
-      <button type="submit" className="btn-primary w-full">
-        {submitLabel}
+      {error && <p className="text-sm text-red-600">{error}</p>}
+      <button type="submit" disabled={busy} className="btn-primary w-full disabled:opacity-60">
+        {busy ? 'Inatuma…' : submitLabel}
       </button>
     </form>
   )

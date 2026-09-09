@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import Logo from './Logo.jsx'
 import Icon from './Icon.jsx'
 import { navLinks } from '../data/nav.js'
-import { church, services, involveOptions } from '../data/site.js'
+import { useSite } from '../content.jsx'
 
 function ColTitle({ children }) {
   return (
@@ -14,6 +14,7 @@ function ColTitle({ children }) {
 }
 
 export default function Footer() {
+  const { church, services, involveOptions } = useSite()
   const year = new Date().getFullYear()
   const linkCls = 'text-[13px] text-cream/55 transition-colors hover:text-cream'
 

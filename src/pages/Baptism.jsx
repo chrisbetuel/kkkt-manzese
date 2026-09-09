@@ -2,9 +2,10 @@ import PageHeader from '../components/PageHeader.jsx'
 import { Section, SectionTitle } from '../components/Section.jsx'
 import Icon from '../components/Icon.jsx'
 import { Field, Select, TextArea, RadioCards, FormPanel } from '../components/Form.jsx'
-import { baptismChecklist } from '../data/site.js'
+import { useSite, postSubmission } from '../content.jsx'
 
 export default function Baptism() {
+  const { baptismChecklist } = useSite()
   return (
     <>
       <PageHeader
@@ -38,6 +39,7 @@ export default function Baptism() {
           <div>
             <SectionTitle eyebrow="Fomu" title="Taarifa za maombi" />
             <FormPanel
+              onSubmit={(data) => postSubmission('baptism', data)}
               submitLabel="Wasilisha maombi ya ubatizo"
               successTitle="Maombi yamepokelewa"
               successText="Ofisi ya kanisa itawasiliana nawe kupanga tarehe ya ubatizo. Mungu akubariki."

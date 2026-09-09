@@ -3,9 +3,10 @@ import PageHeader from '../components/PageHeader.jsx'
 import { Section, SectionTitle } from '../components/Section.jsx'
 import Icon from '../components/Icon.jsx'
 import { Field, Select, TextArea, FormPanel } from '../components/Form.jsx'
-import { partnerWays } from '../data/site.js'
+import { useSite, postSubmission } from '../content.jsx'
 
 export default function Partner() {
+  const { partnerWays } = useSite()
   return (
     <>
       <PageHeader crumbs={['Shiriki', 'Ubia na Uwekezaji']} />
@@ -46,6 +47,7 @@ export default function Partner() {
         <div className="mx-auto max-w-2xl">
           <SectionTitle center eyebrow="Fomu" title="Onyesha nia ya kuwa mshirika" />
           <FormPanel
+              onSubmit={(data) => postSubmission('partner', data)}
             submitLabel="Wasilisha"
             successTitle="Asante!"
             successText="Uongozi wa usharika utawasiliana nawe kuzungumzia hatua zinazofuata."

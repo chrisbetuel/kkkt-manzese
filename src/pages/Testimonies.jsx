@@ -1,21 +1,12 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import PageHeader from '../components/PageHeader.jsx'
 import { Section, SectionTitle } from '../components/Section.jsx'
 import Icon from '../components/Icon.jsx'
 import { Field, RadioCards } from '../components/Form.jsx'
 import Recorder from '../components/Recorder.jsx'
-import { testimonies as seedTestimonies } from '../data/site.js'
+import { useSite, postTestimony } from '../content.jsx'
 
-const STORAGE_KEY = 'kkkt-manzese-testimonies'
 const TYPE_LABEL = { text: 'Maandishi', audio: 'Sauti', video: 'Video' }
-
-function loadLocal() {
-  try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')
-  } catch {
-    return []
-  }
-}
 
 function ytId(url = '') {
   const m = url.match(/(?:youtu\.be\/|[?&]v=|embed\/|shorts\/)([\w-]{11})/)
@@ -59,65 +50,69 @@ function MediaPlaceholder({ label }) {
 }
 
 export default function Testimonies() {
-  const [mine, setMine] = useState([])
+  const { testimonies } = useSite()
+  const [mine, setMine] = useState([]) // optimistic, this session only
   const [filter, setFilter] = useState('Zote')
+  const [error, setError] = useState('')
 
   // form state
   const [type, setType] = useState('text')
   const [method, setMethod] = useState('record') // record | upload | link
   const [recording, setRecording] = useState(null) // { url, blob }
-  const [upload, setUpload] = useState(null) // { url, name }
+  const [upload, setUpload] = useState(null) // { url, name, file }
   const [done, setDone] = useState(false)
+  const [sending, setSending] = useState(false)
 
-  useEffect(() => {
-    setMine(loadLocal())
-  }, [])
-
-  const all = useMemo(() => [...mine, ...seedTestimonies], [mine])
+  const all = useMemo(() => [...mine, ...testimonies], [mine, testimonies])
   const list =
     filter === 'Zote' ? all : all.filter((t) => TYPE_LABEL[t.type] === filter)
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault()
+    setError('')
     const f = Object.fromEntries(new FormData(e.currentTarget).entries())
 
-    const entry = {
-      type,
-      name: f.name || 'Bila jina',
-      role: f.role || 'Mwanausharika',
-      date: new Date().getFullYear().toString(),
-      text: f.text || '',
-      pending: true,
+    const fd = new FormData()
+    fd.append('type', type)
+    fd.append('name', f.name || 'Bila jina')
+    fd.append('role', f.role || 'Mwanausharika')
+    if (f.contact) fd.append('contact', f.contact)
+    if (f.text) fd.append('body', f.text)
+    if (type !== 'text' && method === 'link' && f.link) fd.append('link', f.link)
+    const file =
+      method === 'record' ? recording?.blob : method === 'upload' ? upload?.file : null
+    if (type !== 'text' && file) {
+      const ext = method === 'record' ? (type === 'video' ? 'webm' : 'webm') : ''
+      fd.append('media', file, method === 'record' ? `ushuhuda.${ext}` : upload.name)
     }
 
-    let persist = true
-    if (type === 'text') {
-      entry.text = f.text
-    } else if (method === 'link') {
-      entry.link = f.link
-      if (type === 'video') entry.youtubeId = ytId(f.link)
-    } else if (method === 'record' && recording) {
-      entry.mediaUrl = recording.url
-      entry.sessionOnly = true
-      persist = false // blob URL haiwezi kuhifadhiwa
-    } else if (method === 'upload' && upload) {
-      entry.mediaUrl = upload.url
-      entry.sessionOnly = true
-      persist = false
+    setSending(true)
+    try {
+      await postTestimony(fd)
+      // optimistic pending card for this session
+      setMine((m) => [
+        {
+          type,
+          name: f.name || 'Bila jina',
+          role: f.role || 'Mwanausharika',
+          date: new Date().getFullYear().toString(),
+          text: f.text || '',
+          pending: true,
+          mediaUrl:
+            method === 'record' ? recording?.url : method === 'upload' ? upload?.url : '',
+          link: method === 'link' ? f.link : '',
+          youtubeId: method === 'link' && type === 'video' ? ytId(f.link) : '',
+        },
+        ...m,
+      ])
+      setDone(true)
+      setRecording(null)
+      setUpload(null)
+    } catch {
+      setError('Imeshindikana kutuma. Jaribu tena au wasiliana na ofisi.')
+    } finally {
+      setSending(false)
     }
-
-    const next = [entry, ...loadLocal()]
-    setMine([entry, ...mine])
-    if (persist) {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(next.filter((x) => !x.sessionOnly)))
-      } catch {
-        /* localStorage haipatikani */
-      }
-    }
-    setDone(true)
-    setRecording(null)
-    setUpload(null)
   }
 
   function resetForm() {
@@ -303,7 +298,7 @@ export default function Testimonies() {
                         className="sr-only"
                         onChange={(e) => {
                           const file = e.target.files?.[0]
-                          setUpload(file ? { url: URL.createObjectURL(file), name: file.name } : null)
+                          setUpload(file ? { file, url: URL.createObjectURL(file), name: file.name } : null)
                         }}
                       />
                     </label>
@@ -339,8 +334,10 @@ export default function Testimonies() {
                 tovuti na machapisho yake.
               </p>
 
-              <button type="submit" className="btn-primary w-full">
-                Wasilisha ushuhuda
+              {error && <p className="text-sm text-red-600">{error}</p>}
+
+              <button type="submit" disabled={sending} className="btn-primary w-full disabled:opacity-60">
+                {sending ? 'Inatuma…' : 'Wasilisha ushuhuda'}
               </button>
             </form>
           )}

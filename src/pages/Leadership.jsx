@@ -1,9 +1,10 @@
 import PageHeader from '../components/PageHeader.jsx'
 import { Section, SectionTitle } from '../components/Section.jsx'
 import Icon from '../components/Icon.jsx'
-import { leadership } from '../data/site.js'
+import { useSite } from '../content.jsx'
 
 export default function Leadership() {
+  const { leadership } = useSite()
   return (
     <>
       <PageHeader

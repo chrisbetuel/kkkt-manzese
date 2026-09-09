@@ -2,9 +2,10 @@ import PageHeader from '../components/PageHeader.jsx'
 import { Section, SectionTitle } from '../components/Section.jsx'
 import Icon from '../components/Icon.jsx'
 import { Field, TextArea, Select, CheckboxList, FormPanel } from '../components/Form.jsx'
-import { volunteerAreas } from '../data/site.js'
+import { useSite, postSubmission } from '../content.jsx'
 
 export default function Volunteer() {
+  const { volunteerAreas } = useSite()
   return (
     <>
       <PageHeader
@@ -35,6 +36,7 @@ export default function Volunteer() {
           <div>
             <SectionTitle eyebrow="Fomu" title="Jiandikishe kujitolea" />
             <FormPanel
+              onSubmit={(data) => postSubmission('volunteer', data)}
               submitLabel="Wasilisha"
               successTitle="Asante kwa moyo wa kujitolea!"
               successText="Mratibu wa huduma atawasiliana nawe kukueleza jinsi unavyoweza kuanza."

@@ -1,18 +1,22 @@
 import { useState } from 'react'
-import { church } from '../data/site.js'
+import { useSite } from '../content.jsx'
+
+const LOGO = '/logo.png'
+const LOGO_FALLBACK = '/logo.svg'
 
 /**
- * Nembo ya kanisa. Hujaribu kupakia faili rasmi (church.logo);
- * ikikosekana hutumia nembo ya SVG ya muda (church.logoFallback).
+ * Nembo ya kanisa. Hujaribu kupakia faili rasmi (public/logo.png);
+ * ikikosekana hutumia nembo ya SVG ya muda (public/logo.svg).
  */
 export default function Logo({ className = 'h-11 w-auto max-w-[66px]', showText = true, light = false }) {
-  const [src, setSrc] = useState(church.logo)
+  const { church } = useSite()
+  const [src, setSrc] = useState(LOGO)
 
   return (
     <span className="flex items-center gap-3">
       <img
         src={src}
-        onError={() => src !== church.logoFallback && setSrc(church.logoFallback)}
+        onError={() => src !== LOGO_FALLBACK && setSrc(LOGO_FALLBACK)}
         alt={`Nembo ya ${church.name}`}
         className={`${className} shrink-0 object-contain`}
       />

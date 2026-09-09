@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import PageHeader from '../components/PageHeader.jsx'
 import { Section, SectionTitle } from '../components/Section.jsx'
 import Icon from '../components/Icon.jsx'
-import { sermons } from '../data/site.js'
+import { useSite } from '../content.jsx'
 
 function MediaPlayer({ sermon }) {
   if (sermon.youtubeId) {
@@ -65,6 +65,7 @@ function SermonCard({ sermon }) {
 }
 
 export default function Sermons() {
+  const { sermons } = useSite()
   const [featured, ...rest] = sermons
   return (
     <>

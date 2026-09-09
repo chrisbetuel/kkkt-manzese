@@ -2,9 +2,10 @@ import PageHeader from '../components/PageHeader.jsx'
 import { Section, SectionTitle } from '../components/Section.jsx'
 import Icon from '../components/Icon.jsx'
 import { Field, Select, TextArea, RadioCards, CheckboxList, FormPanel } from '../components/Form.jsx'
-import { choirs, serviceTeams } from '../data/site.js'
+import { useSite, postSubmission } from '../content.jsx'
 
 export default function JoinTeam() {
+  const { choirs, serviceTeams } = useSite()
   return (
     <>
       <PageHeader
@@ -34,6 +35,7 @@ export default function JoinTeam() {
         <div className="mx-auto max-w-2xl">
           <SectionTitle eyebrow="Fomu ya Kujiunga" title="Jaza taarifa zako" center />
           <FormPanel
+              onSubmit={(data) => postSubmission('join_team', data)}
             submitLabel="Wasilisha ombi la kujiunga"
             successTitle="Karibu timu!"
             successText="Kiongozi wa kikundi ulichochagua atawasiliana nawe kuhusu mazoezi na hatua zinazofuata."
