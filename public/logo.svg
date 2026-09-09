@@ -1,0 +1,63 @@
+<!--
+  Nembo ya KKKT / KKKT (Luther Rose ndani ya duara la bluu) — mchoro wa SVG.
+  UNAWEZA KUIBADILISHA: weka faili rasmi kama  public/logo.png  na itatumika badala ya hii.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 180" role="img" aria-label="KKKT Manzese">
+  <defs>
+    <clipPath id="oval">
+      <ellipse cx="128" cy="90" rx="122" ry="84" />
+    </clipPath>
+  </defs>
+
+  <!-- White field -->
+  <ellipse cx="128" cy="90" rx="122" ry="84" fill="#ffffff" />
+
+  <!-- Globe lines -->
+  <g clip-path="url(#oval)" fill="none" stroke="#123c8c" stroke-width="6">
+    <line x1="0" y1="90" x2="256" y2="90" />
+    <ellipse cx="128" cy="90" rx="44" ry="84" />
+    <ellipse cx="128" cy="90" rx="86" ry="84" />
+  </g>
+  <!-- Oval frame -->
+  <ellipse cx="128" cy="90" rx="122" ry="84" fill="none" stroke="#123c8c" stroke-width="9" />
+
+  <!-- ===== Luther Rose ===== -->
+  <g transform="translate(128 90)">
+    <!-- gold ring + sky field -->
+    <circle r="42" fill="#8fc3e8" stroke="#efc21f" stroke-width="5" />
+
+    <!-- green sepals between petals -->
+    <g fill="#3f9a4a">
+      <g transform="rotate(0)"><path d="M0 -8 L7 -34 L-7 -34 Z" /></g>
+      <g transform="rotate(72)"><path d="M0 -8 L7 -34 L-7 -34 Z" /></g>
+      <g transform="rotate(144)"><path d="M0 -8 L7 -34 L-7 -34 Z" /></g>
+      <g transform="rotate(216)"><path d="M0 -8 L7 -34 L-7 -34 Z" /></g>
+      <g transform="rotate(288)"><path d="M0 -8 L7 -34 L-7 -34 Z" /></g>
+    </g>
+
+    <!-- white rose petals -->
+    <g fill="#ffffff" stroke="#123c8c" stroke-width="1.4">
+      <g transform="rotate(-36)"><ellipse cx="0" cy="-22" rx="12.5" ry="19" /></g>
+      <g transform="rotate(36)"><ellipse cx="0" cy="-22" rx="12.5" ry="19" /></g>
+      <g transform="rotate(108)"><ellipse cx="0" cy="-22" rx="12.5" ry="19" /></g>
+      <g transform="rotate(180)"><ellipse cx="0" cy="-22" rx="12.5" ry="19" /></g>
+      <g transform="rotate(252)"><ellipse cx="0" cy="-22" rx="12.5" ry="19" /></g>
+    </g>
+
+    <!-- white centre -->
+    <circle r="20" fill="#ffffff" stroke="#123c8c" stroke-width="1.4" />
+
+    <!-- red heart -->
+    <path
+      transform="translate(0 1)"
+      d="M0 -3 C -5 -13 -18 -11 -18 1 C -18 11 -6 15 0 23 C 6 15 18 11 18 1 C 18 -11 5 -13 0 -3 Z"
+      fill="#d8322f"
+    />
+
+    <!-- black cross -->
+    <g fill="#141414">
+      <rect x="-3" y="-15" width="6" height="32" />
+      <rect x="-11" y="-5" width="22" height="6" />
+    </g>
+  </g>
+</svg>

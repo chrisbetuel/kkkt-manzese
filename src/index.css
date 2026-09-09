@@ -1,0 +1,187 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Palette as CSS variables — resolved by the browser, so no toolchain can choke on them */
+:root {
+  --paper: #f8f4ea;
+  --paper-2: #efe8d7;
+  --ink: #171512;
+  --ink-75: rgba(23, 21, 18, 0.75);
+  --ink-65: rgba(23, 21, 18, 0.65);
+  --ink-20: rgba(23, 21, 18, 0.2);
+  --ink-10: rgba(23, 21, 18, 0.1);
+  --brass: #b98f4c;
+  --brass-500: #b98f4c;
+  --brass-600: #a0762f;
+  --brass-400: #c9974a;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+    .animate-fade-up {
+      animation: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+
+  body {
+    @apply antialiased;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-feature-settings: 'cv05', 'cv08', 'ss01';
+    background-color: var(--paper);
+    color: var(--ink);
+    line-height: 1.6;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-bold;
+    font-family: 'Archivo', 'Inter', system-ui, sans-serif;
+    color: var(--ink);
+    letter-spacing: -0.015em;
+    line-height: 1.12;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  :focus-visible {
+    outline: none;
+    border-radius: 2px;
+    box-shadow: 0 0 0 2px var(--paper), 0 0 0 4px var(--ink);
+  }
+}
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-[1200px] px-5 lg:px-8;
+  }
+
+  /* Buttons — sharp, uppercase, with a hard offset shadow so they clearly read as buttons */
+  .btn,
+  .btn-primary,
+  .btn-navy,
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 text-xs font-semibold uppercase
+           tracking-[0.16em] transition-all duration-150;
+    padding: 0.9rem 1.9rem;
+    border: 1.5px solid transparent;
+    border-radius: 0;
+  }
+
+  .btn-primary {
+    border-color: var(--ink);
+    background: var(--ink);
+    color: var(--paper);
+    box-shadow: 4px 4px 0 0 var(--brass);
+  }
+  .btn-primary:hover {
+    background: var(--brass);
+    border-color: var(--brass);
+    color: var(--ink);
+    box-shadow: 4px 4px 0 0 var(--ink);
+    transform: translate(-1px, -1px);
+  }
+  .btn-primary:active {
+    transform: translate(2px, 2px);
+    box-shadow: 0 0 0 0 var(--ink);
+  }
+
+  /* Solid-looking button on light backgrounds */
+  .btn-navy {
+    border-color: var(--ink);
+    background: #fff;
+    color: var(--ink);
+    box-shadow: 4px 4px 0 0 rgba(23, 21, 18, 0.16);
+  }
+  .btn-navy:hover {
+    background: var(--ink);
+    color: var(--paper);
+    box-shadow: 4px 4px 0 0 var(--brass);
+    transform: translate(-1px, -1px);
+  }
+  .btn-navy:active {
+    transform: translate(2px, 2px);
+    box-shadow: 0 0 0 0 var(--ink);
+  }
+
+  /* Button on dark backgrounds */
+  .btn-outline {
+    border-color: var(--paper);
+    background: rgba(255, 255, 255, 0.12);
+    color: var(--paper);
+    box-shadow: 4px 4px 0 0 rgba(248, 244, 234, 0.25);
+  }
+  .btn-outline:hover {
+    border-color: var(--paper);
+    background: var(--paper);
+    color: var(--ink);
+    box-shadow: 4px 4px 0 0 var(--brass);
+    transform: translate(-1px, -1px);
+  }
+
+  /* Eyebrow / kicker with brass diamond glyph */
+  .eyebrow {
+    @apply mb-4 flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.24em];
+    color: var(--brass-600);
+  }
+  .eyebrow::before {
+    content: '✦';
+    font-size: 0.875rem;
+    color: var(--brass-500);
+  }
+  .eyebrow-center {
+    @apply justify-center;
+  }
+
+  .card {
+    @apply p-6 transition-colors duration-200;
+    border: 1px solid var(--ink-10);
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 2px;
+  }
+  .card:hover {
+    border-color: var(--brass-400);
+  }
+
+  .prose-church p {
+    @apply mb-4 leading-relaxed;
+    color: var(--ink-75);
+  }
+
+  /* Thin section rule with a centered mark */
+  .rule {
+    @apply flex items-center gap-4;
+    color: var(--brass-500);
+  }
+  .rule::before,
+  .rule::after {
+    content: '';
+    height: 1px;
+    flex: 1 1 0%;
+    background: var(--ink-20);
+  }
+}
