@@ -58,10 +58,10 @@ function normalize(d) {
     })),
     events: nonEmpty(d.events, []).map((x) => ({
       title: x.title, tag: x.tag, date: x.date_label, time: x.time_label,
-      location: x.location, text: x.description,
+      location: x.location, text: x.description, image: x.imageUrl || '',
     })),
     announcements: nonEmpty(d.announcements, []).map((x) => ({
-      title: x.title, date: x.date_label, text: x.body,
+      title: x.title, date: x.date_label, text: x.body, image: x.imageUrl || '',
     })),
     sermons: nonEmpty(d.sermons, []).map((x) => ({
       title: x.title, preacher: x.preacher, series: x.series, scripture: x.scripture,

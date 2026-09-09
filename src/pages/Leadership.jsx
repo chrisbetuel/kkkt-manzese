@@ -18,19 +18,25 @@ export default function Leadership() {
       <Section tint="cream">
         <SectionTitle eyebrow="Watumishi wa Neno" title="Wachungaji na Wainjilisti" />
         <div className="grid gap-8 md:grid-cols-3">
-          {leadership.clergy.map((p) => (
-            <div key={p.role} className="overflow-hidden rounded-3xl bg-white shadow-sm">
-              <img
-                src={p.photo}
-                alt={p.name}
-                className="aspect-[4/5] w-full object-cover"
-              />
+          {leadership.clergy.map((p, i) => (
+            <div key={i} className="overflow-hidden border border-ink/12 bg-white">
+              <div className="aspect-[4/5] w-full bg-navy-950">
+                {p.photo ? (
+                  <img src={p.photo} alt={p.name} className="h-full w-full object-cover" />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center">
+                    <span className="font-display text-6xl font-bold text-gold-400/50">
+                      {p.name?.[0] || '✦'}
+                    </span>
+                  </div>
+                )}
+              </div>
               <div className="p-6">
-                <p className="text-xs font-semibold uppercase tracking-widest text-gold-700">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-gold-600">
                   {p.role}
                 </p>
                 <h3 className="mt-1 text-xl font-semibold">{p.name}</h3>
-                <p className="mt-2 text-sm text-navy-600">{p.bio}</p>
+                <p className="mt-2 text-sm text-ink/60">{p.bio}</p>
               </div>
             </div>
           ))}
