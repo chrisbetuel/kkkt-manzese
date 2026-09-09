@@ -76,7 +76,7 @@ export default function Navbar() {
 
       <div
         className={`fixed inset-x-0 top-[76px] z-40 overflow-y-auto border-b border-ink/12 bg-cream transition-all duration-300 xl:hidden ${
-          open ? 'visible h-[calc(100vh-76px)] opacity-100' : 'invisible h-0 opacity-0'
+          open ? 'visible h-[calc(100dvh-76px)] opacity-100' : 'invisible h-0 opacity-0'
         }`}
       >
         <ul className="container-x flex flex-col py-4">

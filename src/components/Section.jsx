@@ -6,7 +6,7 @@ export function Section({ children, className = '', tint = 'cream', id }) {
     navy: 'bg-navy-950 text-cream',
   }[tint]
   return (
-    <section id={id} className={`py-20 md:py-28 ${bg} ${className}`}>
+    <section id={id} className={`py-14 sm:py-20 md:py-28 ${bg} ${className}`}>
       <div className="container-x">{children}</div>
     </section>
   )
@@ -14,7 +14,7 @@ export function Section({ children, className = '', tint = 'cream', id }) {
 
 export function SectionTitle({ eyebrow, title, intro, center = false, invert = false }) {
   return (
-    <div className={`${center ? 'mx-auto max-w-2xl text-center' : 'max-w-2xl'} mb-14`}>
+    <div className={`${center ? 'mx-auto max-w-2xl text-center' : 'max-w-2xl'} mb-10 sm:mb-14`}>
       {eyebrow && (
         <p
           className={`mb-4 flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.24em] ${
