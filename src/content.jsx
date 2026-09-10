@@ -96,7 +96,7 @@ export function ContentProvider({ children }) {
 
   useEffect(() => {
     let alive = true
-    fetch(apiUrl('/content'))
+    fetch(apiUrl('/content'), { cache: 'no-store' })
       .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
       .then((d) => alive && setBundle(normalize(d)))
       .catch(() => {}) // keep the static fallback
