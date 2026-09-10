@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import Icon from './Icon.jsx'
 
 export function ytId(url = '') {
@@ -48,6 +49,39 @@ export function platformOf(url = '') {
   if (/drive\.google|docs\.google/i.test(url)) return 'Google Drive'
   if (/mixlr\.com/i.test(url)) return 'Mixlr'
   return 'kiungo'
+}
+
+/**
+ * Picha ya jalada (cover) ya video — hujaza nafasi nzima ya mzazi (position: relative).
+ * Hutumia thumbnail iliyohifadhiwa, au ya YouTube, au fremu ya kwanza ya faili iliyopakiwa.
+ */
+export function Poster({ thumb = '', link = '', mediaUrl = '', type = 'video' }) {
+  const [failed, setFailed] = useState(false)
+  const src = failed ? '' : thumb || videoThumb(link)
+
+  if (src)
+    return (
+      <img
+        src={src}
+        alt=""
+        loading="lazy"
+        onError={() => setFailed(true)}
+        className="absolute inset-0 h-full w-full object-cover"
+      />
+    )
+
+  if (mediaUrl && type === 'video')
+    return (
+      <video
+        src={`${mediaUrl}#t=0.5`}
+        muted
+        playsInline
+        preload="metadata"
+        className="absolute inset-0 h-full w-full object-cover"
+      />
+    )
+
+  return null
 }
 
 /** Kitufe cha kufungua kiungo cha nje (jukwaa lisiloweza kupachikwa). */

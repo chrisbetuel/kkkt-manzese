@@ -5,7 +5,7 @@ import Icon from '../components/Icon.jsx'
 import Modal from '../components/Modal.jsx'
 import { Field, RadioCards } from '../components/Form.jsx'
 import Recorder from '../components/Recorder.jsx'
-import { Embed, ytId, videoThumb } from '../components/Media.jsx'
+import { Embed, Poster, ytId } from '../components/Media.jsx'
 import { useSite, postTestimony } from '../content.jsx'
 
 const TYPE_LABEL = { text: 'Maandishi', audio: 'Sauti', video: 'Video' }
@@ -94,7 +94,6 @@ function ShareButton({ t, className = '' }) {
 /** Kadi ya kati — inaonyesha muhtasari; media hufunguka kubwa kwenye dirisha. */
 function TestimonyCard({ t, onOpen }) {
   const media = hasMedia(t)
-  const thumb = media ? videoThumb(t.link) : ''
 
   return (
     <figure className="flex flex-col border border-ink/12 bg-white transition-shadow hover:shadow-[4px_4px_0_0_#e6cd9d]">
@@ -102,17 +101,11 @@ function TestimonyCard({ t, onOpen }) {
         <button
           type="button"
           onClick={() => onOpen(t)}
-          className="group relative flex aspect-[16/10] w-full items-center justify-center overflow-hidden border-b border-ink/10 bg-navy-950"
+          className="group relative flex aspect-video w-full items-center justify-center overflow-hidden border-b border-ink/10 bg-navy-950"
           aria-label="Fungua ushuhuda"
         >
-          {thumb && (
-            <img
-              src={thumb}
-              alt=""
-              loading="lazy"
-              className="absolute inset-0 h-full w-full object-cover opacity-70 transition-opacity group-hover:opacity-90"
-            />
-          )}
+          <Poster thumb={t.thumbnail} link={t.link} mediaUrl={t.mediaUrl} type={t.type} />
+          <span className="absolute inset-0 bg-navy-950/30 transition-colors group-hover:bg-navy-950/15" />
           <span className="relative flex h-12 w-12 items-center justify-center rounded-full bg-gold-500 text-navy-950 shadow-lg transition-transform group-hover:scale-110">
             <Icon name="play" className="h-5 w-5" />
           </span>

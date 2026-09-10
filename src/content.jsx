@@ -72,7 +72,7 @@ function normalize(d) {
     testimonies: nonEmpty(d.testimonies, []).map((x) => ({
       name: x.name, role: x.role, type: x.type, text: x.body, date: x.year,
       youtubeId: x.youtube_id || '', audioUrl: x.type === 'audio' ? x.mediaUrl : '',
-      mediaUrl: x.mediaUrl || '', link: x.link || '',
+      mediaUrl: x.mediaUrl || '', link: x.link || '', thumbnail: x.thumbnail_url || '',
     })),
     givingMethods: nonEmpty(d.givingMethods, []).map((x) => ({
       name: x.name, group: x.group_label, holder: x.holder, number: x.number, icon: x.icon,
