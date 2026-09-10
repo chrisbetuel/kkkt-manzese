@@ -79,7 +79,10 @@ function normalize(d) {
     partnerWays: nonEmpty(d.partnerWays, []).map((x) => ({
       title: x.title, icon: x.icon, text: x.description,
     })),
-    leadership: d.leadership && d.leadership.clergy?.length ? d.leadership : S.leadership,
+    leadership:
+      d.leadership && (d.leadership.clergy?.length || d.leadership.council?.length)
+        ? { clergy: d.leadership.clergy || [], council: d.leadership.council || [] }
+        : S.leadership,
 
     galleryImages: S.galleryImages,
     quickLinks: S.quickLinks,
