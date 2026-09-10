@@ -13,28 +13,93 @@ function ytId(url = '') {
   return m ? m[1] : ''
 }
 
+/**
+ * Tambua jukwaa (YouTube, TikTok, Instagram) kutoka kwenye kiungo
+ * na urudishe URL ya kupachika (embed) inayofanya kazi bila SDK.
+ */
+export function videoEmbed(url = '') {
+  const u = (url || '').trim()
+  if (!u) return null
+
+  const yt = ytId(u)
+  if (yt)
+    return { platform: 'YouTube', src: `https://www.youtube.com/embed/${yt}`, portrait: false }
+
+  let m = u.match(/tiktok\.com\/(?:[^/]+\/video\/|v\/|embed\/v2\/)(\d{6,25})/)
+  if (m)
+    return { platform: 'TikTok', src: `https://www.tiktok.com/embed/v2/${m[1]}`, portrait: true }
+
+  m = u.match(/instagram\.com\/(p|reel|tv)\/([\w-]+)/)
+  if (m)
+    return {
+      platform: 'Instagram',
+      src: `https://www.instagram.com/${m[1]}/${m[2]}/embed`,
+      portrait: true,
+    }
+
+  return null
+}
+
+function platformOf(url = '') {
+  if (/tiktok\.com/i.test(url)) return 'TikTok'
+  if (/instagram\.com/i.test(url)) return 'Instagram'
+  if (/youtu\.?be/i.test(url)) return 'YouTube'
+  if (/facebook\.com|fb\.watch/i.test(url)) return 'Facebook'
+  return 'video'
+}
+
+function LinkOut({ url }) {
+  return (
+    <a
+      href={url}
+      target="_blank"
+      rel="noreferrer"
+      className="flex items-center gap-3 border border-ink/12 bg-parchment px-4 py-3 text-xs font-semibold uppercase tracking-wide text-ink/70 transition-colors hover:border-ink hover:text-ink"
+    >
+      <Icon name="play" className="h-4 w-4 text-gold-600" />
+      Tazama kwenye {platformOf(url)}
+      <Icon name="arrow" className="ml-auto h-4 w-4" />
+    </a>
+  )
+}
+
 // -------- media rendering in the list --------
 function TestimonyMedia({ t }) {
   if (t.type === 'video') {
-    const id = t.youtubeId || ytId(t.link || '')
-    if (id)
+    const embed =
+      videoEmbed(t.link || '') ||
+      (t.youtubeId
+        ? { platform: 'YouTube', src: `https://www.youtube.com/embed/${t.youtubeId}`, portrait: false }
+        : null)
+
+    if (embed)
       return (
-        <div className="aspect-video overflow-hidden border border-ink/10">
+        <div
+          className={`overflow-hidden border border-ink/10 ${
+            embed.portrait ? 'mx-auto aspect-[9/16] max-w-[320px]' : 'aspect-video'
+          }`}
+        >
           <iframe
             className="h-full w-full"
-            src={`https://www.youtube.com/embed/${id}`}
-            title={t.name}
+            src={embed.src}
+            title={`${t.name} — ${embed.platform}`}
+            loading="lazy"
+            allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
             allowFullScreen
           />
         </div>
       )
-    if (t.mediaUrl || t.link)
-      return <video src={t.mediaUrl || t.link} controls className="w-full border border-ink/10" />
+    if (t.mediaUrl)
+      return <video src={t.mediaUrl} controls className="w-full border border-ink/10" />
+    if (t.link) return <LinkOut url={t.link} />
     return <MediaPlaceholder label="Video itapatikana baada ya idhini" />
   }
   if (t.type === 'audio') {
-    if (t.mediaUrl || t.audioUrl || t.link)
-      return <audio src={t.mediaUrl || t.audioUrl || t.link} controls className="w-full" />
+    if (t.mediaUrl || t.audioUrl) {
+      const src = t.mediaUrl || t.audioUrl
+      return <audio src={src} controls className="w-full" />
+    }
+    if (t.link) return <LinkOut url={t.link} />
     return <MediaPlaceholder label="Sauti itapatikana baada ya idhini" />
   }
   return null
@@ -242,7 +307,7 @@ export default function Testimonies() {
                 options={[
                   { value: 'text', label: 'Maandishi', desc: 'Andika ushuhuda' },
                   { value: 'audio', label: 'Sauti', desc: 'Rekodi au pakia sauti' },
-                  { value: 'video', label: 'Video', desc: 'Rekodi, pakia au kiungo' },
+                  { value: 'video', label: 'Video', desc: 'Rekodi, pakia au kiungo (YouTube, TikTok, Instagram)' },
                 ]}
               />
 
@@ -305,13 +370,29 @@ export default function Testimonies() {
                   )}
 
                   {method === 'link' && (
-                    <Field
-                      label={type === 'video' ? 'Kiungo cha YouTube / video' : 'Kiungo cha faili ya sauti'}
-                      name="link"
-                      type="url"
-                      required
-                      placeholder="https://youtube.com/watch?v=..."
-                    />
+                    <div>
+                      <Field
+                        label={
+                          type === 'video'
+                            ? 'Kiungo cha video (YouTube, TikTok, Instagram au Facebook)'
+                            : 'Kiungo cha faili ya sauti'
+                        }
+                        name="link"
+                        type="url"
+                        required
+                        placeholder={
+                          type === 'video'
+                            ? 'https://... (YouTube / TikTok / Instagram)'
+                            : 'https://...'
+                        }
+                      />
+                      {type === 'video' && (
+                        <p className="mt-1.5 text-xs text-ink/50">
+                          Nakili kiungo cha video kutoka YouTube, TikTok, Instagram
+                          Reel au Facebook.
+                        </p>
+                      )}
+                    </div>
                   )}
 
                   <Field
