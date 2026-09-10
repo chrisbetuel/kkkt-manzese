@@ -3,6 +3,7 @@ import PageHeader from '../components/PageHeader.jsx'
 import { Section, SectionTitle } from '../components/Section.jsx'
 import Icon from '../components/Icon.jsx'
 import { useSite, postSubmission } from '../content.jsx'
+import { waLink } from '../lib/wa.js'
 
 export default function Contact() {
   const { church } = useSite()
@@ -39,6 +40,16 @@ export default function Contact() {
       value: `${church.phone} / ${church.phoneAlt}`,
       href: `tel:${church.phone.replace(/\s/g, '')}`,
     },
+    ...(waLink(church.whatsapp || church.phone)
+      ? [
+          {
+            icon: 'whatsapp',
+            label: 'WhatsApp',
+            value: 'Tuandikie ujumbe',
+            href: waLink(church.whatsapp || church.phone, `Habari, natoka kwenye tovuti ya ${church.name}.`),
+          },
+        ]
+      : []),
   ]
 
   return (
@@ -61,7 +72,7 @@ export default function Contact() {
                 <a
                   key={d.label}
                   href={d.href}
-                  target={d.icon === 'pin' ? '_blank' : undefined}
+                  target={d.icon === 'pin' || d.icon === 'whatsapp' ? '_blank' : undefined}
                   rel="noreferrer"
                   className="flex items-center gap-4 rounded-2xl border border-navy-100 bg-white p-5 transition-colors hover:border-gold-300"
                 >

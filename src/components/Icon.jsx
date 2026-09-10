@@ -67,15 +67,21 @@ const brand = {
       <path d="M11 9.5v5l4-2.5z" />
     </>
   ),
+  whatsapp: (
+    <path d="M12 3a9 9 0 0 0-7.7 13.6L3 21l4.5-1.2A9 9 0 1 0 12 3zm4.2 12.3c-.2.5-1 1-1.5 1-.4 0-.9.2-3-.9-2.5-1.3-4-3.9-4.2-4.1-.1-.2-1-1.3-1-2.4s.6-1.7.8-1.9c.2-.2.4-.3.6-.3h.5c.1 0 .3 0 .5.4l.7 1.7c.1.2.1.4 0 .5l-.3.5-.3.3c-.1.1-.3.3-.1.5.2.4.8 1.2 1.6 1.9 1 .9 1.8 1.1 2 1.2.2.1.4.1.5-.1l.7-.8c.2-.2.3-.2.5-.1l1.6.8c.3.1.4.2.5.3v1z" />
+  ),
 }
+
+const brandFilled = new Set(['facebook', 'whatsapp'])
 
 export default function Icon({ name, className = 'h-6 w-6', strokeWidth = 1.75, ...props }) {
   if (brand[name]) {
+    const filled = brandFilled.has(name)
     return (
       <svg
         viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
+        fill={filled ? 'currentColor' : 'none'}
+        stroke={filled ? 'none' : 'currentColor'}
         strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeLinejoin="round"

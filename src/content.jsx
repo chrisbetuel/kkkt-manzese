@@ -131,3 +131,29 @@ export async function postTestimony(formData) {
   if (!res.ok) throw new Error('testimony failed')
   return res.json()
 }
+
+// ---- maombi (prayer wall) ----
+export async function fetchPrayers() {
+  const res = await fetch(apiUrl('/prayer-requests'), { cache: 'no-store' })
+  if (!res.ok) throw new Error('prayers failed')
+  return res.json()
+}
+
+export async function postPrayer(data) {
+  const res = await fetch(apiUrl('/prayer-requests'), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+    body: JSON.stringify(data),
+  })
+  if (!res.ok) throw new Error('prayer failed')
+  return res.json()
+}
+
+export async function prayFor(id) {
+  const res = await fetch(apiUrl(`/prayer-requests/${id}/pray`), {
+    method: 'POST',
+    headers: { Accept: 'application/json' },
+  })
+  if (!res.ok) throw new Error('pray failed')
+  return res.json()
+}

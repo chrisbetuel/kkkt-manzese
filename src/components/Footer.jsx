@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import Logo from './Logo.jsx'
 import Icon from './Icon.jsx'
 import { useSite } from '../content.jsx'
+import { waLink } from '../lib/wa.js'
 
 const FOOTER_PAGES = [
   { label: 'Kuhusu Sisi', to: '/kuhusu' },
@@ -10,7 +11,8 @@ const FOOTER_PAGES = [
   { label: 'Idara na Vikundi', to: '/idara' },
   { label: 'Matukio', to: '/matukio' },
   { label: 'Mahubiri', to: '/mahubiri' },
-  { label: 'Matunzio', to: '/matunzio' },
+  { label: 'Ushuhuda', to: '/ushuhuda' },
+  { label: 'Maombi', to: '/maombi' },
   { label: 'Wasiliana', to: '/wasiliana' },
 ]
 
@@ -42,10 +44,13 @@ export default function Footer() {
           </p>
           <div className="mt-5 flex justify-center gap-2 sm:justify-start">
             {[
+              ['whatsapp', waLink(church.whatsapp || church.phone)],
               ['facebook', church.social.facebook],
               ['instagram', church.social.instagram],
               ['youtube', church.social.youtube],
-            ].map(([name, href]) => (
+            ]
+              .filter(([, href]) => href)
+              .map(([name, href]) => (
               <a
                 key={name}
                 href={href}

@@ -15,6 +15,7 @@ export const church = {
   poBox: 'S.L.P [JAZA], Dar es Salaam',
   phone: '+255 [JAZA namba]',
   phoneAlt: '+255 [JAZA namba ya pili]',
+  whatsapp: '', // namba ya WhatsApp, mfano: 255712345678
   email: 'info@kkktmanzese.or.tz',
   mapEmbed:
     'https://www.google.com/maps?q=Manzese,Dar+es+Salaam,Tanzania&output=embed',

@@ -18,6 +18,7 @@ import Baptism from './pages/Baptism.jsx'
 import JoinTeam from './pages/JoinTeam.jsx'
 import Volunteer from './pages/Volunteer.jsx'
 import Testimonies from './pages/Testimonies.jsx'
+import Prayer from './pages/Prayer.jsx'
 import Partner from './pages/Partner.jsx'
 import NotFound from './pages/NotFound.jsx'
 
@@ -44,6 +45,7 @@ export default function App() {
           <Route path="/jiunge" element={<JoinTeam />} />
           <Route path="/kujitolea" element={<Volunteer />} />
           <Route path="/ushuhuda" element={<Testimonies />} />
+          <Route path="/maombi" element={<Prayer />} />
           <Route path="/ubia" element={<Partner />} />
 
           <Route path="*" element={<NotFound />} />

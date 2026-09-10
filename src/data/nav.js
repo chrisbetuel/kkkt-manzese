@@ -9,6 +9,7 @@ export const navLinks = [
   { label: 'Shiriki', to: '/shiriki' },
   { label: 'Matunzio', to: '/matunzio' },
   { label: 'Ushuhuda', to: '/ushuhuda' },
+  { label: 'Maombi', to: '/maombi' },
   { label: 'Ubia', to: '/ubia' },
   { label: 'Wasiliana', to: '/wasiliana' },
 ]
