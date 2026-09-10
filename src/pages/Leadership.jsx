@@ -1,6 +1,8 @@
+import { useState } from 'react'
 import PageHeader from '../components/PageHeader.jsx'
 import { Section, SectionTitle } from '../components/Section.jsx'
 import Icon from '../components/Icon.jsx'
+import Lightbox from '../components/Lightbox.jsx'
 import { useSite } from '../content.jsx'
 
 function Contact({ phone, email }) {
@@ -29,16 +31,26 @@ function Contact({ phone, email }) {
   )
 }
 
-function Avatar({ src, name, className = '' }) {
+function Avatar({ src, name, className = '', onView }) {
   if (src)
     return (
-      <img
-        src={src}
-        alt={name}
-        loading="lazy"
-        decoding="async"
-        className={`object-cover ${className}`}
-      />
+      <button
+        type="button"
+        onClick={onView}
+        className={`group relative block overflow-hidden ${className}`}
+        aria-label={`Tazama picha ya ${name}`}
+      >
+        <img
+          src={src}
+          alt={name}
+          loading="lazy"
+          decoding="async"
+          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+        />
+        <span className="pointer-events-none absolute inset-0 flex items-center justify-center bg-navy-950/0 text-white/0 transition-all group-hover:bg-navy-950/25 group-hover:text-white/90">
+          <Icon name="gallery" className="h-6 w-6" />
+        </span>
+      </button>
     )
   const clean = /JAZA/i.test(name || '') ? '' : name || ''
   const initial = clean.trim().replace(/[^\p{L}]/gu, '')[0]
@@ -57,6 +69,7 @@ export default function Leadership() {
   const { leadership } = useSite()
   const clergy = leadership.clergy || []
   const council = leadership.council || []
+  const [zoom, setZoom] = useState(null) // { src, caption }
 
   return (
     <>
@@ -71,7 +84,12 @@ export default function Leadership() {
           <div className="grid gap-8 md:grid-cols-3">
             {clergy.map((p, i) => (
               <div key={i} className="overflow-hidden border border-ink/12 bg-white">
-                <Avatar src={p.photo} name={p.name} className="aspect-[4/5] w-full" />
+                <Avatar
+                  src={p.photo}
+                  name={p.name}
+                  className="aspect-[4/5] w-full"
+                  onView={() => setZoom({ src: p.photo, caption: `${p.name} — ${p.role}` })}
+                />
                 <div className="p-6">
                   <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-gold-600">
                     {p.role}
@@ -96,7 +114,12 @@ export default function Leadership() {
           {council.map((m, i) => (
             <div key={i} className="flex flex-col border border-ink/12 bg-cream p-5">
               <div className="flex items-start gap-4">
-                <Avatar src={m.photo} name={m.name} className="h-20 w-20 shrink-0 rounded-full" />
+                <Avatar
+                  src={m.photo}
+                  name={m.name}
+                  className="h-20 w-20 shrink-0 rounded-full"
+                  onView={() => setZoom({ src: m.photo, caption: `${m.name} — ${m.role}` })}
+                />
                 <div className="min-w-0">
                   <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-gold-600">
                     {m.role}
@@ -110,6 +133,13 @@ export default function Leadership() {
           ))}
         </div>
       </Section>
+
+      <Lightbox
+        src={zoom?.src}
+        alt={zoom?.caption}
+        caption={zoom?.caption}
+        onClose={() => setZoom(null)}
+      />
     </>
   )
 }
