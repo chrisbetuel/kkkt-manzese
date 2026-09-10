@@ -40,7 +40,8 @@ function Avatar({ src, name, className = '' }) {
         className={`object-cover ${className}`}
       />
     )
-  const initial = (name || '').trim().replace(/[^\p{L}]/gu, '')[0]
+  const clean = /JAZA/i.test(name || '') ? '' : name || ''
+  const initial = clean.trim().replace(/[^\p{L}]/gu, '')[0]
   return (
     <div className={`flex items-center justify-center bg-navy-950 ${className}`}>
       {initial ? (
