@@ -40,9 +40,14 @@ function Avatar({ src, name, className = '' }) {
         className={`object-cover ${className}`}
       />
     )
+  const initial = (name || '').trim().replace(/[^\p{L}]/gu, '')[0]
   return (
     <div className={`flex items-center justify-center bg-navy-950 ${className}`}>
-      <span className="font-display text-4xl font-bold text-gold-400/60">{name?.[0] || '✦'}</span>
+      {initial ? (
+        <span className="font-display text-4xl font-bold uppercase text-gold-400/60">{initial}</span>
+      ) : (
+        <Icon name="user" className="h-2/5 w-2/5 text-gold-400/40" />
+      )}
     </div>
   )
 }

@@ -18,6 +18,7 @@ import {
   ShieldCheck,
   Smartphone,
   Sparkles,
+  UserRound,
   X,
 } from 'lucide-react'
 
@@ -42,6 +43,7 @@ const map = {
   play: Play,
   gallery: Images,
   arrow: ArrowRight,
+  user: UserRound,
   x: X,
 }
 
