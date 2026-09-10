@@ -232,6 +232,8 @@ export const sermons = [
     date: '[JAZA tarehe]',
     scripture: '2 Wakorintho 12:9',
     series: 'Kuishi kwa Imani',
+    type: 'video',
+    link: '',
     summary: 'Katika udhaifu wetu, nguvu ya Mungu hukamilika.',
   },
   {
@@ -240,6 +242,8 @@ export const sermons = [
     date: '[JAZA tarehe]',
     scripture: 'Mathayo 18:21-35',
     series: 'Maisha ya Ufalme',
+    type: 'video',
+    link: '',
     summary: 'Kusamehe bila kikomo, kama Mungu anavyotusamehe.',
   },
   {
@@ -248,6 +252,8 @@ export const sermons = [
     date: '[JAZA tarehe]',
     scripture: 'Mathayo 5:14-16',
     series: 'Mahubiri ya Mlimani',
+    type: 'video',
+    link: '',
     summary: 'Tumeitwa kung’aa kwa matendo mema yanayomtukuza Mungu.',
   },
 ]

@@ -4,113 +4,113 @@ import { Section, SectionTitle } from '../components/Section.jsx'
 import Icon from '../components/Icon.jsx'
 import { Field, RadioCards } from '../components/Form.jsx'
 import Recorder from '../components/Recorder.jsx'
+import { Embed, ytId } from '../components/Media.jsx'
 import { useSite, postTestimony } from '../content.jsx'
 
 const TYPE_LABEL = { text: 'Maandishi', audio: 'Sauti', video: 'Video' }
+const TYPE_ICON = { text: 'book', audio: 'music', video: 'play' }
 
-function ytId(url = '') {
-  const m = url.match(/(?:youtu\.be\/|[?&]v=|embed\/|shorts\/)([\w-]{11})/)
-  return m ? m[1] : ''
+function initialOf(name = '') {
+  const c = name.trim().replace(/[^\p{L}]/gu, '')[0]
+  return c ? c.toUpperCase() : '✦'
 }
 
-/**
- * Tambua jukwaa (YouTube, TikTok, Instagram) kutoka kwenye kiungo
- * na urudishe URL ya kupachika (embed) inayofanya kazi bila SDK.
- */
-export function videoEmbed(url = '') {
-  const u = (url || '').trim()
-  if (!u) return null
-
-  const yt = ytId(u)
-  if (yt)
-    return { platform: 'YouTube', src: `https://www.youtube.com/embed/${yt}`, portrait: false }
-
-  let m = u.match(/tiktok\.com\/(?:[^/]+\/video\/|v\/|embed\/v2\/)(\d{6,25})/)
-  if (m)
-    return { platform: 'TikTok', src: `https://www.tiktok.com/embed/v2/${m[1]}`, portrait: true }
-
-  m = u.match(/instagram\.com\/(p|reel|tv)\/([\w-]+)/)
-  if (m)
-    return {
-      platform: 'Instagram',
-      src: `https://www.instagram.com/${m[1]}/${m[2]}/embed`,
-      portrait: true,
-    }
-
-  return null
-}
-
-function platformOf(url = '') {
-  if (/tiktok\.com/i.test(url)) return 'TikTok'
-  if (/instagram\.com/i.test(url)) return 'Instagram'
-  if (/youtu\.?be/i.test(url)) return 'YouTube'
-  if (/facebook\.com|fb\.watch/i.test(url)) return 'Facebook'
-  return 'video'
-}
-
-function LinkOut({ url }) {
+function Person({ t, className = '' }) {
   return (
-    <a
-      href={url}
-      target="_blank"
-      rel="noreferrer"
-      className="flex items-center gap-3 border border-ink/12 bg-parchment px-4 py-3 text-xs font-semibold uppercase tracking-wide text-ink/70 transition-colors hover:border-ink hover:text-ink"
-    >
-      <Icon name="play" className="h-4 w-4 text-gold-600" />
-      Tazama kwenye {platformOf(url)}
-      <Icon name="arrow" className="ml-auto h-4 w-4" />
-    </a>
+    <figcaption className={`flex items-center gap-3 ${className}`}>
+      <span className="flex h-11 w-11 shrink-0 items-center justify-center bg-navy-950 font-display text-sm font-bold text-gold-400">
+        {initialOf(t.name)}
+      </span>
+      <span className="min-w-0">
+        <span className="block truncate text-sm font-semibold text-ink">{t.name}</span>
+        <span className="block truncate text-xs text-ink/50">
+          {[t.role, t.date].filter(Boolean).join(' · ')}
+        </span>
+      </span>
+    </figcaption>
   )
 }
 
-// -------- media rendering in the list --------
-function TestimonyMedia({ t }) {
-  if (t.type === 'video') {
-    const embed =
-      videoEmbed(t.link || '') ||
-      (t.youtubeId
-        ? { platform: 'YouTube', src: `https://www.youtube.com/embed/${t.youtubeId}`, portrait: false }
-        : null)
-
-    if (embed)
-      return (
-        <div
-          className={`overflow-hidden border border-ink/10 ${
-            embed.portrait ? 'mx-auto aspect-[9/16] max-w-[320px]' : 'aspect-video'
-          }`}
-        >
-          <iframe
-            className="h-full w-full"
-            src={embed.src}
-            title={`${t.name} — ${embed.platform}`}
-            loading="lazy"
-            allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-            allowFullScreen
-          />
-        </div>
-      )
-    if (t.mediaUrl)
-      return <video src={t.mediaUrl} controls className="w-full border border-ink/10" />
-    if (t.link) return <LinkOut url={t.link} />
-    return <MediaPlaceholder label="Video itapatikana baada ya idhini" />
-  }
-  if (t.type === 'audio') {
-    if (t.mediaUrl || t.audioUrl) {
-      const src = t.mediaUrl || t.audioUrl
-      return <audio src={src} controls className="w-full" />
-    }
-    if (t.link) return <LinkOut url={t.link} />
-    return <MediaPlaceholder label="Sauti itapatikana baada ya idhini" />
-  }
-  return null
+function TypeTag({ type, pending }) {
+  return (
+    <div className="flex items-center justify-between">
+      <span className="inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-gold-600">
+        <Icon name={TYPE_ICON[type] || 'book'} className="h-3.5 w-3.5" />
+        {TYPE_LABEL[type] || 'Maandishi'}
+      </span>
+      {pending && (
+        <span className="bg-gold-100 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-gold-700">
+          Inasubiri idhini
+        </span>
+      )}
+    </div>
+  )
 }
 
-function MediaPlaceholder({ label }) {
+/** Ushuhuda wa kwanza — kadi kubwa yenye nukuu. */
+function FeaturedCard({ t }) {
   return (
-    <div className="flex items-center gap-3 border border-ink/12 bg-parchment px-4 py-3 text-xs uppercase tracking-wide text-ink/50">
-      <Icon name="play" className="h-4 w-4 text-gold-600" />
-      {label}
-    </div>
+    <figure className="relative overflow-hidden border border-ink/15 bg-white">
+      <span className="absolute inset-x-0 top-0 h-1 bg-gold-500" />
+      <div className="grid gap-0 md:grid-cols-[1.1fr_1fr]">
+        <div className="flex flex-col justify-center p-7 sm:p-10">
+          <TypeTag type={t.type} pending={t.pending} />
+          <span className="mt-4 font-display text-5xl leading-none text-gold-400">&ldquo;</span>
+          {t.text ? (
+            <blockquote className="mt-1 text-lg font-medium leading-relaxed text-ink/85 sm:text-xl">
+              {t.text}
+            </blockquote>
+          ) : (
+            <p className="mt-1 text-base text-ink/60">Ushuhuda wa {TYPE_LABEL[t.type]?.toLowerCase()}.</p>
+          )}
+          <Person t={t} className="mt-6 border-t border-ink/10 pt-5" />
+        </div>
+        {t.type !== 'text' && (
+          <div className="flex items-center bg-parchment p-5 sm:p-6">
+            <div className="w-full">
+              <Embed
+                link={t.link}
+                mediaUrl={t.mediaUrl}
+                type={t.type}
+                title={t.name}
+                placeholder="Itapatikana baada ya idhini"
+              />
+            </div>
+          </div>
+        )}
+      </div>
+    </figure>
+  )
+}
+
+function TestimonyCard({ t }) {
+  return (
+    <figure className="flex flex-col border border-ink/12 bg-white transition-shadow hover:shadow-[5px_5px_0_0_#e6cd9d]">
+      <div className="flex flex-1 flex-col p-6">
+        <TypeTag type={t.type} pending={t.pending} />
+
+        {t.type !== 'text' && (
+          <div className="mt-4">
+            <Embed
+              link={t.link}
+              mediaUrl={t.mediaUrl}
+              type={t.type}
+              title={t.name}
+              placeholder="Itapatikana baada ya idhini"
+            />
+          </div>
+        )}
+
+        {t.text && (
+          <blockquote className="mt-4 flex-1 text-sm leading-relaxed text-ink/70">
+            <span className="mr-1 font-display text-xl leading-none text-gold-400">&ldquo;</span>
+            {t.text}
+          </blockquote>
+        )}
+
+        <Person t={t} className="mt-5 border-t border-ink/10 pt-4" />
+      </div>
+    </figure>
   )
 }
 
@@ -131,6 +131,13 @@ export default function Testimonies() {
   const all = useMemo(() => [...mine, ...testimonies], [mine, testimonies])
   const list =
     filter === 'Zote' ? all : all.filter((t) => TYPE_LABEL[t.type] === filter)
+  const [featured, ...rest] = list
+
+  const counts = useMemo(() => {
+    const c = { Zote: all.length, Maandishi: 0, Sauti: 0, Video: 0 }
+    all.forEach((t) => (c[TYPE_LABEL[t.type]] = (c[TYPE_LABEL[t.type]] || 0) + 1))
+    return c
+  }, [all])
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -147,8 +154,7 @@ export default function Testimonies() {
     const file =
       method === 'record' ? recording?.blob : method === 'upload' ? upload?.file : null
     if (type !== 'text' && file) {
-      const ext = method === 'record' ? (type === 'video' ? 'webm' : 'webm') : ''
-      fd.append('media', file, method === 'record' ? `ushuhuda.${ext}` : upload.name)
+      fd.append('media', file, method === 'record' ? 'ushuhuda.webm' : upload.name)
     }
 
     setSending(true)
@@ -194,80 +200,59 @@ export default function Testimonies() {
 
       {/* ---------- View ---------- */}
       <Section tint="cream">
-        <SectionTitle eyebrow="Shuhuda" title="Chagua aina ya ushuhuda" />
+        <SectionTitle
+          eyebrow="Shuhuda za Waumini"
+          title="Mungu bado anatenda"
+          intro="Soma, sikiliza na tazama jinsi Bwana alivyowatendea wengine katika usharika wetu."
+        />
 
         <div className="mb-10 flex flex-wrap gap-2">
           {['Zote', 'Maandishi', 'Sauti', 'Video'].map((t) => (
             <button
               key={t}
               onClick={() => setFilter(t)}
-              className={`border px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] transition-colors ${
+              className={`inline-flex items-center gap-2 border px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] transition-colors ${
                 filter === t
                   ? 'border-ink bg-ink text-cream'
                   : 'border-ink/25 bg-white/70 text-ink/70 hover:border-ink hover:text-ink'
               }`}
             >
               {t}
+              <span
+                className={`text-[10px] ${filter === t ? 'text-cream/60' : 'text-ink/35'}`}
+              >
+                {counts[t] || 0}
+              </span>
             </button>
           ))}
         </div>
 
         {mine.some((t) => t.pending) && (
-          <div className="mb-8 flex items-start gap-3 border border-gold-200 bg-gold-50 p-4 text-sm text-ink/70">
+          <div className="mb-8 flex items-start gap-3 border-l-2 border-gold-500 bg-gold-50 p-4 text-sm text-ink/70">
             <Icon name="shield" className="h-5 w-5 shrink-0 text-gold-700" />
             <p>
               Ushuhuda wako unasubiri idhini ya uongozi kabla ya kuonekana kwa
-              umma. Unauona hapa kwa sababu umewasilishwa kutoka kifaa hiki
-              (rekodi/faili hazihifadhiwi zaidi ya kikao hiki).
+              umma. Unauona hapa kwa sababu umewasilishwa kutoka kifaa hiki.
             </p>
           </div>
         )}
 
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {list.map((t, i) => (
-            <figure key={i} className="flex flex-col border border-ink/12 bg-white/80 p-6">
-              <div className="mb-3 flex items-center justify-between">
-                <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-gold-600">
-                  {TYPE_LABEL[t.type] || 'Maandishi'}
-                </span>
-                {t.pending && (
-                  <span className="bg-gold-100 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-gold-700">
-                    Inasubiri idhini
-                  </span>
-                )}
+        {list.length === 0 ? (
+          <p className="border border-ink/12 bg-white/70 p-6 text-sm text-ink/55">
+            Hakuna ushuhuda wa aina hii kwa sasa. Kuwa wa kwanza kushiriki hapa chini.
+          </p>
+        ) : (
+          <div className="space-y-6">
+            <FeaturedCard t={featured} />
+            {rest.length > 0 && (
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {rest.map((t, i) => (
+                  <TestimonyCard key={i} t={t} />
+                ))}
               </div>
-
-              {t.type !== 'text' && (
-                <div className="mb-3">
-                  <TestimonyMedia t={t} />
-                </div>
-              )}
-
-              {t.text && (
-                <blockquote className="flex-1 text-sm leading-relaxed text-ink/70">
-                  &ldquo;{t.text}&rdquo;
-                </blockquote>
-              )}
-
-              <figcaption className="mt-4 flex items-center gap-3 border-t border-ink/10 pt-4">
-                <span className="flex h-10 w-10 items-center justify-center bg-navy-900 font-display text-sm font-bold text-gold-400">
-                  {t.name?.[0] || '?'}
-                </span>
-                <span>
-                  <span className="block text-sm font-semibold text-ink">{t.name}</span>
-                  <span className="block text-xs text-ink/50">
-                    {t.role} · {t.date}
-                  </span>
-                </span>
-              </figcaption>
-            </figure>
-          ))}
-          {list.length === 0 && (
-            <p className="border border-ink/12 bg-white/70 p-6 text-sm text-ink/55">
-              Hakuna ushuhuda wa aina hii kwa sasa.
-            </p>
-          )}
-        </div>
+            )}
+          </div>
+        )}
       </Section>
 
       {/* ---------- Share ---------- */}

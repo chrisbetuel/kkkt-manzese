@@ -65,7 +65,8 @@ function normalize(d) {
     })),
     sermons: nonEmpty(d.sermons, []).map((x) => ({
       title: x.title, preacher: x.preacher, series: x.series, scripture: x.scripture,
-      date: x.preached_on, summary: x.summary, youtubeId: x.youtube_id || '',
+      date: x.preached_on, summary: x.summary, type: x.type || 'video',
+      link: x.link || '', youtubeId: x.youtube_id || '',
       audioUrl: x.audioUrl || '', docUrl: x.docUrl || '',
     })),
     testimonies: nonEmpty(d.testimonies, []).map((x) => ({
