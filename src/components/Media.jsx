@@ -32,6 +32,12 @@ export function videoEmbed(url = '') {
   return null
 }
 
+/** Picha ya onyesho (thumbnail) — kwa sasa YouTube pekee. */
+export function videoThumb(url = '') {
+  const id = ytId(url)
+  return id ? `https://i.ytimg.com/vi/${id}/hqdefault.jpg` : ''
+}
+
 export function platformOf(url = '') {
   if (/tiktok\.com/i.test(url)) return 'TikTok'
   if (/instagram\.com/i.test(url)) return 'Instagram'

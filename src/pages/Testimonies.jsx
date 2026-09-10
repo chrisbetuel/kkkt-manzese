@@ -2,9 +2,10 @@ import { useMemo, useState } from 'react'
 import PageHeader from '../components/PageHeader.jsx'
 import { Section, SectionTitle } from '../components/Section.jsx'
 import Icon from '../components/Icon.jsx'
+import Modal from '../components/Modal.jsx'
 import { Field, RadioCards } from '../components/Form.jsx'
 import Recorder from '../components/Recorder.jsx'
-import { Embed, ytId } from '../components/Media.jsx'
+import { Embed, ytId, videoThumb } from '../components/Media.jsx'
 import { useSite, postTestimony } from '../content.jsx'
 
 const TYPE_LABEL = { text: 'Maandishi', audio: 'Sauti', video: 'Video' }
@@ -15,15 +16,19 @@ function initialOf(name = '') {
   return c ? c.toUpperCase() : '✦'
 }
 
+function hasMedia(t) {
+  return t.type !== 'text' && (t.link || t.mediaUrl)
+}
+
 function Person({ t, className = '' }) {
   return (
-    <figcaption className={`flex items-center gap-3 ${className}`}>
-      <span className="flex h-11 w-11 shrink-0 items-center justify-center bg-navy-950 font-display text-sm font-bold text-gold-400">
+    <figcaption className={`flex min-w-0 items-center gap-3 ${className}`}>
+      <span className="flex h-9 w-9 shrink-0 items-center justify-center bg-navy-950 font-display text-xs font-bold text-gold-400">
         {initialOf(t.name)}
       </span>
       <span className="min-w-0">
-        <span className="block truncate text-sm font-semibold text-ink">{t.name}</span>
-        <span className="block truncate text-xs text-ink/50">
+        <span className="block truncate text-[13px] font-semibold text-ink">{t.name}</span>
+        <span className="block truncate text-[11px] text-ink/50">
           {[t.role, t.date].filter(Boolean).join(' · ')}
         </span>
       </span>
@@ -33,13 +38,13 @@ function Person({ t, className = '' }) {
 
 function TypeTag({ type, pending }) {
   return (
-    <div className="flex items-center justify-between">
-      <span className="inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-gold-600">
+    <div className="flex items-center justify-between gap-2">
+      <span className="inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-gold-600">
         <Icon name={TYPE_ICON[type] || 'book'} className="h-3.5 w-3.5" />
         {TYPE_LABEL[type] || 'Maandishi'}
       </span>
       {pending && (
-        <span className="bg-gold-100 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-gold-700">
+        <span className="bg-gold-100 px-2 py-0.5 text-[9px] font-medium uppercase tracking-wide text-gold-700">
           Inasubiri idhini
         </span>
       )}
@@ -47,70 +52,137 @@ function TypeTag({ type, pending }) {
   )
 }
 
-/** Ushuhuda wa kwanza — kadi kubwa yenye nukuu. */
-function FeaturedCard({ t }) {
+function ShareButton({ t, className = '' }) {
+  const [copied, setCopied] = useState(false)
+
+  async function onShare(e) {
+    e.stopPropagation()
+    const base = typeof window !== 'undefined' ? window.location.origin : ''
+    const url = t.link || `${base}/ushuhuda`
+    const text = t.text
+      ? `“${t.text}” — ${t.name}${t.role ? ', ' + t.role : ''}`
+      : `Ushuhuda wa ${t.name} — KKKT Usharika wa Manzese`
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: 'Ushuhuda — KKKT Manzese', text, url })
+        return
+      }
+    } catch {
+      return // user cancelled the share sheet
+    }
+    try {
+      await navigator.clipboard.writeText(`${text}\n${url}`)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch {
+      /* ignore */
+    }
+  }
+
   return (
-    <figure className="relative overflow-hidden border border-ink/15 bg-white">
-      <span className="absolute inset-x-0 top-0 h-1 bg-gold-500" />
-      <div className="grid gap-0 md:grid-cols-[1.1fr_1fr]">
-        <div className="flex flex-col justify-center p-7 sm:p-10">
-          <TypeTag type={t.type} pending={t.pending} />
-          <span className="mt-4 font-display text-5xl leading-none text-gold-400">&ldquo;</span>
-          {t.text ? (
-            <blockquote className="mt-1 text-lg font-medium leading-relaxed text-ink/85 sm:text-xl">
-              {t.text}
-            </blockquote>
-          ) : (
-            <p className="mt-1 text-base text-ink/60">Ushuhuda wa {TYPE_LABEL[t.type]?.toLowerCase()}.</p>
+    <button
+      type="button"
+      onClick={onShare}
+      className={`inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-ink/45 transition-colors hover:text-gold-700 ${className}`}
+    >
+      <Icon name="share" className="h-3.5 w-3.5" />
+      {copied ? 'Imenakiliwa' : 'Sambaza'}
+    </button>
+  )
+}
+
+/** Kadi ya kati — inaonyesha muhtasari; media hufunguka kubwa kwenye dirisha. */
+function TestimonyCard({ t, onOpen }) {
+  const media = hasMedia(t)
+  const thumb = media ? videoThumb(t.link) : ''
+
+  return (
+    <figure className="flex flex-col border border-ink/12 bg-white transition-shadow hover:shadow-[4px_4px_0_0_#e6cd9d]">
+      {media && (
+        <button
+          type="button"
+          onClick={() => onOpen(t)}
+          className="group relative flex aspect-[16/10] w-full items-center justify-center overflow-hidden border-b border-ink/10 bg-navy-950"
+          aria-label="Fungua ushuhuda"
+        >
+          {thumb && (
+            <img
+              src={thumb}
+              alt=""
+              loading="lazy"
+              className="absolute inset-0 h-full w-full object-cover opacity-70 transition-opacity group-hover:opacity-90"
+            />
           )}
-          <Person t={t} className="mt-6 border-t border-ink/10 pt-5" />
-        </div>
-        {t.type !== 'text' && (
-          <div className="flex items-center bg-parchment p-5 sm:p-6">
-            <div className="w-full">
-              <Embed
-                link={t.link}
-                mediaUrl={t.mediaUrl}
-                type={t.type}
-                title={t.name}
-                placeholder="Itapatikana baada ya idhini"
-              />
-            </div>
-          </div>
+          <span className="relative flex h-12 w-12 items-center justify-center rounded-full bg-gold-500 text-navy-950 shadow-lg transition-transform group-hover:scale-110">
+            <Icon name="play" className="h-5 w-5" />
+          </span>
+        </button>
+      )}
+
+      <div className="flex flex-1 flex-col p-5">
+        <TypeTag type={t.type} pending={t.pending} />
+
+        {t.text ? (
+          <blockquote className="mt-3 flex-1 text-[13px] leading-relaxed text-ink/70">
+            <span className="mr-1 font-display text-lg leading-none text-gold-400">&ldquo;</span>
+            <span className="line-clamp-5">{t.text}</span>
+          </blockquote>
+        ) : (
+          <p className="mt-3 flex-1 text-[13px] text-ink/50">
+            Ushuhuda wa {TYPE_LABEL[t.type]?.toLowerCase()}.
+          </p>
         )}
+
+        {(t.text?.length > 220 || media) && (
+          <button
+            type="button"
+            onClick={() => onOpen(t)}
+            className="mt-3 inline-flex items-center gap-1.5 self-start text-[11px] font-semibold uppercase tracking-[0.12em] text-gold-700 hover:text-gold-800"
+          >
+            {media ? 'Fungua' : 'Soma zaidi'}
+            <Icon name="arrow" className="h-3.5 w-3.5" />
+          </button>
+        )}
+
+        <div className="mt-4 flex items-center justify-between gap-3 border-t border-ink/10 pt-3">
+          <Person t={t} />
+          <ShareButton t={t} className="shrink-0" />
+        </div>
       </div>
     </figure>
   )
 }
 
-function TestimonyCard({ t }) {
+/** Maudhui makubwa ndani ya dirisha ibukizi. */
+function TestimonyDetail({ t }) {
   return (
-    <figure className="flex flex-col border border-ink/12 bg-white transition-shadow hover:shadow-[5px_5px_0_0_#e6cd9d]">
-      <div className="flex flex-1 flex-col p-6">
-        <TypeTag type={t.type} pending={t.pending} />
+    <div className="p-6 sm:p-8">
+      <TypeTag type={t.type} pending={t.pending} />
 
-        {t.type !== 'text' && (
-          <div className="mt-4">
-            <Embed
-              link={t.link}
-              mediaUrl={t.mediaUrl}
-              type={t.type}
-              title={t.name}
-              placeholder="Itapatikana baada ya idhini"
-            />
-          </div>
-        )}
+      {hasMedia(t) && (
+        <div className="mt-4">
+          <Embed
+            link={t.link}
+            mediaUrl={t.mediaUrl}
+            type={t.type}
+            title={t.name}
+            placeholder="Itapatikana baada ya idhini"
+          />
+        </div>
+      )}
 
-        {t.text && (
-          <blockquote className="mt-4 flex-1 text-sm leading-relaxed text-ink/70">
-            <span className="mr-1 font-display text-xl leading-none text-gold-400">&ldquo;</span>
-            {t.text}
-          </blockquote>
-        )}
+      {t.text && (
+        <blockquote className="mt-5 text-base leading-relaxed text-ink/85">
+          <span className="mr-1 font-display text-3xl leading-none text-gold-400">&ldquo;</span>
+          {t.text}
+        </blockquote>
+      )}
 
-        <Person t={t} className="mt-5 border-t border-ink/10 pt-4" />
+      <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-ink/10 pt-5">
+        <Person t={t} />
+        <ShareButton t={t} />
       </div>
-    </figure>
+    </div>
   )
 }
 
@@ -118,6 +190,7 @@ export default function Testimonies() {
   const { testimonies } = useSite()
   const [mine, setMine] = useState([]) // optimistic, this session only
   const [filter, setFilter] = useState('Zote')
+  const [active, setActive] = useState(null) // testimony open in modal
   const [error, setError] = useState('')
 
   // form state
@@ -131,7 +204,6 @@ export default function Testimonies() {
   const all = useMemo(() => [...mine, ...testimonies], [mine, testimonies])
   const list =
     filter === 'Zote' ? all : all.filter((t) => TYPE_LABEL[t.type] === filter)
-  const [featured, ...rest] = list
 
   const counts = useMemo(() => {
     const c = { Zote: all.length, Maandishi: 0, Sauti: 0, Video: 0 }
@@ -206,7 +278,7 @@ export default function Testimonies() {
           intro="Soma, sikiliza na tazama jinsi Bwana alivyowatendea wengine katika usharika wetu."
         />
 
-        <div className="mb-10 flex flex-wrap gap-2">
+        <div className="mb-8 flex flex-wrap gap-2">
           {['Zote', 'Maandishi', 'Sauti', 'Video'].map((t) => (
             <button
               key={t}
@@ -242,18 +314,17 @@ export default function Testimonies() {
             Hakuna ushuhuda wa aina hii kwa sasa. Kuwa wa kwanza kushiriki hapa chini.
           </p>
         ) : (
-          <div className="space-y-6">
-            <FeaturedCard t={featured} />
-            {rest.length > 0 && (
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {rest.map((t, i) => (
-                  <TestimonyCard key={i} t={t} />
-                ))}
-              </div>
-            )}
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {list.map((t, i) => (
+              <TestimonyCard key={i} t={t} onOpen={setActive} />
+            ))}
           </div>
         )}
       </Section>
+
+      <Modal open={!!active} onClose={() => setActive(null)} size="lg">
+        {active && <TestimonyDetail t={active} />}
+      </Modal>
 
       {/* ---------- Share ---------- */}
       <Section tint="white">

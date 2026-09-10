@@ -18,6 +18,7 @@ import {
   ShieldCheck,
   Smartphone,
   Sparkles,
+  Share2,
   UserRound,
   X,
 } from 'lucide-react'
@@ -44,6 +45,7 @@ const map = {
   gallery: Images,
   arrow: ArrowRight,
   user: UserRound,
+  share: Share2,
   x: X,
 }
 
