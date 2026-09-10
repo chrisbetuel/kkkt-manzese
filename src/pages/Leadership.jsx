@@ -30,7 +30,16 @@ function Contact({ phone, email }) {
 }
 
 function Avatar({ src, name, className = '' }) {
-  if (src) return <img src={src} alt={name} className={`object-cover ${className}`} />
+  if (src)
+    return (
+      <img
+        src={src}
+        alt={name}
+        loading="lazy"
+        decoding="async"
+        className={`object-cover ${className}`}
+      />
+    )
   return (
     <div className={`flex items-center justify-center bg-navy-950 ${className}`}>
       <span className="font-display text-4xl font-bold text-gold-400/60">{name?.[0] || '✦'}</span>
@@ -81,7 +90,7 @@ export default function Leadership() {
           {council.map((m, i) => (
             <div key={i} className="flex flex-col border border-ink/12 bg-cream p-5">
               <div className="flex items-start gap-4">
-                <Avatar src={m.photo} name={m.name} className="h-16 w-16 shrink-0 rounded-full" />
+                <Avatar src={m.photo} name={m.name} className="h-20 w-20 shrink-0 rounded-full" />
                 <div className="min-w-0">
                   <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-gold-600">
                     {m.role}
