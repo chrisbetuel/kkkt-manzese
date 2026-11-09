@@ -259,33 +259,16 @@ export const sermons = [
   },
 ]
 
-// Matunzio yamepangwa kwa albamu — mtumiaji huchagua anayotaka kuona.
-const U = (id) =>
-  `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=900&q=70`
-
-// picha halisi za usharika
+// Matunzio ya akiba (API ikishindwa). Albamu halisi husimamiwa /admin → Matunzio (Albamu).
 const K = (name) => `/images/kanisa/${name}.jpg`
 
 export const galleryImages = [
-  { album: 'Ibada', src: K('maombi-ibada'), caption: 'Maombi wakati wa ibada' },
-  { album: 'Ibada', src: K('mchungaji-madhabahu'), caption: 'Huduma madhabahuni' },
-  { album: 'Ibada', src: K('mahubiri-mimbari'), caption: 'Neno la Mungu mimbarini' },
-  { album: 'Ubatizo', src: K('ubatizo-familia'), caption: 'Ubatizo Mtakatifu pamoja na familia' },
-  { album: 'Ubatizo', src: K('baba-na-mtoto'), caption: 'Baba na mtoto siku ya ubatizo' },
-  { album: 'Ushirika', src: K('washirika'), caption: 'Washirika kanisani' },
-  { album: 'Ibada', src: U('1438032005730-c779502df39b'), caption: 'Ibada ya Jumapili' },
-  { album: 'Ibada', src: U('1507692049790-de58290a4334'), caption: 'Ndani ya kanisa' },
-  { album: 'Ibada', src: U('1511988617509-a57c8a288659'), caption: 'Ushirika baada ya ibada' },
-  { album: 'Kwaya', src: U('1445445290350-18a3b86e0b5a'), caption: 'Kwaya Kuu ikiimba' },
-  { album: 'Kwaya', src: U('1510915361894-db8b60106cb1'), caption: 'Mazoezi ya kwaya' },
-  { album: 'Vijana', src: U('1529070538774-1843cb3265df'), caption: 'Semina ya vijana' },
-  { album: 'Vijana', src: U('1523240795612-9a054b0db644'), caption: 'Mkutano wa vijana' },
-  { album: 'Ubatizo', src: U('1438032005730-c779502df39b'), caption: 'Ubatizo Mtakatifu' },
-  { album: 'Ushirika', src: U('1511988617509-a57c8a288659'), caption: 'Chai baada ya ibada' },
-  { album: 'Ujenzi', src: U('1466629437334-b4f6603563c5'), caption: 'Harambee ya ujenzi' },
-  { album: 'Ujenzi', src: U('1541888946425-d81bb19240f5'), caption: 'Ujenzi unaendelea' },
-  { album: 'Watoto', src: U('1508963493744-76fce69379c0'), caption: 'Shule ya Jumapili' },
-  { album: 'Sikukuu', src: U('1516450360452-9312f5e86fc7'), caption: 'Sherehe ya Krismasi' },
+  { album: 'Ibada za Jumapili 2026', src: K('maombi-ibada'), caption: 'Maombi wakati wa ibada' },
+  { album: 'Ibada za Jumapili 2026', src: K('mchungaji-madhabahu'), caption: 'Huduma madhabahuni' },
+  { album: 'Ibada za Jumapili 2026', src: K('mahubiri-mimbari'), caption: 'Neno la Mungu mimbarini' },
+  { album: 'Ibada za Jumapili 2026', src: K('washirika'), caption: 'Washirika kanisani' },
+  { album: 'Ubatizo Mtakatifu 2026', src: K('ubatizo-familia'), caption: 'Ubatizo Mtakatifu pamoja na familia' },
+  { album: 'Ubatizo Mtakatifu 2026', src: K('baba-na-mtoto'), caption: 'Baba na mtoto siku ya ubatizo' },
 ]
 
 export const givingMethods = [

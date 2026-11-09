@@ -39,6 +39,7 @@ export default function App() {
           <Route path="/mahubiri/pakia" element={<UploadSermon />} />
           <Route path="/michango" element={<Giving />} />
           <Route path="/matunzio" element={<Gallery />} />
+          <Route path="/matunzio/:slug" element={<Gallery />} />
           <Route path="/wasiliana" element={<Contact />} />
 
           <Route path="/shiriki" element={<Involve />} />

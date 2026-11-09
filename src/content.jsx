@@ -175,3 +175,33 @@ export async function postMember(formData) {
   }
   return body
 }
+
+// ---- matunzio (albamu) ----
+const slugify = (s) =>
+  String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
+
+/** Albamu za akiba (picha za site.js) API ikishindwa. */
+function fallbackAlbums() {
+  const by = new Map()
+  for (const g of S.galleryImages) {
+    if (!by.has(g.album)) by.set(g.album, { slug: slugify(g.album), title: g.album, description: '', date: null, photos: [], videos: [] })
+    by.get(g.album).photos.push(g.src)
+  }
+  return [...by.values()].map((a) => ({ ...a, cover: a.photos[0] }))
+}
+
+/** Albamu zote za matunzio: { albums, loading }. */
+export function useGallery() {
+  const [state, setState] = useState({ albums: [], loading: true })
+  useEffect(() => {
+    let alive = true
+    fetch(apiUrl('/gallery'), { cache: 'no-store' })
+      .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
+      .then((albums) => alive && setState({ albums: albums.length ? albums : fallbackAlbums(), loading: false }))
+      .catch(() => alive && setState({ albums: fallbackAlbums(), loading: false }))
+    return () => {
+      alive = false
+    }
+  }, [])
+  return state
+}
