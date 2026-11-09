@@ -4,43 +4,12 @@ import { Section, SectionTitle } from '../components/Section.jsx'
 import Icon from '../components/Icon.jsx'
 import { homeLinks } from '../data/nav.js'
 import { useSite } from '../content.jsx'
+import { CHURCH_PHOTOS as HERO_SLIDES, fallbackPhotos, photo } from '../lib/photos.js'
 
 const WRAP = 'container-x'
 
-// picha halisi za usharika (public/images/kanisa)
-const photo = (name, small = false) => `/images/kanisa/${name}${small ? '-sm' : ''}.jpg`
 // picha za hero hubadilika kila sekunde 3
-const HERO_SLIDES = [
-  'maombi-ibada',
-  'ubatizo-familia',
-  'mchungaji-madhabahu',
-  'mahubiri-mimbari',
-  'baba-na-mtoto',
-  'washirika',
-]
 const SLIDE_MS = 3000
-
-// tukio lisilo na picha hupewa picha ya usharika kulingana na aina/jina lake
-const EVENT_PHOTOS = [
-  [/ubatizo|mtoto|watoto|shule ya jumapili/, 'baba-na-mtoto'],
-  [/maombi|sala|masifa/, 'maombi-ibada'],
-  [/mahubiri|neno|semina|mafundisho/, 'mahubiri-mimbari'],
-  [/krismasi|pasaka|sikukuu|ibada/, 'mchungaji-madhabahu'],
-  [/vijana|harambee|ujenzi|mkutano|ushirika/, 'washirika'],
-]
-/** Picha kwa kila tukio; kadi zilizo pamoja hazirudii picha moja. */
-function eventPhotos(list) {
-  const used = new Set()
-  return list.map((e) => {
-    if (e.image) return e.image
-    const text = `${e.tag || ''} ${e.title || ''}`.toLowerCase()
-    const hit = EVENT_PHOTOS.find(([re]) => re.test(text))?.[1]
-    const name =
-      hit && !used.has(hit) ? hit : HERO_SLIDES.find((n) => !used.has(n)) || hit || HERO_SLIDES[0]
-    used.add(name)
-    return photo(name, true)
-  })
-}
 
 /** Picha zinazopishana kwa kufifia, na zoom ndogo kwenye picha inayoonekana. */
 function HeroSlides({ className = '', sizes = '100vw' }) {
@@ -127,7 +96,8 @@ export default function Home() {
   const { church, services, announcements, events, involveOptions } = useSite()
   const sundays = services.filter((s) => s.day === 'Jumapili').slice(0, 2)
   const upcoming = events.slice(0, 4)
-  const upcomingPhotos = eventPhotos(upcoming)
+  const upcomingPhotos = fallbackPhotos(upcoming)
+  const newsPhotos = fallbackPhotos(announcements.slice(0, 3), { offset: 3 })
   const steps = involveOptions.slice(0, 3)
 
   return (
@@ -435,19 +405,17 @@ export default function Home() {
         <Section tint="white">
           <SectionTitle eyebrow="Matangazo" title="Yanayoendelea kanisani" />
           <div className="grid gap-5 md:grid-cols-3">
-            {announcements.slice(0, 3).map((a) => (
+            {announcements.slice(0, 3).map((a, i) => (
               <article
                 key={a.title}
                 className="flex flex-col overflow-hidden rounded-2xl border border-line bg-white transition-shadow hover:shadow-card"
               >
-                {a.image && (
-                  <img
-                    src={a.image}
-                    alt={a.title}
-                    loading="lazy"
-                    className="aspect-[16/9] w-full object-cover"
-                  />
-                )}
+                <img
+                  src={newsPhotos[i]}
+                  alt={a.title}
+                  loading="lazy"
+                  className="aspect-[16/9] w-full object-cover"
+                />
                 <div className="flex flex-1 flex-col p-5">
                   <p className="text-[12px] font-semibold text-gold-700">{a.date}</p>
                   <h3 className="mt-1 text-base font-bold">{a.title}</h3>

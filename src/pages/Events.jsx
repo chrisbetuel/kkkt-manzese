@@ -3,25 +3,19 @@ import PageHeader from '../components/PageHeader.jsx'
 import { Section, SectionTitle } from '../components/Section.jsx'
 import Icon from '../components/Icon.jsx'
 import { useSite } from '../content.jsx'
+import { fallbackPhotos } from '../lib/photos.js'
 
-function EventCard({ e, index }) {
+function EventCard({ e, image }) {
   return (
     <article className="rounded-2xl group flex flex-col overflow-hidden border border-ink/12 bg-white/80 transition-all hover:border-gold-400 hover:shadow-card">
       <div className="relative aspect-[16/10] overflow-hidden bg-parchment">
-        {e.image ? (
-          <img
-            src={e.image}
-            alt={e.title}
-            loading="lazy"
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-          />
-        ) : (
-          <div className="flex h-full w-full items-center justify-center">
-            <span className="font-display text-5xl font-bold tabular-nums text-ink/10">
-              {String(index + 1).padStart(2, '0')}
-            </span>
-          </div>
-        )}
+        <img
+          src={image}
+          alt={e.title}
+          loading="lazy"
+          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+        />
+        <span aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-ink/35 to-transparent" />
         <span className="rounded-full absolute left-3 top-3 bg-ink px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-cream">
           {e.tag}
         </span>
@@ -58,6 +52,8 @@ export default function Events() {
     [events],
   )
   const list = active === 'Zote' ? events : events.filter((e) => e.tag === active)
+  const listPhotos = fallbackPhotos(list)
+  const newsPhotos = fallbackPhotos(announcements, { offset: 3 })
 
   return (
     <>
@@ -68,19 +64,17 @@ export default function Events() {
         <Section tint="cream">
           <SectionTitle eyebrow="Matangazo" title="Yanayoendelea kanisani" />
           <div className="grid gap-5 md:grid-cols-3">
-            {announcements.map((a) => (
+            {announcements.map((a, i) => (
               <article
                 key={a.title}
                 className="rounded-2xl flex flex-col overflow-hidden border border-ink/12 bg-white/80"
               >
-                {a.image && (
-                  <img
-                    src={a.image}
-                    alt={a.title}
-                    loading="lazy"
-                    className="aspect-[16/9] w-full object-cover"
-                  />
-                )}
+                <img
+                  src={newsPhotos[i]}
+                  alt={a.title}
+                  loading="lazy"
+                  className="aspect-[16/9] w-full object-cover"
+                />
                 <div className="flex flex-1 flex-col p-5">
                   <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-gold-600">
                     {a.date}
@@ -103,7 +97,7 @@ export default function Events() {
             <button
               key={t}
               onClick={() => setActive(t)}
-              className={`border px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] transition-colors ${
+              className={`rounded-full border px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] transition-colors ${
                 active === t
                   ? 'border-ink bg-ink text-cream'
                   : 'border-ink/25 bg-white/70 text-ink/70 hover:border-ink hover:text-ink'
@@ -117,7 +111,7 @@ export default function Events() {
         {list.length > 0 ? (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {list.map((e, i) => (
-              <EventCard key={e.title + i} e={e} index={i} />
+              <EventCard key={e.title + i} e={e} image={listPhotos[i]} />
             ))}
           </div>
         ) : (
