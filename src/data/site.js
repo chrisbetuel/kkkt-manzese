@@ -263,7 +263,16 @@ export const sermons = [
 const U = (id) =>
   `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=900&q=70`
 
+// picha halisi za usharika
+const K = (name) => `/images/kanisa/${name}.jpg`
+
 export const galleryImages = [
+  { album: 'Ibada', src: K('maombi-ibada'), caption: 'Maombi wakati wa ibada' },
+  { album: 'Ibada', src: K('mchungaji-madhabahu'), caption: 'Huduma madhabahuni' },
+  { album: 'Ibada', src: K('mahubiri-mimbari'), caption: 'Neno la Mungu mimbarini' },
+  { album: 'Ubatizo', src: K('ubatizo-familia'), caption: 'Ubatizo Mtakatifu pamoja na familia' },
+  { album: 'Ubatizo', src: K('baba-na-mtoto'), caption: 'Baba na mtoto siku ya ubatizo' },
+  { album: 'Ushirika', src: K('washirika'), caption: 'Washirika kanisani' },
   { album: 'Ibada', src: U('1438032005730-c779502df39b'), caption: 'Ibada ya Jumapili' },
   { album: 'Ibada', src: U('1507692049790-de58290a4334'), caption: 'Ndani ya kanisa' },
   { album: 'Ibada', src: U('1511988617509-a57c8a288659'), caption: 'Ushirika baada ya ibada' },

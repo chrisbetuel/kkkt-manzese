@@ -6,14 +6,15 @@ import { useSite } from '../content.jsx'
 
 const WRAP = 'container-x'
 
-const img = (id, w = 1600) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=72`
-const HERO_IMAGE = img('1519491050282-cf00c82424b4', 1800)
+// picha halisi za usharika (public/images/kanisa)
+const photo = (name, small = false) => `/images/kanisa/${name}${small ? '-sm' : ''}.jpg`
+const HERO_IMAGE = photo('maombi-ibada')
 
 // kadi ndefu za picha (kama "Daily Challenges / Group Saving")
 const FEATURES = [
-  { to: '/maombi', title: 'Maombi', icon: 'hands', image: img('1609234656388-0ff363383899', 700) },
-  { to: '/mahubiri', title: 'Mahubiri', icon: 'book', image: img('1504052434569-70ad5836ab65', 700) },
-  { to: '/ushuhuda', title: 'Ushuhuda', icon: 'heart', image: img('1529070538774-1843cb3265df', 700) },
+  { to: '/maombi', title: 'Maombi', icon: 'hands', image: photo('mchungaji-madhabahu', true) },
+  { to: '/mahubiri', title: 'Mahubiri', icon: 'book', image: photo('mahubiri-mimbari', true) },
+  { to: '/ushuhuda', title: 'Ushuhuda', icon: 'heart', image: photo('ubatizo-familia', true) },
 ]
 
 const MONTHS = ['Jan', 'Feb', 'Mac', 'Apr', 'Mei', 'Jun', 'Jul', 'Ago', 'Sep', 'Okt', 'Nov', 'Des']
