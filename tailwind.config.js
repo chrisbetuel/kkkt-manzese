@@ -70,9 +70,15 @@ export default {
           '0%': { opacity: '0', transform: 'translateY(14px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
+        'soft-pulse': {
+          '0%': { boxShadow: '0 0 0 0 rgba(185, 143, 76, 0.55)' },
+          '70%': { boxShadow: '0 0 0 14px rgba(185, 143, 76, 0)' },
+          '100%': { boxShadow: '0 0 0 0 rgba(185, 143, 76, 0)' },
+        },
       },
       animation: {
         'fade-up': 'fade-up 0.6s ease-out both',
+        'soft-pulse': 'soft-pulse 2.6s ease-out infinite',
       },
     },
   },

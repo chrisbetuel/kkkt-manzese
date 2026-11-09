@@ -157,3 +157,21 @@ export async function prayFor(id) {
   if (!res.ok) throw new Error('pray failed')
   return res.json()
 }
+
+// ---- usajili wa washirika ----
+/** Hutupa Error yenye `status` na `errors` (kutoka validation ya Laravel) ikishindikana. */
+export async function postMember(formData) {
+  const res = await fetch(apiUrl('/members'), {
+    method: 'POST',
+    headers: { Accept: 'application/json' },
+    body: formData, // FormData (ina picha)
+  })
+  const body = await res.json().catch(() => ({}))
+  if (!res.ok) {
+    const err = new Error(body.message || 'registration failed')
+    err.status = res.status
+    err.errors = body.errors || {}
+    throw err
+  }
+  return body
+}
