@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Section, SectionTitle } from '../components/Section.jsx'
 import Icon from '../components/Icon.jsx'
@@ -8,7 +9,57 @@ const WRAP = 'container-x'
 
 // picha halisi za usharika (public/images/kanisa)
 const photo = (name, small = false) => `/images/kanisa/${name}${small ? '-sm' : ''}.jpg`
-const HERO_IMAGE = photo('maombi-ibada')
+// picha za hero hubadilika kila sekunde 3
+const HERO_SLIDES = [
+  'maombi-ibada',
+  'ubatizo-familia',
+  'mchungaji-madhabahu',
+  'mahubiri-mimbari',
+  'baba-na-mtoto',
+  'washirika',
+]
+const SLIDE_MS = 3000
+
+/** Picha zinazopishana kwa kufifia, na zoom ndogo kwenye picha inayoonekana. */
+function HeroSlides({ className = '', sizes = '100vw' }) {
+  const [i, setI] = useState(0)
+
+  useEffect(() => {
+    const t = setInterval(() => setI((n) => (n + 1) % HERO_SLIDES.length), SLIDE_MS)
+    return () => clearInterval(t)
+  }, [])
+
+  return (
+    <div className={`relative overflow-hidden ${className}`}>
+      {HERO_SLIDES.map((name, n) => (
+        <img
+          key={name}
+          src={photo(name)}
+          srcSet={`${photo(name, true)} 800w, ${photo(name)} 1600w`}
+          sizes={sizes}
+          alt=""
+          loading={n === 0 ? 'eager' : 'lazy'}
+          className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ease-in-out ${
+            n === i ? 'opacity-100 motion-safe:animate-kenburns' : 'opacity-0'
+          }`}
+        />
+      ))}
+      <div className="absolute bottom-5 left-1/2 z-10 flex -translate-x-1/2 gap-1.5 lg:bottom-auto lg:left-auto lg:right-8 lg:top-1/2 lg:-translate-y-1/2 lg:translate-x-0 lg:flex-col">
+        {HERO_SLIDES.map((name, n) => (
+          <button
+            key={name}
+            type="button"
+            onClick={() => setI(n)}
+            aria-label={`Picha ${n + 1}`}
+            className={`rounded-full bg-white shadow transition-all ${
+              n === i ? 'h-2 w-6 lg:h-6 lg:w-2' : 'h-2 w-2 opacity-60 hover:opacity-100'
+            }`}
+          />
+        ))}
+      </div>
+    </div>
+  )
+}
 
 // kadi ndefu za picha (kama "Daily Challenges / Group Saving")
 const FEATURES = [
@@ -61,10 +112,10 @@ export default function Home() {
       {/* ---------------- HERO ---------------- */}
       <section className="relative overflow-hidden bg-gradient-to-br from-parchment via-white to-white">
         {/* picha upande wa kulia, inafifia kuelekea kushoto */}
-        <div aria-hidden className="absolute inset-y-0 right-0 hidden w-[58%] lg:block">
-          <img src={HERO_IMAGE} alt="" className="h-full w-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-r from-parchment via-parchment/40 to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-white to-transparent" />
+        <div className="absolute inset-y-0 right-0 hidden w-[58%] lg:block">
+          <HeroSlides className="h-full w-full" sizes="58vw" />
+          <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-r from-parchment via-parchment/40 to-transparent" />
+          <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-white to-transparent" />
         </div>
 
         <div className={`relative ${WRAP} pb-14 pt-12 sm:pt-16 lg:pb-20 lg:pt-20`}>
@@ -106,9 +157,8 @@ export default function Home() {
           </div>
 
           {/* picha kwa simu */}
-          <div className="relative mt-10 overflow-hidden rounded-3xl shadow-card lg:hidden">
-            <img src={HERO_IMAGE} alt="" className="aspect-[16/10] w-full object-cover" />
-          </div>
+          <HeroSlides className="mt-10 aspect-[16/10] w-full rounded-3xl shadow-card lg:hidden" />
+
 
           {/* vipande vinavyoelea juu ya picha */}
           <div aria-hidden className="pointer-events-none absolute right-8 top-16 hidden animate-float items-center gap-3 rounded-2xl border border-white/70 bg-white/90 px-4 py-3 shadow-chip backdrop-blur lg:flex xl:right-16">

@@ -83,8 +83,13 @@ export default {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-6px)' },
         },
+        kenburns: {
+          '0%': { transform: 'scale(1)' },
+          '100%': { transform: 'scale(1.08)' },
+        },
       },
       animation: {
+        kenburns: 'kenburns 4s ease-out both',
         'fade-up': 'fade-up 0.6s ease-out both',
         'soft-pulse': 'soft-pulse 2.6s ease-out infinite',
         float: 'float 5s ease-in-out infinite',
