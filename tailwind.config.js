@@ -41,6 +41,8 @@ export default {
         sans: ['Inter', 'system-ui', 'sans-serif'],
         serif: ['Archivo', 'Inter', 'system-ui', 'sans-serif'],
         display: ['Archivo', 'Inter', 'system-ui', 'sans-serif'],
+        // vichwa vya ukurasa wa nyumbani (hero)
+        elegant: ['"EB Garamond"', 'Georgia', 'serif'],
       },
       letterSpacing: {
         tightest: '-0.04em',

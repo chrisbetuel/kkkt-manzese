@@ -5,7 +5,9 @@ import { navLinks, ctaLink } from '../data/nav.js'
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
   const { pathname } = useLocation()
+  const home = pathname === '/'
 
   useEffect(() => setOpen(false), [pathname])
 
@@ -14,16 +16,36 @@ export default function Navbar() {
     return () => (document.body.style.overflow = '')
   }, [open])
 
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  // ukurasa wa nyumbani: menyu inaelea juu ya picha ya hero hadi mtu ashuke chini
+  const dark = home && !scrolled && !open
+
   const linkClass = ({ isActive }) =>
-    `whitespace-nowrap text-[10px] font-semibold uppercase tracking-[0.14em] transition-colors 2xl:text-[11px] 2xl:tracking-[0.18em] ${
-      isActive ? 'text-ink' : 'text-ink/55 hover:text-ink'
+    `relative whitespace-nowrap py-2 text-[10px] font-semibold uppercase tracking-[0.14em] transition-colors 2xl:text-[11px] 2xl:tracking-[0.18em] ${
+      dark
+        ? isActive
+          ? 'text-white after:absolute after:inset-x-0 after:-bottom-0.5 after:h-[2px] after:bg-gold-500'
+          : 'text-cream/65 hover:text-white'
+        : isActive
+          ? 'text-ink'
+          : 'text-ink/55 hover:text-ink'
     }`
 
   return (
-    <header className="sticky top-0 z-50 border-b border-ink/12 bg-cream/95 backdrop-blur">
+    <header
+      className={`sticky top-0 z-50 border-b transition-colors duration-300 ${
+        home ? '-mb-[76px]' : ''
+      } ${dark ? 'border-white/10 bg-transparent' : 'border-ink/12 bg-cream/95 backdrop-blur'}`}
+    >
       <nav className="container-x flex h-[76px] items-center justify-between gap-4">
         <Link to="/" aria-label="KKKT Manzese - Nyumbani">
-          <Logo />
+          <Logo light={dark} />
         </Link>
 
         <ul className="hidden items-center gap-x-4 gap-y-1 xl:flex 2xl:gap-x-[18px]">
@@ -39,18 +61,27 @@ export default function Navbar() {
         </ul>
 
         <div className="hidden items-center xl:flex">
-          <Link
-            to={ctaLink.to}
-            className="btn-primary whitespace-nowrap !px-5 !py-3 !text-[10px]"
-          >
-            {ctaLink.label}
-          </Link>
+          {dark ? (
+            <Link
+              to={ctaLink.to}
+              className="inline-flex items-center whitespace-nowrap border-[1.5px] border-gold-500 px-5 py-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-gold-300 transition-colors hover:bg-gold-500 hover:text-ink"
+            >
+              {ctaLink.label}
+            </Link>
+          ) : (
+            <Link
+              to={ctaLink.to}
+              className="btn-primary whitespace-nowrap !px-5 !py-3 !text-[10px]"
+            >
+              {ctaLink.label}
+            </Link>
+          )}
         </div>
 
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
-          className="flex h-11 w-11 items-center justify-center text-ink xl:hidden"
+          className={`flex h-11 w-11 items-center justify-center xl:hidden ${dark ? 'text-white' : 'text-ink'}`}
           aria-label={open ? 'Funga menyu' : 'Fungua menyu'}
           aria-expanded={open}
         >

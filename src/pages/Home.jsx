@@ -6,88 +6,136 @@ import { useSite } from '../content.jsx'
 
 const WRAP = 'mx-auto w-full max-w-[1180px] px-5 sm:px-8 lg:px-16'
 
+const HERO_IMAGE =
+  'https://images.unsplash.com/photo-1478147427282-58a87a120781?auto=format&fit=crop&w=2000&q=70'
+
+const MONTHS = ['Jan', 'Feb', 'Mac', 'Apr', 'Mei', 'Jun', 'Jul', 'Ago', 'Sep', 'Okt', 'Nov', 'Des']
+// viambishi vya majina ya miezi: Kiswahili kisha Kiingereza
+const MONTH_PREFIX = [
+  ['jan'], ['feb'], ['mac', 'mar'], ['apr'], ['mei', 'may'], ['jun'],
+  ['jul'], ['ago', 'aug'], ['sep'], ['okt', 'oct'], ['nov'], ['des', 'dec'],
+]
+
+/** Tarehe ya tukio (maandishi huru) -> { day, mon } kwa kisanduku cha tarehe, au null. */
+function dateBox(label = '') {
+  const s = String(label).toLowerCase()
+  let m = s.match(/(\d{4})-(\d{1,2})-(\d{1,2})/)
+  if (m) return { day: +m[3], mon: MONTHS[+m[2] - 1] }
+  m = s.match(/\b(\d{1,2})[./-](\d{1,2})(?:[./-]\d{2,4})?\b/)
+  if (m && +m[2] >= 1 && +m[2] <= 12) return { day: +m[1], mon: MONTHS[+m[2] - 1] }
+  const month = (w) => MONTH_PREFIX.findIndex((p) => p.some((x) => w.startsWith(x)))
+  m = s.match(/\b(\d{1,2})\s+([a-z]{3,})/) || s.match(/\b([a-z]{3,})\s+(\d{1,2})\b/)
+  if (m) {
+    const [d, w] = /\d/.test(m[1]) ? [m[1], m[2]] : [m[2], m[1]]
+    const i = month(w)
+    if (i >= 0) return { day: +d, mon: MONTHS[i] }
+  }
+  return null
+}
+
 export default function Home() {
-  const { church, services, announcements } = useSite()
+  const { church, services, announcements, events } = useSite()
   const sundays = services.filter((s) => s.day === 'Jumapili').slice(0, 2)
+  const upcoming = events.slice(0, 3)
 
   return (
     <>
       {/* ---------------- HERO ---------------- */}
-      <section className="relative overflow-hidden border-b border-ink/12 bg-cream">
-        {/* decorative layer */}
-        <div aria-hidden className="pointer-events-none absolute inset-0 select-none">
-          <img
-            src="https://images.unsplash.com/photo-1445445290350-18a3b86e0b5a?auto=format&fit=crop&w=1900&q=70"
-            alt=""
-            className="absolute inset-0 h-full w-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-br from-cream/[0.92] via-cream/[0.86] to-cream/[0.7]" />
-          <div className="absolute inset-0 bg-cream/[0.3]" />
-          <div
-            className="absolute inset-0 opacity-50"
-            style={{
-              backgroundImage:
-                'radial-gradient(circle at 1px 1px, rgba(23,21,18,0.07) 1px, transparent 0)',
-              backgroundSize: '26px 26px',
-              maskImage:
-                'radial-gradient(ellipse 75% 70% at 50% 40%, #000 30%, transparent 100%)',
-              WebkitMaskImage:
-                'radial-gradient(ellipse 75% 70% at 50% 40%, #000 30%, transparent 100%)',
-            }}
-          />
-          <div className="absolute inset-3 border border-ink/15 sm:inset-5">
-            <span className="absolute -left-[7px] -top-[7px] text-[13px] leading-none text-gold-500">✦</span>
-            <span className="absolute -right-[7px] -top-[7px] text-[13px] leading-none text-gold-500">✦</span>
-            <span className="absolute -bottom-[9px] -left-[7px] text-[13px] leading-none text-gold-500">✦</span>
-            <span className="absolute -bottom-[9px] -right-[7px] text-[13px] leading-none text-gold-500">✦</span>
-          </div>
-        </div>
+      <section className="relative isolate overflow-hidden bg-[#0c0b0a] text-cream">
+        <img
+          src={HERO_IMAGE}
+          alt=""
+          aria-hidden
+          className="absolute inset-0 -z-10 h-full w-full object-cover object-[65%_center] grayscale brightness-[1.15] contrast-[1.15]"
+        />
+        <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-r from-black/85 via-black/45 to-black/0" />
+        <div aria-hidden className="absolute inset-x-0 bottom-0 -z-10 h-1/2 bg-gradient-to-t from-black/75 to-transparent" />
+        <div aria-hidden className="absolute inset-x-0 top-0 -z-10 h-40 bg-gradient-to-b from-black/60 to-transparent" />
 
-        <div className={`relative z-10 py-14 sm:py-20 lg:py-28 ${WRAP}`}>
-          <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-gold-600 sm:text-[11px] sm:tracking-[0.22em]">
-            <span className="text-gold-500">✦</span>
-            {church.fullName}
-          </p>
+        <div className={`pb-8 pt-[130px] sm:pb-10 sm:pt-[170px] lg:pt-[200px] ${WRAP}`}>
+          <div className="max-w-2xl animate-fade-up">
+            <span className="block h-[2px] w-24 bg-gold-500 sm:w-32" />
+            <p className="mt-6 text-[10px] font-semibold uppercase tracking-[0.22em] text-gold-300 sm:text-[11px]">
+              {church.fullName} · {church.parish}
+            </p>
 
-          <h1 className="mt-4 font-display uppercase text-ink sm:mt-6">
-            <span className="block text-[clamp(3.25rem,17vw,8rem)] font-extrabold leading-[0.85] tracking-[0.01em]">
-              KKKT
-            </span>
-            <span className="mt-3 flex items-center gap-3 sm:mt-4">
-              <span className="h-[2px] w-7 shrink-0 bg-gold-500 sm:w-12" />
-              <span className="text-[clamp(0.95rem,4vw,1.6rem)] font-semibold tracking-[0.16em] text-gold-600 sm:tracking-[0.24em]">
-                Usharika wa Manzese
-              </span>
-            </span>
-          </h1>
+            <h1 className="mt-4 font-elegant text-[clamp(2.6rem,7.2vw,5rem)] font-medium leading-[1.02] tracking-[-0.01em] text-white">
+              Jumuika, kua na
+              <br />
+              hudumu pamoja nasi
+            </h1>
 
-          <p className="mt-6 max-w-xl text-sm leading-relaxed text-ink/70 sm:text-base">
-            {church.tagline}. Karibu kwenye ibada, ushirika na huduma za kanisa
-            letu hapa Manzese, Dar es Salaam.
-          </p>
+            <p className="mt-6 max-w-xl text-sm leading-relaxed text-cream/75 sm:text-[15px]">
+              {church.tagline}. Karibu kwenye ibada, ushirika na huduma za kanisa letu hapa
+              Manzese, Dar es Salaam — kuna nafasi kwa ajili yako katika familia ya Mungu.
+            </p>
 
-          <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-[11px] uppercase tracking-[0.14em] text-ink/55">
-            <span className="flex items-center gap-2">
-              <Icon name="pin" className="h-3.5 w-3.5 text-gold-500" />
-              Manzese, Dar es Salaam
-            </span>
-            {sundays.length > 0 && (
+            <div className="mt-8 flex flex-wrap items-center gap-x-7 gap-y-4">
+              <Link
+                to="/kuhusu"
+                className="inline-flex items-center border-[1.5px] border-gold-500 px-6 py-3.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-gold-300 transition-colors hover:bg-gold-500 hover:text-ink"
+              >
+                Fahamu zaidi kuhusu KKKT Manzese
+              </Link>
+              <Link
+                to="/ratiba"
+                className="group inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-cream/80 hover:text-white"
+              >
+                Ratiba ya Ibada
+                <Icon name="arrow" className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              </Link>
+            </div>
+
+            <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-[11px] uppercase tracking-[0.14em] text-cream/55">
               <span className="flex items-center gap-2">
-                <Icon name="clock" className="h-3.5 w-3.5 text-gold-500" />
-                Ibada za Jumapili{' '}
-                <span className="text-ink/75">{sundays.map((s) => s.time).join(' · ')}</span>
+                <Icon name="pin" className="h-3.5 w-3.5 text-gold-500" />
+                Manzese, Dar es Salaam
               </span>
-            )}
+              {sundays.length > 0 && (
+                <span className="flex items-center gap-2">
+                  <Icon name="clock" className="h-3.5 w-3.5 text-gold-500" />
+                  Ibada za Jumapili{' '}
+                  <span className="text-cream/80">{sundays.map((s) => s.time).join(' · ')}</span>
+                </span>
+              )}
+            </div>
           </div>
 
-          <div className="mt-8 flex flex-wrap gap-3 sm:gap-4">
-            <Link to="/ratiba" className="btn-primary">
-              Ratiba ya Ibada
-            </Link>
-            <Link to="/michango" className="btn-navy">
-              Toa Sadaka &amp; Zaka
-            </Link>
-          </div>
+          {/* matukio yajayo — kadi juu ya picha */}
+          {upcoming.length > 0 && (
+            <ul className="mt-14 grid gap-3 sm:mt-20 md:grid-cols-3">
+              {upcoming.map((e) => {
+                const box = dateBox(e.date)
+                return (
+                  <li key={e.title}>
+                    <Link
+                      to="/matukio"
+                      className="group flex h-full gap-4 border border-white/10 bg-navy-700/80 p-4 backdrop-blur-sm transition-colors hover:border-gold-500/60 hover:bg-navy-600/90 sm:p-5"
+                    >
+                      <span className="flex h-16 w-14 shrink-0 flex-col items-center justify-center border border-white/20 bg-navy-500/50 text-center">
+                        {box ? (
+                          <>
+                            <span className="text-[11px] uppercase tracking-[0.08em] text-cream/75">{box.mon}</span>
+                            <span className="font-elegant text-[1.7rem] leading-none text-white">{box.day}</span>
+                          </>
+                        ) : (
+                          <Icon name="calendar" className="h-6 w-6 text-gold-300" />
+                        )}
+                      </span>
+                      <span className="min-w-0">
+                        <span className="block truncate text-sm font-semibold text-white group-hover:text-gold-300">
+                          {e.title}
+                        </span>
+                        <span className="mt-1 line-clamp-3 block text-[12.5px] leading-relaxed text-cream/65">
+                          {[box ? null : e.date, e.time, e.text].filter(Boolean).join(' · ')}
+                        </span>
+                      </span>
+                    </Link>
+                  </li>
+                )
+              })}
+            </ul>
+          )}
         </div>
       </section>
 
