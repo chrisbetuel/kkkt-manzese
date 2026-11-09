@@ -20,6 +20,28 @@ const HERO_SLIDES = [
 ]
 const SLIDE_MS = 3000
 
+// tukio lisilo na picha hupewa picha ya usharika kulingana na aina/jina lake
+const EVENT_PHOTOS = [
+  [/ubatizo|mtoto|watoto|shule ya jumapili/, 'baba-na-mtoto'],
+  [/maombi|sala|masifa/, 'maombi-ibada'],
+  [/mahubiri|neno|semina|mafundisho/, 'mahubiri-mimbari'],
+  [/krismasi|pasaka|sikukuu|ibada/, 'mchungaji-madhabahu'],
+  [/vijana|harambee|ujenzi|mkutano|ushirika/, 'washirika'],
+]
+/** Picha kwa kila tukio; kadi zilizo pamoja hazirudii picha moja. */
+function eventPhotos(list) {
+  const used = new Set()
+  return list.map((e) => {
+    if (e.image) return e.image
+    const text = `${e.tag || ''} ${e.title || ''}`.toLowerCase()
+    const hit = EVENT_PHOTOS.find(([re]) => re.test(text))?.[1]
+    const name =
+      hit && !used.has(hit) ? hit : HERO_SLIDES.find((n) => !used.has(n)) || hit || HERO_SLIDES[0]
+    used.add(name)
+    return photo(name, true)
+  })
+}
+
 /** Picha zinazopishana kwa kufifia, na zoom ndogo kwenye picha inayoonekana. */
 function HeroSlides({ className = '', sizes = '100vw' }) {
   const [i, setI] = useState(0)
@@ -105,6 +127,7 @@ export default function Home() {
   const { church, services, announcements, events, involveOptions } = useSite()
   const sundays = services.filter((s) => s.day === 'Jumapili').slice(0, 2)
   const upcoming = events.slice(0, 4)
+  const upcomingPhotos = eventPhotos(upcoming)
   const steps = involveOptions.slice(0, 3)
 
   return (
@@ -288,7 +311,7 @@ export default function Home() {
           </div>
 
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {upcoming.map((e) => {
+            {upcoming.map((e, idx) => {
               const box = dateBox(e.date)
               return (
                 <article
@@ -296,13 +319,13 @@ export default function Home() {
                   className="group flex flex-col overflow-hidden rounded-2xl border border-line bg-white transition-shadow hover:shadow-card"
                 >
                   <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-parchment to-navy-50">
-                    {e.image ? (
-                      <img src={e.image} alt="" loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                    ) : (
-                      <span className="flex h-full items-center justify-center">
-                        <Icon name="calendar" className="h-12 w-12 text-gold-500/70" />
-                      </span>
-                    )}
+                    <img
+                      src={upcomingPhotos[idx]}
+                      alt=""
+                      loading="lazy"
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <span aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-ink/35 to-transparent" />
                     {e.tag && (
                       <span className="absolute left-3 top-3 rounded-full bg-ink px-2.5 py-1 text-[11px] font-semibold text-white">
                         {e.tag}
