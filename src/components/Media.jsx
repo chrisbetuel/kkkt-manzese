@@ -91,7 +91,7 @@ export function LinkOut({ url, label }) {
       href={url}
       target="_blank"
       rel="noreferrer"
-      className="flex items-center gap-3 border border-ink/15 bg-parchment px-4 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-ink/70 transition-colors hover:border-ink hover:text-ink"
+      className="rounded-xl flex items-center gap-3 border border-ink/15 bg-parchment px-4 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-ink/70 transition-colors hover:border-ink hover:text-ink"
     >
       <Icon name="play" className="h-4 w-4 text-gold-600" />
       {label || `Fungua kwenye ${platformOf(url)}`}
@@ -127,13 +127,13 @@ export function Embed({ link = '', mediaUrl = '', type = 'video', title = '', pl
   if (mediaUrl && type === 'audio')
     return <audio src={mediaUrl} controls className="w-full" />
   if (mediaUrl)
-    return <video src={mediaUrl} controls className="w-full border border-ink/10" />
+    return <video src={mediaUrl} controls className="rounded-xl w-full border border-ink/10" />
 
   if (link) return <LinkOut url={link} />
 
   if (placeholder)
     return (
-      <div className="flex items-center gap-3 border border-ink/12 bg-parchment px-4 py-3 text-xs uppercase tracking-wide text-ink/50">
+      <div className="rounded-xl flex items-center gap-3 border border-ink/12 bg-parchment px-4 py-3 text-xs uppercase tracking-wide text-ink/50">
         <Icon name="play" className="h-4 w-4 text-gold-600" />
         {placeholder}
       </div>

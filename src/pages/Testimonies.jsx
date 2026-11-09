@@ -23,7 +23,7 @@ function hasMedia(t) {
 function Person({ t, className = '' }) {
   return (
     <figcaption className={`flex min-w-0 items-center gap-3 ${className}`}>
-      <span className="flex h-9 w-9 shrink-0 items-center justify-center bg-navy-950 font-display text-xs font-bold text-gold-400">
+      <span className="rounded-full flex h-9 w-9 shrink-0 items-center justify-center bg-navy-950 font-display text-xs font-bold text-gold-400">
         {initialOf(t.name)}
       </span>
       <span className="min-w-0">
@@ -44,7 +44,7 @@ function TypeTag({ type, pending }) {
         {TYPE_LABEL[type] || 'Maandishi'}
       </span>
       {pending && (
-        <span className="bg-gold-100 px-2 py-0.5 text-[9px] font-medium uppercase tracking-wide text-gold-700">
+        <span className="rounded-full bg-gold-100 px-2 py-0.5 text-[9px] font-medium uppercase tracking-wide text-gold-700">
           Inasubiri idhini
         </span>
       )}
@@ -96,7 +96,7 @@ function TestimonyCard({ t, onOpen }) {
   const media = hasMedia(t)
 
   return (
-    <figure className="flex flex-col border border-ink/12 bg-white transition-shadow hover:shadow-[4px_4px_0_0_#e6cd9d]">
+    <figure className="rounded-2xl flex flex-col border border-ink/12 bg-white transition-shadow hover:shadow-card">
       {media && (
         <button
           type="button"
@@ -303,7 +303,7 @@ export default function Testimonies() {
         )}
 
         {list.length === 0 ? (
-          <p className="border border-ink/12 bg-white/70 p-6 text-sm text-ink/55">
+          <p className="rounded-2xl border border-ink/12 bg-white/70 p-6 text-sm text-ink/55">
             Hakuna ushuhuda wa aina hii kwa sasa. Kuwa wa kwanza kushiriki hapa chini.
           </p>
         ) : (
@@ -330,8 +330,8 @@ export default function Testimonies() {
           />
 
           {done ? (
-            <div className="flex flex-col items-center border border-gold-200 bg-white px-6 py-14 text-center">
-              <span className="flex h-16 w-16 items-center justify-center bg-gold-100 text-gold-700">
+            <div className="rounded-2xl flex flex-col items-center border border-gold-200 bg-white px-6 py-14 text-center">
+              <span className="rounded-2xl flex h-16 w-16 items-center justify-center bg-gold-100 text-gold-700">
                 <Icon name="heart" className="h-8 w-8" />
               </span>
               <h3 className="mt-4 text-xl font-semibold">Asante kwa kushiriki!</h3>
@@ -346,7 +346,7 @@ export default function Testimonies() {
               </button>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-5 border border-ink/12 bg-white p-6 md:p-8">
+            <form onSubmit={handleSubmit} className="rounded-2xl space-y-5 border border-ink/12 bg-white p-6 md:p-8">
               <RadioCards
                 name="type"
                 label="Aina ya ushuhuda"
@@ -403,7 +403,7 @@ export default function Testimonies() {
                   )}
 
                   {method === 'upload' && (
-                    <label className="flex cursor-pointer items-center gap-3 border border-dashed border-ink/30 bg-cream px-4 py-4 text-sm text-ink/60 hover:border-gold-400">
+                    <label className="rounded-xl flex cursor-pointer items-center gap-3 border border-dashed border-ink/30 bg-cream px-4 py-4 text-sm text-ink/60 hover:border-gold-400">
                       <Icon name="arrow" className="h-5 w-5 -rotate-90 text-gold-600" />
                       {upload ? upload.name : `Chagua faili ya ${type === 'video' ? 'video' : 'sauti'}`}
                       <input

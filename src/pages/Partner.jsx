@@ -20,7 +20,7 @@ export default function Partner() {
         <div className="grid gap-6 md:grid-cols-2">
           {partnerWays.map((w) => (
             <div key={w.title} className="card flex gap-5">
-              <span className="flex h-12 w-12 shrink-0 items-center justify-center bg-navy-900 text-gold-400">
+              <span className="rounded-2xl flex h-12 w-12 shrink-0 items-center justify-center bg-navy-900 text-gold-400">
                 <Icon name={w.icon} className="h-6 w-6" />
               </span>
               <div>
@@ -31,7 +31,7 @@ export default function Partner() {
           ))}
         </div>
 
-        <div className="mt-8 flex flex-wrap items-center gap-3 border border-ink/12 bg-white/60 p-6">
+        <div className="rounded-2xl mt-8 flex flex-wrap items-center gap-3 border border-ink/12 bg-white/60 p-6">
           <Icon name="hand" className="h-6 w-6 shrink-0 text-gold-600" />
           <p className="text-sm text-ink/70">
             Kwa michango ya moja kwa moja, angalia{' '}

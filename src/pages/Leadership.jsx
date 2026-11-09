@@ -83,7 +83,7 @@ export default function Leadership() {
           <SectionTitle eyebrow="Watumishi wa Neno" title="Wachungaji na Wainjilisti" />
           <div className="grid gap-8 md:grid-cols-3">
             {clergy.map((p, i) => (
-              <div key={i} className="overflow-hidden border border-ink/12 bg-white">
+              <div key={i} className="rounded-2xl overflow-hidden border border-ink/12 bg-white">
                 <Avatar
                   src={p.photo}
                   name={p.name}
@@ -112,7 +112,7 @@ export default function Leadership() {
         />
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {council.map((m, i) => (
-            <div key={i} className="flex flex-col border border-ink/12 bg-cream p-5">
+            <div key={i} className="rounded-2xl flex flex-col border border-ink/12 bg-cream p-5">
               <div className="flex items-start gap-4">
                 <Avatar
                   src={m.photo}

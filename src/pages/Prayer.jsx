@@ -50,14 +50,14 @@ function PrayerCard({ p }) {
   }
 
   return (
-    <figure className="flex flex-col border border-ink/12 bg-white p-5">
+    <figure className="rounded-2xl flex flex-col border border-ink/12 bg-white p-5">
       <div className="flex items-center justify-between gap-2">
         <span className="inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-gold-600">
           <Icon name="hands" className="h-3.5 w-3.5" />
           {p.category}
         </span>
         {p.answered && (
-          <span className="bg-gold-100 px-2 py-0.5 text-[9px] font-medium uppercase tracking-wide text-gold-700">
+          <span className="rounded-full bg-gold-100 px-2 py-0.5 text-[9px] font-medium uppercase tracking-wide text-gold-700">
             Limejibiwa
           </span>
         )}
@@ -66,7 +66,7 @@ function PrayerCard({ p }) {
       <blockquote className="mt-3 flex-1 text-[13px] leading-relaxed text-ink/75">{p.body}</blockquote>
 
       {p.answered && p.answerNote && (
-        <p className="mt-3 border-l-2 border-gold-500 bg-cream px-3 py-2 text-[12px] text-ink/70">
+        <p className="rounded-full mt-3 border-l-2 border-gold-500 bg-cream px-3 py-2 text-[12px] text-ink/70">
           <span className="font-semibold text-gold-700">Shukrani: </span>
           {p.answerNote}
         </p>
@@ -165,7 +165,7 @@ export default function Prayer() {
         )}
 
         {list.length === 0 ? (
-          <p className="border border-ink/12 bg-white/70 p-6 text-sm text-ink/55">
+          <p className="rounded-2xl border border-ink/12 bg-white/70 p-6 text-sm text-ink/55">
             Bado hakuna maombi ukutani. Kuwa wa kwanza kuwasilisha hapa chini.
           </p>
         ) : (
@@ -187,8 +187,8 @@ export default function Prayer() {
           />
 
           {done ? (
-            <div className="flex flex-col items-center border border-gold-200 bg-white px-6 py-14 text-center">
-              <span className="flex h-16 w-16 items-center justify-center bg-gold-100 text-gold-700">
+            <div className="rounded-2xl flex flex-col items-center border border-gold-200 bg-white px-6 py-14 text-center">
+              <span className="rounded-2xl flex h-16 w-16 items-center justify-center bg-gold-100 text-gold-700">
                 <Icon name="hands" className="h-8 w-8" />
               </span>
               <h3 className="mt-4 text-xl font-semibold">Tumepokea ombi lako</h3>
@@ -208,7 +208,7 @@ export default function Prayer() {
               </button>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-5 border border-ink/12 bg-white p-6 md:p-8">
+            <form onSubmit={handleSubmit} className="rounded-2xl space-y-5 border border-ink/12 bg-white p-6 md:p-8">
               <div className="grid gap-5 sm:grid-cols-2">
                 <Field label="Jina (au acha wazi)" name="name" />
                 <Field label="Simu / barua pepe (haitachapishwa)" name="contact" />
@@ -222,7 +222,7 @@ export default function Prayer() {
                 placeholder="Andika ombi lako hapa..."
               />
 
-              <label className="flex cursor-pointer items-start gap-3 border border-ink/15 bg-cream p-4 text-sm text-ink/70">
+              <label className="rounded-xl flex cursor-pointer items-start gap-3 border border-ink/15 bg-cream p-4 text-sm text-ink/70">
                 <input
                   type="checkbox"
                   checked={priv}

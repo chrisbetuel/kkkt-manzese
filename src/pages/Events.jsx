@@ -6,7 +6,7 @@ import { useSite } from '../content.jsx'
 
 function EventCard({ e, index }) {
   return (
-    <article className="group flex flex-col overflow-hidden border border-ink/12 bg-white/80 transition-all hover:border-gold-400 hover:shadow-[4px_4px_0_0_#b98f4c]">
+    <article className="rounded-2xl group flex flex-col overflow-hidden border border-ink/12 bg-white/80 transition-all hover:border-gold-400 hover:shadow-card">
       <div className="relative aspect-[16/10] overflow-hidden bg-parchment">
         {e.image ? (
           <img
@@ -22,7 +22,7 @@ function EventCard({ e, index }) {
             </span>
           </div>
         )}
-        <span className="absolute left-0 top-0 bg-ink px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-cream">
+        <span className="rounded-full absolute left-3 top-3 bg-ink px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-cream">
           {e.tag}
         </span>
       </div>
@@ -71,7 +71,7 @@ export default function Events() {
             {announcements.map((a) => (
               <article
                 key={a.title}
-                className="flex flex-col overflow-hidden border border-ink/12 bg-white/80"
+                className="rounded-2xl flex flex-col overflow-hidden border border-ink/12 bg-white/80"
               >
                 {a.image && (
                   <img
@@ -121,7 +121,7 @@ export default function Events() {
             ))}
           </div>
         ) : (
-          <p className="border border-ink/12 bg-white/70 p-6 text-sm text-ink/55">
+          <p className="rounded-2xl border border-ink/12 bg-white/70 p-6 text-sm text-ink/55">
             Hakuna matukio katika kundi hili kwa sasa.
           </p>
         )}

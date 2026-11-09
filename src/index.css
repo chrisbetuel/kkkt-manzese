@@ -4,17 +4,19 @@
 
 /* Palette as CSS variables — resolved by the browser, so no toolchain can choke on them */
 :root {
-  --paper: #f8f4ea;
-  --paper-2: #efe8d7;
-  --ink: #171512;
-  --ink-75: rgba(23, 21, 18, 0.75);
-  --ink-65: rgba(23, 21, 18, 0.65);
-  --ink-20: rgba(23, 21, 18, 0.2);
-  --ink-10: rgba(23, 21, 18, 0.1);
-  --brass: #b98f4c;
-  --brass-500: #b98f4c;
-  --brass-600: #a0762f;
-  --brass-400: #c9974a;
+  --paper: #f4f5f7;
+  --paper-2: #fdf4e3;
+  --ink: #0e2344;
+  --ink-75: rgba(14, 35, 68, 0.75);
+  --ink-65: rgba(14, 35, 68, 0.65);
+  --ink-20: rgba(14, 35, 68, 0.14);
+  --ink-10: rgba(14, 35, 68, 0.08);
+  --line: #e5e8ee;
+  --soft: #5b6577;
+  --brass: #c89128;
+  --brass-500: #c89128;
+  --brass-600: #8a5a08;
+  --brass-400: #e5b972;
 }
 
 @layer base {
@@ -40,9 +42,8 @@
 
   body {
     @apply antialiased;
-    font-family: 'Inter', system-ui, sans-serif;
-    font-feature-settings: 'cv05', 'cv08', 'ss01';
-    background-color: var(--paper);
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    background-color: #fff;
     color: var(--ink);
     line-height: 1.6;
   }
@@ -51,10 +52,10 @@
   h2,
   h3,
   h4 {
-    @apply font-bold;
-    font-family: 'Archivo', 'Inter', system-ui, sans-serif;
+    @apply font-extrabold;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
     color: var(--ink);
-    letter-spacing: -0.015em;
+    letter-spacing: -0.025em;
     line-height: 1.12;
     text-wrap: balance;
   }
@@ -80,67 +81,69 @@
     @apply mx-auto w-full max-w-[1200px] px-5 lg:px-8;
   }
 
-  /* Buttons — sharp, uppercase, with a hard offset shadow so they clearly read as buttons */
+  /* Vitufe — vidonge (pill), herufi za kawaida, kivuli laini */
   .btn,
   .btn-primary,
   .btn-navy,
-  .btn-outline {
-    @apply inline-flex items-center justify-center gap-2 text-xs font-semibold uppercase
-           tracking-[0.16em] transition-all duration-150;
-    padding: 0.9rem 1.9rem;
+  .btn-outline,
+  .btn-gold {
+    @apply inline-flex items-center justify-center gap-2 text-sm font-semibold transition-all duration-200;
+    padding: 0.8rem 1.6rem;
     border: 1.5px solid transparent;
-    border-radius: 0;
+    border-radius: 9999px;
+  }
+  .btn:active,
+  .btn-primary:active,
+  .btn-navy:active,
+  .btn-outline:active,
+  .btn-gold:active {
+    transform: translateY(1px);
   }
 
   .btn-primary {
-    border-color: var(--ink);
     background: var(--ink);
-    color: var(--paper);
-    box-shadow: 4px 4px 0 0 var(--brass);
+    color: #fff;
+    box-shadow: 0 10px 22px -10px rgba(14, 35, 68, 0.6);
   }
   .btn-primary:hover {
-    background: var(--brass);
-    border-color: var(--brass);
-    color: var(--ink);
-    box-shadow: 4px 4px 0 0 var(--ink);
-    transform: translate(-1px, -1px);
-  }
-  .btn-primary:active {
-    transform: translate(2px, 2px);
-    box-shadow: 0 0 0 0 var(--ink);
+    background: #1d3156;
+    transform: translateY(-1px);
+    box-shadow: 0 14px 26px -10px rgba(14, 35, 68, 0.65);
   }
 
-  /* Solid-looking button on light backgrounds */
+  /* Kitufe cha pili kwenye mandhari nyeupe */
   .btn-navy {
-    border-color: var(--ink);
+    border-color: var(--line);
     background: #fff;
     color: var(--ink);
-    box-shadow: 4px 4px 0 0 rgba(23, 21, 18, 0.16);
+    box-shadow: 0 6px 18px -10px rgba(14, 35, 68, 0.25);
   }
   .btn-navy:hover {
-    background: var(--ink);
-    color: var(--paper);
-    box-shadow: 4px 4px 0 0 var(--brass);
-    transform: translate(-1px, -1px);
-  }
-  .btn-navy:active {
-    transform: translate(2px, 2px);
-    box-shadow: 0 0 0 0 var(--ink);
+    border-color: var(--brass);
+    color: var(--ink);
+    transform: translateY(-1px);
   }
 
-  /* Button on dark backgrounds */
+  .btn-gold {
+    background: var(--brass);
+    color: var(--ink);
+    box-shadow: 0 10px 22px -10px rgba(200, 145, 40, 0.7);
+  }
+  .btn-gold:hover {
+    background: #d9a245;
+    transform: translateY(-1px);
+  }
+
+  /* Kitufe kwenye mandhari ya giza */
   .btn-outline {
-    border-color: var(--paper);
-    background: rgba(255, 255, 255, 0.12);
-    color: var(--paper);
-    box-shadow: 4px 4px 0 0 rgba(248, 244, 234, 0.25);
+    border-color: rgba(255, 255, 255, 0.45);
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
   }
   .btn-outline:hover {
-    border-color: var(--paper);
-    background: var(--paper);
+    border-color: #fff;
+    background: #fff;
     color: var(--ink);
-    box-shadow: 4px 4px 0 0 var(--brass);
-    transform: translate(-1px, -1px);
   }
 
   /* Eyebrow / kicker with brass diamond glyph */
@@ -160,8 +163,8 @@
   .card {
     @apply p-6 transition-colors duration-200;
     border: 1px solid var(--ink-10);
-    background: rgba(255, 255, 255, 0.7);
-    border-radius: 2px;
+    background: #fff;
+    border-radius: 18px;
   }
   .card:hover {
     border-color: var(--brass-400);

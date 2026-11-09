@@ -24,7 +24,7 @@ function SermonCard({ s }) {
   const hasMedia = s.link || s.audioUrl || s.youtubeId
 
   return (
-    <article className="flex flex-col border border-ink/12 bg-white">
+    <article className="rounded-2xl flex flex-col border border-ink/12 bg-white">
       <div className="flex flex-1 flex-col p-6">
         <span className="inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-gold-600">
           <Icon name={TYPE_ICON[s.type] || 'play'} className="h-3.5 w-3.5" />
@@ -95,7 +95,7 @@ export default function Sermons() {
         </div>
 
         {featured && (
-          <article className="border border-ink/15 bg-white">
+          <article className="rounded-2xl border border-ink/15 bg-white">
             <div className="grid gap-0 lg:grid-cols-[1.15fr_1fr]">
               <div className="bg-parchment p-5 sm:p-7">
                 {featuredEmbed || featured.audioUrl ? (
@@ -110,9 +110,9 @@ export default function Sermons() {
                     href={featured.link}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex aspect-video flex-col items-center justify-center gap-3 border border-ink/15 bg-white text-center transition-colors hover:border-ink"
+                    className="rounded-2xl flex aspect-video flex-col items-center justify-center gap-3 border border-ink/15 bg-white text-center transition-colors hover:border-ink"
                   >
-                    <span className="flex h-14 w-14 items-center justify-center bg-navy-950 text-gold-400">
+                    <span className="rounded-2xl flex h-14 w-14 items-center justify-center bg-navy-950 text-gold-400">
                       <Icon name="play" className="h-7 w-7" />
                     </span>
                     <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-ink/70">
@@ -120,7 +120,7 @@ export default function Sermons() {
                     </span>
                   </a>
                 ) : (
-                  <div className="flex aspect-video items-center justify-center border border-ink/12 bg-white text-xs uppercase tracking-wide text-ink/40">
+                  <div className="rounded-2xl flex aspect-video items-center justify-center border border-ink/12 bg-white text-xs uppercase tracking-wide text-ink/40">
                     Kiungo cha hubiri kitawekwa hapa
                   </div>
                 )}

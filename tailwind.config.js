@@ -4,63 +4,65 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Dark / accent — deep teal-ink (keeps the `navy-*` key so existing classes restyle)
+        // Navy ya kina (#0E2344) — funguo `navy-*` zimebaki ili madarasa yaliyopo yafuate rangi mpya
         navy: {
-          50: '#eef2f1',
-          100: '#d6e0de',
-          200: '#adc3bf',
-          300: '#7ea099',
-          400: '#527b73',
-          500: '#345c55',
-          600: '#274743',
-          700: '#1f3a37',
-          800: '#182d2b',
-          900: '#122120',
-          950: '#0b1615',
+          50: '#eaf0f8',
+          100: '#d5deec',
+          200: '#aebdd6',
+          300: '#8296bb',
+          400: '#566f9c',
+          500: '#3a5381',
+          600: '#2a4069',
+          700: '#1d3156',
+          800: '#15284a',
+          900: '#0e2344',
+          950: '#091830',
         },
-        // Warm brass accent (keeps the `gold-*` key)
+        // Dhahabu (#C89128) — funguo `gold-*`
         gold: {
-          50: '#faf5ea',
-          100: '#f2e6cd',
-          200: '#e6cd9d',
-          300: '#d8b06a',
-          400: '#c9974a',
-          500: '#b98f4c',
-          600: '#a0762f',
-          700: '#835d29',
-          800: '#6b4c27',
-          900: '#5a4023',
+          50: '#fdf4e3',
+          100: '#f9e6c2',
+          200: '#f1d097',
+          300: '#e5b972',
+          400: '#d9a245',
+          500: '#c89128',
+          600: '#a87818',
+          700: '#8a5a08',
+          800: '#6f4807',
+          900: '#573907',
         },
-        cream: '#f8f4ea', // paper
-        parchment: '#efe8d7', // paper, one shade deeper
+        cream: '#f4f5f7', // ukurasa (kijivu hafifu)
+        parchment: '#fdf4e3', // joto (cream ya dhahabu)
+        line: '#e5e8ee',
+        soft: '#5b6577',
         white: '#ffffff',
-        ink: '#171512',
+        ink: '#0e2344', // maandishi = navy
       },
       fontFamily: {
-        // Inter for text/UI, Archivo for headings & display
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        serif: ['Archivo', 'Inter', 'system-ui', 'sans-serif'],
-        display: ['Archivo', 'Inter', 'system-ui', 'sans-serif'],
-        // vichwa vya ukurasa wa nyumbani (hero)
-        elegant: ['"EB Garamond"', 'Georgia', 'serif'],
+        sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+        serif: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+        display: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+        // maandishi ya mkono kwa msisitizo wa dhahabu
+        script: ['Yellowtail', 'cursive'],
       },
       letterSpacing: {
         tightest: '-0.04em',
       },
       borderRadius: {
-        // Sharp, minimal — corners barely rounded
         none: '0px',
-        sm: '2px',
-        DEFAULT: '2px',
-        md: '3px',
-        lg: '3px',
-        xl: '4px',
-        '2xl': '5px',
-        '3xl': '6px',
+        sm: '6px',
+        DEFAULT: '8px',
+        md: '10px',
+        lg: '12px',
+        xl: '14px',
+        '2xl': '18px',
+        '3xl': '24px',
         full: '9999px',
       },
       boxShadow: {
-        soft: '0 1px 2px rgba(23, 21, 18, 0.04)',
+        soft: '0 10px 30px -12px rgba(14, 35, 68, 0.18)',
+        card: '0 18px 40px -18px rgba(14, 35, 68, 0.25)',
+        chip: '0 8px 24px -8px rgba(14, 35, 68, 0.22)',
       },
       container: {
         center: true,
@@ -73,14 +75,19 @@ export default {
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
         'soft-pulse': {
-          '0%': { boxShadow: '0 0 0 0 rgba(185, 143, 76, 0.55)' },
-          '70%': { boxShadow: '0 0 0 14px rgba(185, 143, 76, 0)' },
-          '100%': { boxShadow: '0 0 0 0 rgba(185, 143, 76, 0)' },
+          '0%': { boxShadow: '0 0 0 0 rgba(200, 145, 40, 0.55)' },
+          '70%': { boxShadow: '0 0 0 14px rgba(200, 145, 40, 0)' },
+          '100%': { boxShadow: '0 0 0 0 rgba(200, 145, 40, 0)' },
+        },
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-6px)' },
         },
       },
       animation: {
         'fade-up': 'fade-up 0.6s ease-out both',
         'soft-pulse': 'soft-pulse 2.6s ease-out infinite',
+        float: 'float 5s ease-in-out infinite',
       },
     },
   },

@@ -14,6 +14,9 @@ export const navLinks = [
   { label: 'Wasiliana', to: '/wasiliana' },
 ]
 
+// Kwenye kompyuta, hizi hukaa chini ya "Zaidi" ili menyu isijae
+export const moreLinks = ['/shiriki', '/matunzio', '/ushuhuda', '/ubia']
+
 // Faharasa ya ukurasa wa nyumbani (isiyo na "Nyumbani")
 export const homeLinks = navLinks.filter((l) => l.to !== '/')
 

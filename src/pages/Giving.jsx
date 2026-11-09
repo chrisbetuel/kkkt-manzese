@@ -25,7 +25,7 @@ function CopyRow({ label, value }) {
       </div>
       <button
         onClick={copy}
-        className="shrink-0 border border-ink px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-ink transition-colors hover:bg-ink hover:text-cream"
+        className="rounded-full shrink-0 border border-ink px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-ink transition-colors hover:bg-ink hover:text-cream"
       >
         {copied ? 'Imenakiliwa' : 'Nakili'}
       </button>
@@ -50,7 +50,7 @@ export default function Giving() {
           {givingMethods.map((m) => (
             <div key={m.name} className="card flex flex-col gap-4">
               <div className="flex items-center gap-4">
-                <span className="flex h-12 w-12 shrink-0 items-center justify-center bg-navy-900 text-gold-400">
+                <span className="rounded-2xl flex h-12 w-12 shrink-0 items-center justify-center bg-navy-900 text-gold-400">
                   <Icon name={m.icon} className="h-6 w-6" />
                 </span>
                 <div>
@@ -66,7 +66,7 @@ export default function Giving() {
           ))}
         </div>
 
-        <div className="mt-8 flex items-start gap-4 border border-ink/12 bg-white/60 p-6">
+        <div className="rounded-2xl mt-8 flex items-start gap-4 border border-ink/12 bg-white/60 p-6">
           <Icon name="hand" className="h-6 w-6 shrink-0 text-gold-600" />
           <p className="text-sm leading-relaxed text-ink/70">{givingInPerson}</p>
         </div>
@@ -76,8 +76,8 @@ export default function Giving() {
         <SectionTitle eyebrow="Matumizi" title="Michango yako inasaidia nini" />
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {givingPurposes.map((p) => (
-            <div key={p.title} className="border border-ink/12 bg-cream p-6">
-              <h3 className="font-display text-base font-semibold uppercase tracking-[0.1em] text-ink">
+            <div key={p.title} className="rounded-2xl border border-ink/12 bg-cream p-6">
+              <h3 className="font-display text-lg font-bold text-ink">
                 {p.title}
               </h3>
               <p className="mt-2 text-sm text-ink/65">{p.text}</p>

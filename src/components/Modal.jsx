@@ -33,7 +33,7 @@ export default function Modal({ open, onClose, children, size = 'md' }) {
           type="button"
           onClick={onClose}
           aria-label="Funga"
-          className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center bg-ink/10 text-ink/70 transition-colors hover:bg-ink/20 hover:text-ink"
+          className="rounded-full absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center bg-ink/10 text-ink/70 transition-colors hover:bg-ink/20 hover:text-ink"
         >
           <Icon name="x" className="h-4 w-4" />
         </button>

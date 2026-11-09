@@ -23,15 +23,15 @@ export default function Logo({ className = 'h-11 w-auto max-w-[66px]', showText 
       {showText && (
         <span className="leading-tight">
           <span
-            className={`block whitespace-nowrap font-display text-[13px] font-bold uppercase tracking-[0.16em] ${
+            className={`block whitespace-nowrap font-display text-[17px] font-extrabold tracking-[-0.02em] ${
               light ? 'text-white' : 'text-ink'
             }`}
           >
             {church.name}
           </span>
           <span
-            className={`block whitespace-nowrap text-[9px] font-medium uppercase tracking-[0.18em] ${
-              light ? 'text-cream/60' : 'text-ink/45'
+            className={`mt-0.5 block whitespace-nowrap text-[9px] font-semibold uppercase tracking-[0.2em] ${
+              light ? 'text-white/55' : 'text-soft'
             }`}
           >
             {church.parish}

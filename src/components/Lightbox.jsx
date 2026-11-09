@@ -25,7 +25,7 @@ export default function Lightbox({ src, alt = '', caption = '', onClose }) {
     >
       <button
         type="button"
-        className="absolute right-5 top-5 flex h-11 w-11 items-center justify-center bg-white/10 text-white transition-colors hover:bg-white/20"
+        className="rounded-full absolute right-5 top-5 flex h-11 w-11 items-center justify-center bg-white/10 text-white transition-colors hover:bg-white/20"
         onClick={onClose}
         aria-label="Funga"
       >

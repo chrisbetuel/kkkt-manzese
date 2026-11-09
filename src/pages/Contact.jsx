@@ -157,7 +157,7 @@ export default function Contact() {
         <iframe
           title="Ramani ya KKKT Manzese"
           src={church.mapEmbed}
-          className="h-full w-full border-0 grayscale-[0.2]"
+          className="rounded-xl h-full w-full border-0 grayscale-[0.2]"
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
         />

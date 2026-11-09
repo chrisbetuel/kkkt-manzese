@@ -144,8 +144,8 @@ const money = (v) => (v === '' || v == null ? '' : Number(v).toLocaleString('en-
 
 // ---- vipengele vidogo vya fomu ----
 const inputCls = (err) =>
-  `w-full border bg-cream px-4 py-3 text-[15px] text-ink outline-none transition-colors placeholder:text-ink/35 focus:border-gold-500 focus:ring-2 focus:ring-gold-200 ${
-    err ? 'border-red-400' : 'border-ink/15'
+  `w-full rounded-xl border bg-white px-4 py-3 text-[15px] text-ink outline-none transition-colors placeholder:text-ink/35 focus:border-gold-400 focus:ring-4 focus:ring-gold-100 ${
+    err ? 'border-red-400' : 'border-line'
   }`
 
 function FieldShell({ id, label: text, required, optional, hint, error, children }) {
@@ -187,8 +187,8 @@ function Choice({ id, label: text, options, value, onChange, lang, required, err
           return (
             <label
               key={v}
-              className={`flex cursor-pointer items-center gap-3 border px-3.5 py-3 text-sm transition-colors ${
-                active ? 'border-gold-500 bg-gold-50 text-ink ring-1 ring-gold-300' : 'border-ink/15 bg-cream text-ink/75 hover:border-gold-400'
+              className={`flex cursor-pointer items-center gap-3 rounded-xl border px-3.5 py-3 text-sm transition-colors ${
+                active ? 'border-gold-500 bg-gold-50 text-ink ring-1 ring-gold-300' : 'border-line bg-white text-ink/75 hover:border-gold-400'
               }`}
             >
               <input
@@ -228,12 +228,12 @@ function Multi({ label: text, hint, options, value, onChange, lang, error }) {
               key={v}
               onClick={() => toggle(v)}
               aria-pressed={on}
-              className={`flex items-center gap-2.5 border px-3 py-2.5 text-left text-sm transition-colors ${
-                on ? 'border-ink bg-ink text-cream' : 'border-ink/15 bg-cream text-ink/75 hover:border-gold-400'
+              className={`flex items-center gap-2.5 rounded-xl border px-3 py-2.5 text-left text-sm transition-colors ${
+                on ? 'border-ink bg-ink text-cream' : 'border-line bg-white text-ink/75 hover:border-gold-400'
               }`}
             >
               <span
-                className={`flex h-4 w-4 shrink-0 items-center justify-center border ${
+                className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border ${
                   on ? 'border-gold-400 bg-gold-500 text-ink' : 'border-ink/30 bg-white'
                 }`}
               >
@@ -278,7 +278,7 @@ function StepTitle({ eyebrow, title, intro }) {
         <span className="text-gold-500">✦</span>
         {eyebrow}
       </p>
-      <h2 className="mt-2 text-xl font-semibold uppercase tracking-tight text-ink md:text-2xl">{title}</h2>
+      <h2 className="mt-2 text-xl font-extrabold tracking-tight text-ink md:text-2xl">{title}</h2>
       {intro && <p className="mt-2 text-sm leading-relaxed text-ink/60">{intro}</p>}
     </div>
   )
@@ -558,14 +558,14 @@ export default function Register() {
       <>
         <PageHeader crumbs={['Jisajili']} />
         <Section tint="cream">
-          <div ref={top} className="mx-auto max-w-xl scroll-mt-24 border border-gold-300 bg-white px-6 py-12 text-center md:px-10">
-            <span className="mx-auto flex h-16 w-16 items-center justify-center bg-gold-100 text-gold-700">
+          <div ref={top} className="mx-auto max-w-xl scroll-mt-24 rounded-3xl border border-line bg-white px-6 py-12 text-center shadow-card md:px-10">
+            <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-parchment text-gold-700">
               <Icon name="check" className="h-8 w-8" strokeWidth={2.25} />
             </span>
             <p className="mt-5 text-[11px] font-semibold uppercase tracking-[0.22em] text-gold-600">
               {tx('Usajili Umepokelewa', 'Registration Received')}
             </p>
-            <h2 className="mt-2 text-2xl font-semibold uppercase tracking-tight">
+            <h2 className="mt-2 text-2xl font-extrabold tracking-tight">
               {tx('Karibu, ', 'Welcome, ')}
               {done.name?.split(' ')[0]}!
             </h2>
@@ -576,7 +576,7 @@ export default function Register() {
               )}
             </p>
 
-            <div className="mt-7 border border-dashed border-ink/25 bg-cream px-4 py-5">
+            <div className="mt-7 rounded-2xl border border-dashed border-gold-300 bg-parchment px-4 py-5">
               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-ink/50">
                 {tx('Namba yako ya ahadi', 'Your pledge number')}
               </p>
@@ -629,7 +629,7 @@ export default function Register() {
                 <span className="text-gold-500">✦</span>
                 {tx('Usajili wa Washirika', 'Member Registration')}
               </p>
-              <h1 className="text-2xl font-semibold uppercase tracking-tight text-ink md:text-[2rem] md:leading-[1.15]">
+              <h1 className="text-[1.9rem] font-extrabold tracking-[-0.03em] text-ink md:text-[2.5rem] md:leading-[1.1]">
                 {tx('Jisajili kama Mshirika', 'Register as a Member')}
               </h1>
               <p className="mt-3 max-w-xl text-sm leading-relaxed text-ink/60">
@@ -639,7 +639,7 @@ export default function Register() {
                 )}
               </p>
             </div>
-            <div className="flex shrink-0 items-center gap-1 self-start border border-ink/15 bg-white p-1 sm:self-auto" role="group" aria-label="Language">
+            <div className="flex shrink-0 items-center gap-1 self-start rounded-full border border-line bg-white p-1 sm:self-auto" role="group" aria-label="Language">
               <Icon name="lang" className="mx-1.5 h-4 w-4 text-ink/40" />
               {[
                 ['sw', 'Kiswahili'],
@@ -650,7 +650,7 @@ export default function Register() {
                   type="button"
                   onClick={() => setLang(k)}
                   aria-pressed={lang === k}
-                  className={`px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] transition-colors ${
+                  className={`rounded-full px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] transition-colors ${
                     lang === k ? 'bg-ink text-cream' : 'text-ink/55 hover:text-ink'
                   }`}
                 >
@@ -669,7 +669,7 @@ export default function Register() {
                 </span>
                 <span className="text-ink/45">{pct}%</span>
               </div>
-              <div className="mt-2 h-1.5 bg-ink/10">
+              <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-ink/10">
                 <div className="h-full bg-gold-500 transition-all duration-300" style={{ width: `${pct}%` }} />
               </div>
             </div>
@@ -688,7 +688,7 @@ export default function Register() {
                       className="group w-full text-left disabled:cursor-default"
                     >
                       <span
-                        className={`block h-1 transition-colors ${
+                        className={`block h-1 rounded-full transition-colors ${
                           state === 'now' ? 'bg-gold-500' : state === 'done' ? 'bg-ink' : 'bg-ink/12'
                         }`}
                       />
@@ -698,7 +698,7 @@ export default function Register() {
                         } ${reachable ? 'group-hover:text-gold-700' : ''}`}
                       >
                         <span
-                          className={`flex h-5 w-5 shrink-0 items-center justify-center text-[10px] ${
+                          className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[10px] ${
                             state === 'now'
                               ? 'bg-gold-500 text-ink'
                               : state === 'done'
@@ -717,7 +717,7 @@ export default function Register() {
             </ol>
           </div>
 
-          <form onSubmit={onSubmit} noValidate className="border border-ink/12 bg-white p-5 sm:p-7 md:p-9">
+          <form onSubmit={onSubmit} noValidate className="rounded-3xl border border-line bg-white p-5 shadow-card sm:p-7 md:p-9">
             {step === 0 && (
               <div className="animate-fade-up">
                 <StepTitle
@@ -730,7 +730,7 @@ export default function Register() {
                 <div className="mb-6 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
                   <label
                     htmlFor="photo"
-                    className={`relative flex h-28 w-24 shrink-0 cursor-pointer items-center justify-center overflow-hidden border-2 border-dashed bg-cream transition-colors hover:border-gold-500 ${
+                    className={`relative flex h-28 w-24 shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-2xl border-2 border-dashed bg-cream transition-colors hover:border-gold-500 ${
                       errors.photo ? 'border-red-400' : 'border-ink/20'
                     }`}
                   >
@@ -752,7 +752,7 @@ export default function Register() {
                     </p>
                     <label
                       htmlFor="photo"
-                      className="mt-2.5 inline-flex cursor-pointer items-center gap-1.5 border border-ink/20 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-ink/70 hover:border-ink hover:text-ink"
+                      className="mt-2.5 inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-line px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-ink/70 hover:border-ink hover:text-ink"
                     >
                       <Icon name="camera" className="h-3.5 w-3.5" />
                       {photo ? tx('Badilisha picha', 'Change photo') : tx('Chagua picha', 'Choose photo')}
@@ -939,7 +939,7 @@ export default function Register() {
                           type="button"
                           onClick={() => set('dependants')(d.dependants.filter((_, j) => j !== i))}
                           aria-label={tx('Ondoa', 'Remove')}
-                          className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center border border-ink/15 text-ink/50 hover:border-red-300 hover:text-red-600"
+                          className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-line text-ink/50 hover:border-red-300 hover:text-red-600"
                         >
                           <Icon name="trash" className="h-4 w-4" />
                         </button>
@@ -951,7 +951,7 @@ export default function Register() {
                     <button
                       type="button"
                       onClick={() => set('dependants')([...d.dependants, { name: '', relationship: '' }])}
-                      className="mt-3 inline-flex items-center gap-1.5 border border-dashed border-ink/25 px-3.5 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-ink/65 hover:border-gold-500 hover:text-ink"
+                      className="mt-3 inline-flex items-center gap-1.5 rounded-full border border-dashed border-ink/25 px-3.5 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-ink/65 hover:border-gold-500 hover:text-ink"
                     >
                       <Icon name="plus" className="h-3.5 w-3.5" />
                       {tx('Ongeza mtegemezi', 'Add dependant')}
@@ -999,7 +999,7 @@ export default function Register() {
                   </div>
                 )}
                 {d.is_baptized === '0' && (
-                  <p className="animate-fade-up border border-gold-200 bg-gold-50 px-4 py-3 text-sm text-ink/70">
+                  <p className="animate-fade-up rounded-xl border border-gold-200 bg-gold-50 px-4 py-3 text-sm text-ink/70">
                     {tx('Karibu! ', 'Welcome! ')}
                     <Link to="/ubatizo" className="font-semibold text-gold-700 underline underline-offset-2">
                       {tx('Soma kuhusu madarasa ya ubatizo', 'Learn about baptism classes')}
@@ -1079,7 +1079,7 @@ export default function Register() {
                 )}
 
                 {inChoir && (
-                  <div className="animate-fade-up space-y-4 border border-gold-300 bg-gold-50/60 p-4 sm:p-5">
+                  <div className="animate-fade-up space-y-4 rounded-2xl border border-gold-300 bg-gold-50/60 p-4 sm:p-5">
                     <p className="flex items-center gap-2 text-sm font-semibold text-ink">
                       <Icon name="music" className="h-4 w-4 text-gold-700" />
                       {tx('Chagua kwaya yako', 'Choose your choir')}
@@ -1107,7 +1107,7 @@ export default function Register() {
                   eyebrow={tx('Hatua ya 5', 'Step 5')}
                   title={tx('Ahadi Yangu kwa Bwana', 'My Pledge to the Lord')}
                 />
-                <div className="flex items-start gap-3 border border-navy-200 bg-navy-50 px-4 py-3.5 text-sm leading-relaxed text-navy-800">
+                <div className="flex items-start gap-3 rounded-2xl border border-navy-100 bg-navy-50 px-4 py-3.5 text-sm leading-relaxed text-navy-800">
                   <Icon name="lock" className="mt-0.5 h-4 w-4 shrink-0" />
                   <p>
                     <strong>{tx('Hiari na siri.', 'Voluntary and confidential.')}</strong>{' '}
@@ -1180,8 +1180,8 @@ export default function Register() {
                   intro={tx('Hakikisha taarifa zako ni sahihi. Bofya "Hariri" kurekebisha.', 'Check that your details are correct. Tap "Edit" to make changes.')}
                 />
 
-                <div className="mb-6 flex items-center gap-4 border border-ink/10 bg-cream p-4">
-                  {preview && <img src={preview} alt="" className="h-20 w-16 shrink-0 object-cover" />}
+                <div className="mb-6 flex items-center gap-4 rounded-2xl border border-line bg-cream p-4">
+                  {preview && <img src={preview} alt="" className="h-20 w-16 shrink-0 rounded-xl object-cover" />}
                   <div className="min-w-0">
                     <p className="truncate text-lg font-semibold text-ink">{d.full_name}</p>
                     <p className="text-sm text-ink/55">{d.phone}</p>
@@ -1192,8 +1192,8 @@ export default function Register() {
                   {review.map((sec) => {
                     const rows = sec.rows.filter(Boolean)
                     return (
-                      <div key={sec.step} className="border border-ink/10">
-                        <div className="flex items-center justify-between border-b border-ink/10 bg-parchment/60 px-4 py-2.5">
+                      <div key={sec.step} className="overflow-hidden rounded-2xl border border-line">
+                        <div className="flex items-center justify-between border-b border-line bg-parchment/70 px-4 py-2.5">
                           <p className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-ink">
                             {sec.step === 4 && <Icon name="lock" className="h-3.5 w-3.5 text-gold-700" />}
                             {STEPS[sec.step][lang]}
@@ -1220,7 +1220,7 @@ export default function Register() {
                 </div>
 
                 <label
-                  className={`mt-6 flex cursor-pointer items-start gap-3 border p-4 text-sm leading-relaxed text-ink/75 ${
+                  className={`mt-6 flex cursor-pointer items-start gap-3 rounded-2xl border p-4 text-sm leading-relaxed text-ink/75 ${
                     errors.consent ? 'border-red-400 bg-red-50/40' : 'border-ink/15 bg-cream'
                   }`}
                 >
@@ -1242,7 +1242,7 @@ export default function Register() {
             )}
 
             {formError && (
-              <p className="mt-6 border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700" role="alert">
+              <p className="mt-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700" role="alert">
                 {formError}
               </p>
             )}

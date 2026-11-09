@@ -117,7 +117,7 @@ export default function Recorder({ mode = 'audio', onChange }) {
 
   if (status === 'unsupported') {
     return (
-      <p className="border border-ink/12 bg-parchment px-4 py-3 text-sm text-ink/60">
+      <p className="rounded-xl border border-ink/12 bg-parchment px-4 py-3 text-sm text-ink/60">
         Kivinjari chako hakiruhusu kurekodi. Tumia chaguo la "Pakia faili" au "Weka kiungo".
       </p>
     )
@@ -127,7 +127,7 @@ export default function Recorder({ mode = 'audio', onChange }) {
     mode === 'video' && (status === 'ready' || status === 'recording')
 
   return (
-    <div className="border border-ink/20 bg-white/70 p-4">
+    <div className="rounded-2xl border border-ink/20 bg-white/70 p-4">
       {showLivePreview && (
         <div className="relative mb-3 overflow-hidden bg-ink/90">
           <video
@@ -137,7 +137,7 @@ export default function Recorder({ mode = 'audio', onChange }) {
             muted
           />
           {status === 'recording' && (
-            <span className="absolute left-3 top-3 flex items-center gap-1.5 bg-red-600 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-white">
+            <span className="rounded-full absolute left-3 top-3 flex items-center gap-1.5 bg-red-600 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-white">
               <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-white" />
               REC {clock}
             </span>
@@ -160,7 +160,7 @@ export default function Recorder({ mode = 'audio', onChange }) {
           <button
             type="button"
             onClick={mode === 'video' ? openCamera : startAudio}
-            className="inline-flex items-center gap-2 border border-ink bg-ink px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-cream"
+            className="rounded-full inline-flex items-center gap-2 border border-ink bg-ink px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-cream"
           >
             <Icon name={mode === 'video' ? 'play' : 'phone'} className="h-3.5 w-3.5" />
             {mode === 'video' ? 'Fungua kamera' : 'Anza kurekodi sauti'}
@@ -172,7 +172,7 @@ export default function Recorder({ mode = 'audio', onChange }) {
             <button
               type="button"
               onClick={beginRecording}
-              className="inline-flex items-center gap-2 border border-ink bg-ink px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-cream"
+              className="rounded-full inline-flex items-center gap-2 border border-ink bg-ink px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-cream"
             >
               <span className="h-2.5 w-2.5 rounded-full bg-red-500" />
               Anza kurekodi
@@ -192,7 +192,7 @@ export default function Recorder({ mode = 'audio', onChange }) {
             <button
               type="button"
               onClick={stop}
-              className="inline-flex items-center gap-2 border border-ink bg-white px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-ink"
+              className="rounded-full inline-flex items-center gap-2 border border-ink bg-white px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-ink"
             >
               <span className="h-2.5 w-2.5 bg-ink" />
               Simamisha

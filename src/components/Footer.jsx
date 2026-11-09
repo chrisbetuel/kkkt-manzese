@@ -18,8 +18,8 @@ const FOOTER_PAGES = [
 
 function ColTitle({ children }) {
   return (
-    <h4 className="mb-4 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-gold-400">
-      <span className="text-gold-500">✦</span>
+    <h4 className="mb-4 flex items-center gap-2.5 text-[11px] font-bold uppercase tracking-[0.2em] text-gold-300">
+      <span className="h-[2px] w-5 rounded-full bg-gold-500" />
       {children}
     </h4>
   )
@@ -57,7 +57,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noreferrer"
                 aria-label={name}
-                className="flex h-10 w-10 items-center justify-center border border-cream/15 text-cream/60 transition-colors hover:border-gold-400 hover:text-gold-300"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white/70 transition-colors hover:border-gold-400 hover:bg-gold-500 hover:text-ink"
               >
                 <Icon name={name} className="h-4 w-4" />
               </a>
@@ -103,7 +103,7 @@ export default function Footer() {
                 </li>
               ))}
               <li>
-                <Link to="/ratiba" className="text-[12px] font-semibold uppercase tracking-wide text-gold-400 hover:text-gold-300">
+                <Link to="/ratiba" className="text-[13px] font-semibold text-gold-300 hover:text-gold-200">
                   Ratiba kamili →
                 </Link>
               </li>
@@ -135,7 +135,7 @@ export default function Footer() {
       </div>
 
       <div className="border-t border-cream/10">
-        <div className="container-x flex flex-col items-center justify-between gap-1.5 py-5 text-center text-[10px] uppercase tracking-[0.14em] text-cream/40 sm:flex-row sm:text-left">
+        <div className="container-x flex flex-col items-center justify-between gap-1.5 py-5 text-center text-[12px] text-white/45 sm:flex-row sm:text-left">
           <p>© {year} {church.name}</p>
           <p>Kwa utukufu wa Mungu</p>
         </div>

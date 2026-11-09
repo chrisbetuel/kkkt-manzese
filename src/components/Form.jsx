@@ -2,7 +2,7 @@ import { useState } from 'react'
 import Icon from './Icon.jsx'
 
 const inputBase =
-  'w-full rounded-xl border border-navy-200 bg-cream px-4 py-3 text-navy-900 outline-none transition-colors focus:border-gold-400 focus:ring-2 focus:ring-gold-200 placeholder:text-navy-400'
+  'w-full rounded-xl border border-line bg-white px-4 py-3 text-ink outline-none transition-colors focus:border-gold-400 focus:ring-4 focus:ring-gold-100 placeholder:text-navy-300'
 
 function Label({ htmlFor, children, required }) {
   return (

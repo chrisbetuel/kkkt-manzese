@@ -65,7 +65,7 @@ export default function Gallery() {
             <button
               key={img.src + i}
               onClick={() => setActive(i)}
-              className="group relative block w-full overflow-hidden border border-ink/10 focus-visible:ring-2 focus-visible:ring-gold-500"
+              className="rounded-xl group relative block w-full overflow-hidden border border-ink/10 focus-visible:ring-2 focus-visible:ring-gold-500"
             >
               <img
                 src={img.src}
@@ -87,10 +87,10 @@ export default function Gallery() {
           {[1, 2, 3].map((n) => (
             <div
               key={n}
-              className="flex aspect-video items-center justify-center border border-ink/12 bg-cream"
+              className="rounded-xl flex aspect-video items-center justify-center border border-ink/12 bg-cream"
             >
               <div className="text-center">
-                <span className="mx-auto flex h-14 w-14 items-center justify-center bg-navy-900 text-gold-400">
+                <span className="rounded-2xl mx-auto flex h-14 w-14 items-center justify-center bg-navy-900 text-gold-400">
                   <Icon name="play" className="h-7 w-7" />
                 </span>
                 <p className="mt-3 text-xs uppercase tracking-wide text-ink/45">
@@ -109,7 +109,7 @@ export default function Gallery() {
           onClick={() => setActive(null)}
         >
           <button
-            className="absolute right-5 top-5 flex h-11 w-11 items-center justify-center bg-white/10 text-white hover:bg-white/20"
+            className="rounded-full absolute right-5 top-5 flex h-11 w-11 items-center justify-center bg-white/10 text-white hover:bg-white/20"
             onClick={() => setActive(null)}
             aria-label="Funga"
           >
