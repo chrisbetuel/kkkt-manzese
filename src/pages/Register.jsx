@@ -74,7 +74,7 @@ const STEPS = [
   { sw: 'Binafsi', en: 'Personal', fields: ['full_name', 'date_of_birth', 'gender', 'phone', 'alt_phone', 'email', 'address', 'photo', 'occupation', 'workplace', 'education_level'] },
   { sw: 'Familia', en: 'Family', fields: ['marital_status', 'dependants_count', 'dependants', 'spouse_name', 'spouse_phone'] },
   { sw: 'Kiroho', en: 'Spiritual', fields: ['is_baptized', 'baptism_year', 'baptism_church', 'confirmation_status', 'confirmation_year'] },
-  { sw: 'Huduma', en: 'Ministry', fields: ['membership_type', 'membership_number', 'previous_church', 'departments', 'other_department', 'choirs', 'other_choir'] },
+  { sw: 'Huduma', en: 'Ministry', fields: ['membership_type', 'previous_church', 'departments', 'other_department', 'choirs', 'other_choir'] },
   { sw: 'Ahadi', en: 'Pledge', fields: ['has_pledge_number', 'pledge_number', 'pledge_amount', 'pledge_status', 'pledge_notes'] },
   { sw: 'Hakiki', en: 'Review', fields: ['consent'] },
 ]
@@ -84,7 +84,7 @@ const EMPTY = {
   occupation: '', workplace: '', education_level: '',
   marital_status: '', dependants_count: '', dependants: [], spouse_name: '', spouse_phone: '',
   is_baptized: '', baptism_year: '', baptism_church: '', confirmation_status: '', confirmation_year: '',
-  membership_type: '', membership_number: '', previous_church: '',
+  membership_type: '', previous_church: '',
   departments: [], other_department: '', choirs: [], other_choir: '',
   has_pledge_number: '', pledge_number: '', pledge_amount: '', pledge_status: '', pledge_notes: '',
   consent: false,
@@ -92,6 +92,25 @@ const EMPTY = {
 
 const THIS_YEAR = new Date().getFullYear()
 const TODAY = new Date().toISOString().slice(0, 10)
+
+// tarehe inaandikwa DD/MM/YYYY; mikwaju huwekwa yenyewe, na "5/5/" huwa "05/05/"
+const maskDob = (raw) => {
+  const parts = raw.split(/\D+/)
+  const n = parts
+    .map((p, i) => (i < 2 && i < parts.length - 1 && p.length === 1 ? `0${p}` : p))
+    .join('')
+    .slice(0, 8)
+  return [n.slice(0, 2), n.slice(2, 4), n.slice(4)].filter(Boolean).join('/')
+}
+// "14/05/1990" -> "1990-05-14", au '' kama si tarehe halali
+const dobIso = (s) => {
+  const m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(s)
+  if (!m) return ''
+  const [dd, mm, yyyy] = [Number(m[1]), Number(m[2]), Number(m[3])]
+  const dt = new Date(Date.UTC(yyyy, mm - 1, dd))
+  return dt.getUTCDate() === dd && dt.getUTCMonth() === mm - 1 ? dt.toISOString().slice(0, 10) : ''
+}
+
 const PHONE_RE = /^\+?[0-9\s()-]{9,20}$/
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const MAX_PHOTO = 5 * 1024 * 1024
@@ -332,9 +351,10 @@ export default function Register() {
 
     if (i === 0) {
       if (d.full_name.trim().length < 3) e.full_name = tx('Andika jina lako kamili.', 'Enter your full name.')
+      const dob = dobIso(d.date_of_birth)
       if (!d.date_of_birth) e.date_of_birth = req
-      else if (d.date_of_birth >= TODAY || d.date_of_birth < '1900-01-01')
-        e.date_of_birth = tx('Tarehe ya kuzaliwa si sahihi.', 'Date of birth is not valid.')
+      else if (!dob || dob >= TODAY || dob < '1900-01-01')
+        e.date_of_birth = tx('Andika tarehe sahihi, mfano 14/05/1990.', 'Enter a valid date, e.g. 14/05/1990.')
       if (!d.gender) e.gender = req
       if (!PHONE_RE.test(d.phone.trim())) e.phone = badPhone
       if (d.alt_phone && !PHONE_RE.test(d.alt_phone.trim())) e.alt_phone = badPhone
@@ -391,6 +411,7 @@ export default function Register() {
     if (!inChoir) keep.choirs = []
     if (!keep.choirs.includes('other')) keep.other_choir = ''
     if (keep.has_pledge_number !== '1') keep.pledge_number = ''
+    keep.date_of_birth = dobIso(keep.date_of_birth)
 
     for (const [k, v] of Object.entries(keep)) {
       if (k === 'dependants') {
@@ -445,7 +466,7 @@ export default function Register() {
 
   async function copyRef() {
     try {
-      await navigator.clipboard.writeText(done.reference)
+      await navigator.clipboard.writeText(done.pledgeNumber || done.reference)
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
     } catch {
@@ -504,7 +525,6 @@ export default function Register() {
       step: 3,
       rows: [
         [tx('Uanachama', 'Membership'), label(MEMBERSHIP, d.membership_type, lang)],
-        [tx('Namba ya Uanachama', 'Membership Number'), d.membership_number],
         [tx('Kanisa la Awali', 'Previous Church'), d.previous_church],
         [
           tx('Idara', 'Departments'),
@@ -521,7 +541,10 @@ export default function Register() {
     {
       step: 4,
       rows: [
-        [tx('Namba ya Ahadi', 'Pledge Number'), d.has_pledge_number === '1' ? d.pledge_number : ''],
+        [
+          tx('Namba ya Ahadi', 'Pledge Number'),
+          d.has_pledge_number === '1' && d.pledge_number ? d.pledge_number : tx('Itatolewa ukimaliza usajili', 'Issued when you submit'),
+        ],
         [tx('Kiasi', 'Amount'), d.pledge_amount ? `TSh ${money(d.pledge_amount)}` : ''],
         [tx('Hali ya Malipo', 'Payment Status'), label(PLEDGE_STATUS, d.pledge_status, lang)],
         [tx('Maelezo', 'Notes'), d.pledge_notes],
@@ -548,16 +571,16 @@ export default function Register() {
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-ink/60">
               {tx(
-                'Asante kwa kujisajili. Ofisi ya kanisa itahakiki taarifa zako na kukupa namba ya uanachama.',
-                'Thank you for registering. The church office will verify your details and issue your membership number.',
+                'Asante kwa kujisajili. Ofisi ya kanisa itahakiki taarifa zako hivi karibuni.',
+                'Thank you for registering. The church office will verify your details shortly.',
               )}
             </p>
 
             <div className="mt-7 border border-dashed border-ink/25 bg-cream px-4 py-5">
               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-ink/50">
-                {tx('Namba yako ya kumbukumbu', 'Your reference number')}
+                {tx('Namba yako ya ahadi', 'Your pledge number')}
               </p>
-              <p className="mt-1.5 break-all font-mono text-xl font-semibold tracking-wide text-ink">{done.reference}</p>
+              <p className="mt-1.5 break-all font-mono text-xl font-semibold tracking-wide text-ink">{done.pledgeNumber || done.reference}</p>
               <button
                 type="button"
                 onClick={copyRef}
@@ -755,13 +778,16 @@ export default function Register() {
                   </div>
                   <Input
                     id="date_of_birth"
-                    type="date"
+                    inputMode="numeric"
                     label={tx('Tarehe ya Kuzaliwa', 'Date of Birth')}
                     required
-                    max={TODAY}
-                    min="1900-01-01"
+                    placeholder="DD/MM/YYYY"
+                    maxLength={10}
                     autoComplete="bday"
-                    {...bind('date_of_birth')}
+                    hint={tx('Andika siku/mwezi/mwaka, mfano 14/05/1990.', 'Type day/month/year, e.g. 14/05/1990.')}
+                    value={d.date_of_birth}
+                    onChange={(e) => set('date_of_birth')(maskDob(e.target.value))}
+                    error={errors.date_of_birth}
                   />
                   <Choice
                     id="gender"
@@ -1029,14 +1055,6 @@ export default function Register() {
                   cols={3}
                 />
                 <div className="grid gap-5 sm:grid-cols-2">
-                  {d.membership_type !== 'new' && (
-                    <Input
-                      id="membership_number"
-                      label={tx('Namba ya Uanachama', 'Membership Number')}
-                      optional={tx('kama unayo', 'if available')}
-                      {...bind('membership_number')}
-                    />
-                  )}
                   <Input
                     id="previous_church"
                     label={tx('Kanisa la Awali', 'Previous Church')}
@@ -1107,6 +1125,11 @@ export default function Register() {
                   onChange={set('has_pledge_number')}
                   lang={lang}
                 />
+                {d.has_pledge_number === '0' && (
+                  <p className="animate-fade-up -mt-3 text-xs text-ink/55">
+                    {tx('Utapewa namba mpya ya ahadi ukimaliza usajili.', 'You will receive a new pledge number when you finish registering.')}
+                  </p>
+                )}
                 <div className="grid gap-5 sm:grid-cols-2">
                   {d.has_pledge_number === '1' && (
                     <Input id="pledge_number" label={tx('Namba ya Ahadi', 'Pledge Number')} optional={optional} {...bind('pledge_number')} />
