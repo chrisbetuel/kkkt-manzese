@@ -29,7 +29,7 @@ export default function About() {
               ['calendar', 'Ulianzishwa', church.founded],
               ['pin', 'Eneo', 'Manzese, Dar es Salaam'],
               ['book', 'Dhehebu', 'KKKT (Kilutheri)'],
-            ].map(([icon, label, val]) => (
+            ].filter(([, , val]) => val).map(([icon, label, val]) => (
               <div
                 key={label}
                 className="flex items-center gap-4 rounded-2xl border border-navy-100 bg-white p-5"

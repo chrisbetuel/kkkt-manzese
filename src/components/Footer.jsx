@@ -117,12 +117,14 @@ export default function Footer() {
                 <Icon name="pin" className="mt-0.5 h-4 w-4 shrink-0 text-gold-400" />
                 <span className="leading-relaxed">{church.address}</span>
               </li>
-              <li className="flex gap-2.5">
-                <Icon name="phone" className="mt-0.5 h-4 w-4 shrink-0 text-gold-400" />
-                <a href={`tel:${(church.phone || '').replace(/\s/g, '')}`} className="hover:text-cream">
-                  {church.phone}
-                </a>
-              </li>
+              {church.phone && (
+                <li className="flex gap-2.5">
+                  <Icon name="phone" className="mt-0.5 h-4 w-4 shrink-0 text-gold-400" />
+                  <a href={`tel:${church.phone.replace(/\s/g, '')}`} className="hover:text-cream">
+                    {church.phone}
+                  </a>
+                </li>
+              )}
               <li className="flex gap-2.5">
                 <Icon name="mail" className="mt-0.5 h-4 w-4 shrink-0 text-gold-400" />
                 <a href={`mailto:${church.email}`} className="break-all hover:text-cream">

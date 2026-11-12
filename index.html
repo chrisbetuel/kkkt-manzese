@@ -3,17 +3,31 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta
       name="description"
       content="KKKT Manzese - Kanisa la Kiinjili la Kilutheri Tanzania. Karibu kwenye ibada, matukio na huduma za kanisa letu Manzese, Dar es Salaam."
     />
     <meta name="theme-color" content="#0e2344" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="KKKT Manzese" />
 
-    <!-- Open Graph -->
+    <!-- Open Graph (server huweka za kila ukurasa) -->
     <meta property="og:title" content="KKKT Manzese" />
     <meta property="og:description" content="Kanisa la Kiinjili la Kilutheri Tanzania - Usharika wa Manzese" />
     <meta property="og:type" content="website" />
+
+    <!-- mandhari kabla ya kuchora ukurasa (kuepuka kumweka kwa mwanga) -->
+    <script>
+      try {
+        var t = localStorage.getItem('kkkt.theme') || 'system'
+        if (t === 'dark' || (t === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches))
+          document.documentElement.classList.add('dark')
+        if (localStorage.getItem('kkkt.lang') === 'en') document.documentElement.lang = 'en'
+      } catch (e) {}
+    </script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -25,6 +39,7 @@
     <title>KKKT Manzese | Kanisa la Kiinjili la Kilutheri Tanzania</title>
   </head>
   <body>
+    <noscript>Tafadhali washa JavaScript kutumia tovuti ya KKKT Manzese.</noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

@@ -31,14 +31,15 @@ export default function Contact() {
     }
   }
 
+  const phones = [church.phone, church.phoneAlt].filter(Boolean)
   const details = [
     { icon: 'pin', label: 'Anwani', value: church.address, href: church.mapLink },
     { icon: 'mail', label: 'Barua pepe', value: church.email, href: `mailto:${church.email}` },
     {
       icon: 'phone',
       label: 'Simu',
-      value: `${church.phone} / ${church.phoneAlt}`,
-      href: `tel:${church.phone.replace(/\s/g, '')}`,
+      value: phones.join(' / '),
+      href: phones[0] ? `tel:${phones[0].replace(/\s/g, '')}` : undefined,
     },
     ...(waLink(church.whatsapp || church.phone)
       ? [
@@ -68,7 +69,7 @@ export default function Contact() {
           <div>
             <SectionTitle eyebrow="Mawasiliano" title="Taarifa za kanisa" />
             <div className="space-y-4">
-              {details.map((d) => (
+              {details.filter((d) => d.value).map((d) => (
                 <a
                   key={d.label}
                   href={d.href}

@@ -4,6 +4,7 @@ import PageHeader from '../components/PageHeader.jsx'
 import { Section } from '../components/Section.jsx'
 import Icon from '../components/Icon.jsx'
 import { postMember, useSite } from '../content.jsx'
+import { useApi } from '../lib/api.js'
 
 // ---- chaguo: [thamani (ya API), Kiswahili, English] ----
 const GENDERS = [
@@ -116,6 +117,7 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const MAX_PHOTO = 5 * 1024 * 1024
 
 const LANG_KEY = 'kkkt_lang'
+const DRAFT_KEY = 'kkkt_register_draft'
 
 function useLang() {
   const [lang, setLang] = useState(() => {
@@ -325,6 +327,37 @@ export default function Register() {
     top.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }, [step, done])
 
+  // huduma na kwaya hai kutoka admin (orodha haijaandikwa kwenye msimbo); akiba ni orodha ya zamani
+  const { data: ministries } = useApi('/ministries')
+  const live = (kind) => (ministries || []).filter((m) => m.kind === kind).map((m) => [m.key, m.name, m.name])
+  const deptOpts = live('ministry').length ? [DEPARTMENTS[0], ...live('ministry'), DEPARTMENTS[DEPARTMENTS.length - 1]] : DEPARTMENTS
+  const choirOpts = live('choir').length ? [...live('choir'), CHOIRS[CHOIRS.length - 1]] : CHOIRS
+
+  // rasimu huhifadhiwa kwenye kichupo hiki tu (sessionStorage) — hufutika kichupo kikifungwa; picha haihifadhiwi
+  const restored = useRef(false)
+  useEffect(() => {
+    try {
+      const saved = JSON.parse(sessionStorage.getItem(DRAFT_KEY) || 'null')
+      if (saved?.d) {
+        setD({ ...EMPTY, ...saved.d, consent: false })
+        setStep(Math.min(saved.step || 0, STEPS.length - 1))
+        setMaxStep(Math.min(saved.maxStep || 0, STEPS.length - 1))
+      }
+    } catch {
+      /* hakuna rasimu */
+    }
+    restored.current = true
+  }, [])
+  useEffect(() => {
+    if (!restored.current) return
+    try {
+      if (done) sessionStorage.removeItem(DRAFT_KEY)
+      else sessionStorage.setItem(DRAFT_KEY, JSON.stringify({ d, step, maxStep }))
+    } catch {
+      /* hifadhi imezuiwa */
+    }
+  }, [d, step, maxStep, done])
+
   const married = d.marital_status === 'married'
   const inChoir = d.departments.includes('kwaya')
 
@@ -360,8 +393,6 @@ export default function Register() {
       if (d.alt_phone && !PHONE_RE.test(d.alt_phone.trim())) e.alt_phone = badPhone
       if (d.email && !EMAIL_RE.test(d.email.trim())) e.email = tx('Barua pepe si sahihi.', 'Email address is not valid.')
       if (!d.address.trim()) e.address = req
-      if (!d.occupation.trim()) e.occupation = req
-      if (!photo) e.photo = tx('Tafadhali weka picha yako.', 'Please add your photo.')
     }
     if (i === 1) {
       if (!d.marital_status) e.marital_status = req
@@ -529,12 +560,12 @@ export default function Register() {
         [
           tx('Idara', 'Departments'),
           d.departments
-            .map((v) => (v === 'other' && d.other_department ? d.other_department : label(DEPARTMENTS, v, lang)))
+            .map((v) => (v === 'other' && d.other_department ? d.other_department : label(deptOpts, v, lang)))
             .join(', '),
         ],
         inChoir && [
           tx('Kwaya', 'Choirs'),
-          d.choirs.map((v) => (v === 'other' && d.other_choir ? d.other_choir : label(CHOIRS, v, lang))).join(', '),
+          d.choirs.map((v) => (v === 'other' && d.other_choir ? d.other_choir : label(choirOpts, v, lang))).join(', '),
         ],
       ],
     },
@@ -742,11 +773,11 @@ export default function Register() {
                   </label>
                   <div>
                     <p className="text-sm font-medium text-ink/85">
-                      {tx('Picha Yako', 'Profile Photograph')} <span className="text-gold-600">*</span>
+                      {tx('Picha Yako', 'Profile Photograph')} <span className="text-xs font-normal text-ink/50">({optional})</span>
                     </p>
                     <p className="mt-1 text-xs text-ink/50">
                       {tx(
-                        'Picha ya uso inayoonekana vizuri. JPG, PNG au WEBP, isizidi MB 5.',
+                        'Picha ya uso inayoonekana vizuri (inatumika kwenye kadi ya uanachama). JPG, PNG au WEBP, isizidi MB 5.',
                         'A clear photo of your face. JPG, PNG or WEBP, up to 5 MB.',
                       )}
                     </p>
@@ -833,7 +864,7 @@ export default function Register() {
                     placeholder={tx('mfano: Manzese, Mtaa wa Tip Top', 'e.g. Manzese, Tip Top Street')}
                     {...bind('address')}
                   />
-                  <Input id="occupation" label={tx('Kazi Unayofanya', 'Occupation')} required {...bind('occupation')} />
+                  <Input id="occupation" label={tx('Kazi Unayofanya', 'Occupation')} optional={optional} {...bind('occupation')} />
                   <Input
                     id="workplace"
                     label={tx('Mahali pa Kazi / Jina la Biashara', 'Workplace / Business Name')}
@@ -1067,7 +1098,7 @@ export default function Register() {
                 <Multi
                   label={tx('Idara Unazotamani Kuhudumu', 'Departments You Wish to Serve In')}
                   hint={tx('Chagua moja au zaidi.', 'Select one or more.')}
-                  options={DEPARTMENTS}
+                  options={deptOpts}
                   value={d.departments}
                   onChange={set('departments')}
                   lang={lang}
@@ -1087,7 +1118,7 @@ export default function Register() {
                     <Multi
                       label={tx('Kwaya', 'Choirs')}
                       hint={tx('Unaweza kuchagua zaidi ya moja.', 'You may select more than one.')}
-                      options={CHOIRS}
+                      options={choirOpts}
                       value={d.choirs}
                       onChange={set('choirs')}
                       lang={lang}

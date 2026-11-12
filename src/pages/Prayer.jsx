@@ -5,6 +5,15 @@ import Icon from '../components/Icon.jsx'
 import { Field, Select, TextArea } from '../components/Form.jsx'
 import { fetchPrayers, postPrayer, prayFor } from '../content.jsx'
 
+const KINDS = [
+  ['prayer', 'Ombi la maombi'],
+  ['counselling', 'Ushauri wa kichungaji'],
+  ['hospital_visit', 'Kutembelewa hospitalini'],
+  ['home_visit', 'Kutembelewa nyumbani'],
+  ['guidance', 'Mwongozo wa kiroho'],
+  ['other', 'Huduma nyingine ya kichungaji'],
+]
+
 const CATEGORIES = [
   'Afya na Uponyaji',
   'Familia na Ndoa',
@@ -100,7 +109,10 @@ export default function Prayer() {
   const [done, setDone] = useState(null) // null | 'private' | 'public'
   const [sending, setSending] = useState(false)
   const [error, setError] = useState('')
-  const [priv, setPriv] = useState(false)
+  // faragha ni chaguo-msingi: ombi huwekwa ukutani tu mwombaji akiridhia wazi
+  const [share, setShare] = useState(false)
+  const [kind, setKind] = useState('prayer')
+  const priv = kind !== 'prayer' || !share
 
   useEffect(() => {
     fetchPrayers()
@@ -121,10 +133,13 @@ export default function Prayer() {
     setSending(true)
     try {
       await postPrayer({
+        kind,
         name: f.name || '',
         contact: f.contact || '',
         category: f.category || 'Nyingine',
         body: f.body,
+        location: f.location || '',
+        consent_public: kind === 'prayer' && share,
         is_private: priv,
       })
       setDone(priv ? 'private' : 'public')
@@ -143,7 +158,7 @@ export default function Prayer() {
         <SectionTitle
           eyebrow="Ukuta wa Maombi"
           title="Tuombeane"
-          intro="Wasilisha ombi lako na uungane kuwaombea wengine. “Ombeaneni ninyi kwa ninyi mpate kuponywa.” — Yakobo 5:16"
+          intro="Maombi ambayo waombaji wameridhia yashirikiwe. Ungana nasi kuwaombea wengine (Yakobo 5:16)."
         />
 
         {cats.length > 2 && (
@@ -181,9 +196,9 @@ export default function Prayer() {
         <div className="mx-auto max-w-2xl">
           <SectionTitle
             center
-            eyebrow="Wasilisha Ombi"
+            eyebrow="Maombi na Huduma ya Kichungaji"
             title="Tunaomba pamoja nawe"
-            intro="Uongozi wa kanisa hupitia kila ombi. Chagua faragha kama hutaki lionekane ukutani."
+            intro="Ombi lako ni la faragha — linaonwa na wachungaji na wahudumu wa kichungaji pekee, isipokuwa ukiruhusu liwekwe ukutani."
           />
 
           {done ? (
@@ -200,7 +215,8 @@ export default function Prayer() {
               <button
                 onClick={() => {
                   setDone(null)
-                  setPriv(false)
+                  setShare(false)
+                  setKind('prayer')
                 }}
                 className="mt-6 text-[11px] font-semibold uppercase tracking-[0.14em] text-gold-700 hover:text-gold-800"
               >
@@ -209,31 +225,57 @@ export default function Prayer() {
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="rounded-2xl space-y-5 border border-ink/12 bg-white p-6 md:p-8">
+              <fieldset>
+                <legend className="mb-2 text-[13px] font-semibold text-ink">Unahitaji nini?</legend>
+                <div className="grid gap-2 sm:grid-cols-2">
+                  {KINDS.map(([value, label]) => (
+                    <label
+                      key={value}
+                      className={`flex cursor-pointer items-center gap-3 rounded-xl border px-3.5 py-3 text-sm ${
+                        kind === value ? 'border-gold-500 bg-parchment font-semibold' : 'border-line'
+                      }`}
+                    >
+                      <input type="radio" name="kind" value={value} checked={kind === value} onChange={() => setKind(value)} className="h-4 w-4 accent-gold-600" />
+                      {label}
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
               <div className="grid gap-5 sm:grid-cols-2">
                 <Field label="Jina (au acha wazi)" name="name" />
-                <Field label="Simu / barua pepe (haitachapishwa)" name="contact" />
+                <Field label="Simu / barua pepe (haitachapishwa)" name="contact" required={kind !== 'prayer'} />
               </div>
-              <Select label="Aina ya ombi" name="category" options={CATEGORIES} />
+              {kind === 'prayer' && <Select label="Aina ya ombi" name="category" options={CATEGORIES} />}
+              {(kind === 'hospital_visit' || kind === 'home_visit') && (
+                <Field label={kind === 'hospital_visit' ? 'Hospitali / wodi' : 'Mahali (eneo / mtaa)'} name="location" required />
+              )}
               <TextArea
-                label="Ombi lako"
+                label={kind === 'prayer' ? 'Ombi lako' : 'Tueleze kwa ufupi'}
                 name="body"
                 required
                 rows={5}
-                placeholder="Andika ombi lako hapa..."
+                placeholder="Andika hapa..."
               />
 
-              <label className="rounded-xl flex cursor-pointer items-start gap-3 border border-ink/15 bg-cream p-4 text-sm text-ink/70">
-                <input
-                  type="checkbox"
-                  checked={priv}
-                  onChange={(e) => setPriv(e.target.checked)}
-                  className="mt-0.5 h-4 w-4 accent-gold-600"
-                />
-                <span>
-                  <span className="font-semibold text-ink">Omba kwa faragha</span> — uongozi
-                  wa kanisa pekee ataliona; halitawekwa kwenye ukuta wa maombi.
-                </span>
-              </label>
+              {kind === 'prayer' ? (
+                <label className="rounded-xl flex cursor-pointer items-start gap-3 border border-ink/15 bg-cream p-4 text-sm text-ink/70">
+                  <input
+                    type="checkbox"
+                    checked={share}
+                    onChange={(e) => setShare(e.target.checked)}
+                    className="mt-0.5 h-4 w-4 accent-gold-600"
+                  />
+                  <span>
+                    <span className="font-semibold text-ink">Naruhusu ombi hili liwekwe kwenye ukuta wa maombi</span> (bila
+                    mawasiliano yangu) baada ya kupitiwa na uongozi. Usipochagua, ni la faragha.
+                  </span>
+                </label>
+              ) : (
+                <p className="rounded-xl border border-ink/15 bg-cream p-4 text-sm text-ink/70">
+                  <Icon name="lock" className="mr-1 inline h-4 w-4 text-gold-700" />
+                  Ombi hili ni la faragha daima: linaonwa na Mchungaji na wahudumu wa kichungaji walioteuliwa tu.
+                </p>
+              )}
 
               {error && <p className="text-sm text-red-600">{error}</p>}
 

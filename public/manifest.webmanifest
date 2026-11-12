@@ -1,0 +1,24 @@
+{
+  "name": "KKKT Usharika wa Manzese",
+  "short_name": "KKKT Manzese",
+  "description": "Ibada, mahubiri, matukio, maombi na akaunti ya mshirika — KKKT Usharika wa Manzese.",
+  "lang": "sw",
+  "start_url": "/?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0e2344",
+  "theme_color": "#0e2344",
+  "categories": ["lifestyle", "education", "social"],
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Tazama Ibada", "url": "/tazama", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Neno la Leo", "url": "/neno-la-leo", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Omba Maombi", "url": "/maombi", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Akaunti Yangu", "url": "/akaunti", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }] }
+  ]
+}

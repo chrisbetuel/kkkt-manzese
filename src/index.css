@@ -188,3 +188,105 @@
     background: var(--ink-20);
   }
 }
+
+/* ===================================================================
+ * Mandhari ya giza (html.dark) — hubadili nyuso na maandishi ya madarasa
+ * yaliyopo bila kuandika upya kila kipengele. Rangi zimechaguliwa kwa
+ * utofautishaji unaosomeka (WCAG AA) kwenye simu na kompyuta.
+ * =================================================================== */
+html.dark {
+  color-scheme: dark;
+  --paper: #0d1a2e;
+  --line: #24324d;
+  --soft: #9aa6ba;
+}
+html.dark body { background-color: #0b1526; color: #e6ebf3; }
+
+html.dark .bg-white,
+html.dark .bg-white\/95,
+html.dark .bg-white\/90,
+html.dark .bg-white\/70,
+html.dark .bg-white\/60 { background-color: #101d33 !important; }
+html.dark .bg-cream { background-color: #0d1a2e !important; }
+html.dark .bg-parchment,
+html.dark .bg-parchment\/60 { background-color: #1a2436 !important; }
+html.dark .bg-navy-50,
+html.dark .bg-gold-50\/60,
+html.dark .bg-gold-100 { background-color: #17233a !important; }
+html.dark .bg-ink,
+html.dark .bg-navy-950 { background-color: #060e1c !important; }
+html.dark .hover\:bg-cream:hover,
+html.dark .hover\:bg-white:hover { background-color: #17233a !important; }
+
+/* mipito ya rangi (gradients) ya sehemu za mwanga */
+html.dark .from-parchment,
+html.dark .from-white,
+html.dark .from-navy-50 {
+  --tw-gradient-from: #0d1a2e var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: rgb(13 26 46 / 0) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+}
+html.dark .via-white,
+html.dark .via-parchment,
+html.dark .via-parchment\/40 {
+  --tw-gradient-to: rgb(13 26 46 / 0) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), rgb(13 26 46 / 0.6) var(--tw-gradient-via-position), var(--tw-gradient-to) !important;
+}
+html.dark .to-white,
+html.dark .to-navy-50,
+html.dark .to-gold-100 { --tw-gradient-to: #0b1526 var(--tw-gradient-to-position) !important; }
+
+/* maandishi */
+html.dark h1, html.dark h2, html.dark h3, html.dark h4 { color: #f1f4f9; }
+html.dark .text-ink,
+html.dark .text-navy-900,
+html.dark .text-navy-800 { color: #e8edf5 !important; }
+html.dark .text-ink\/85, html.dark .text-ink\/80, html.dark .text-ink\/75,
+html.dark .text-ink\/70 { color: rgb(232 237 245 / 0.82) !important; }
+html.dark .text-ink\/60, html.dark .text-ink\/55, html.dark .text-ink\/50,
+html.dark .text-ink\/40, html.dark .text-ink\/35, html.dark .text-ink\/30 { color: rgb(232 237 245 / 0.6) !important; }
+html.dark .text-soft,
+html.dark .text-navy-600,
+html.dark .text-navy-500 { color: #a3afc2 !important; }
+html.dark .text-gold-700,
+html.dark .text-gold-800 { color: #e5b972 !important; }
+html.dark .text-red-800, html.dark .text-red-700 { color: #fca5a5 !important; }
+html.dark .text-emerald-800, html.dark .text-emerald-700 { color: #6ee7b7 !important; }
+html.dark .bg-red-50 { background-color: rgb(127 29 29 / 0.25) !important; }
+html.dark .bg-emerald-50 { background-color: rgb(6 78 59 / 0.3) !important; }
+html.dark .border-red-200 { border-color: rgb(248 113 113 / 0.35) !important; }
+html.dark .border-emerald-200 { border-color: rgb(52 211 153 / 0.35) !important; }
+
+/* mipaka */
+html.dark .border-line,
+html.dark .border-navy-100,
+html.dark .border-ink\/10, html.dark .border-ink\/12, html.dark .border-ink\/15,
+html.dark .border-ink\/20, html.dark .border-ink\/25,
+html.dark .border-white\/70 { border-color: #24324d !important; }
+html.dark .divide-line > :not([hidden]) ~ :not([hidden]) { border-color: #24324d !important; }
+
+/* vipengele */
+html.dark .card { background: #101d33; border-color: #24324d; }
+html.dark .btn-navy { background: #101d33; border-color: #2c3b58; color: #e8edf5; }
+html.dark .btn-primary { background: #c89128; color: #0e2344; }
+html.dark .btn-primary:hover { background: #d9a245; }
+html.dark input:not([type='checkbox']):not([type='radio']),
+html.dark select,
+html.dark textarea { background-color: #0d1a2e !important; color: #e8edf5 !important; border-color: #2c3b58 !important; }
+html.dark ::selection { background: #c89128; color: #0e2344; }
+html.dark :focus-visible { box-shadow: 0 0 0 2px #0b1526, 0 0 0 4px #e5b972; }
+
+/* ===================================================================
+ * Kuchapisha kadi ya uanachama (ukubwa wa kadi ya benki: 85.6 × 54 mm)
+ * =================================================================== */
+@media print {
+  body * { visibility: hidden; }
+  .print-card, .print-card * { visibility: visible; }
+  .print-card {
+    position: absolute; left: 0; top: 0;
+    width: 85.6mm !important; height: 54mm !important; max-width: none !important;
+    box-shadow: none !important;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .no-print { display: none !important; }
+}

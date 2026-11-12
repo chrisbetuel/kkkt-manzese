@@ -5,6 +5,8 @@ import Icon from '../components/Icon.jsx'
 import { homeLinks } from '../data/nav.js'
 import { useSite } from '../content.jsx'
 import { CHURCH_PHOTOS as HERO_SLIDES, fallbackPhotos, photo } from '../lib/photos.js'
+import { LiveAndWord, Welcome, LatestSermons, MinistriesStrip, CareAndVisit, FindUs } from '../components/HomeSections.jsx'
+import { useMeta } from '../lib/prefs.jsx'
 
 const WRAP = 'container-x'
 
@@ -99,6 +101,7 @@ export default function Home() {
   const upcomingPhotos = fallbackPhotos(upcoming)
   const newsPhotos = fallbackPhotos(announcements.slice(0, 3), { offset: 3 })
   const steps = involveOptions.slice(0, 3)
+  useMeta('KKKT Manzese | Kanisa la Kiinjili la Kilutheri Tanzania')
 
   return (
     <>
@@ -142,9 +145,9 @@ export default function Home() {
                 Ratiba ya Ibada
                 <Icon name="arrow" className="h-4 w-4" />
               </Link>
-              <Link to="/kuhusu" className="btn-navy">
-                <Icon name="church" className="h-4 w-4 text-gold-600" />
-                Kuhusu Sisi
+              <Link to="/tazama" className="btn-navy">
+                <Icon name="play" className="h-4 w-4 text-gold-600" />
+                Tazama Ibada
               </Link>
             </div>
           </div>
@@ -202,6 +205,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <LiveAndWord />
 
       {/* ---------------- KARIBU + KADI NDEFU ---------------- */}
       <section className="bg-white pb-16 pt-4 sm:pb-24">
@@ -285,12 +290,12 @@ export default function Home() {
               const box = dateBox(e.date)
               return (
                 <article
-                  key={e.title}
+                  key={e.slug || e.title}
                   className="group flex flex-col overflow-hidden rounded-2xl border border-line bg-white transition-shadow hover:shadow-card"
                 >
                   <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-parchment to-navy-50">
                     <img
-                      src={upcomingPhotos[idx]}
+                      src={e.image || upcomingPhotos[idx]}
                       alt=""
                       loading="lazy"
                       className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
@@ -322,12 +327,14 @@ export default function Home() {
                     )}
                     <div className="flex-1 pb-4" />
                     <div className="flex gap-2 border-t border-line pt-4">
-                      <Link to="/matukio" className="btn-gold flex-1 !px-3 !py-2 !text-[12.5px]">
+                      <Link to={e.slug ? `/matukio/${e.slug}` : '/matukio'} className="btn-gold flex-1 !px-3 !py-2 !text-[12.5px]">
                         Maelezo
                       </Link>
-                      <Link to="/jisajili" className="btn-navy flex-1 !px-3 !py-2 !text-[12.5px]">
-                        Jisajili
-                      </Link>
+                      {e.requiresRegistration && (
+                        <Link to={`/matukio/${e.slug}`} className="btn-navy flex-1 !px-3 !py-2 !text-[12.5px]">
+                          Jisajili
+                        </Link>
+                      )}
                     </div>
                   </div>
                 </article>
@@ -336,6 +343,11 @@ export default function Home() {
           </div>
         </Section>
       )}
+
+      <Welcome />
+      <LatestSermons />
+      <MinistriesStrip />
+      <CareAndVisit />
 
       {/* ---------------- NJIA ZA KUSHIRIKI ---------------- */}
       {steps.length > 0 && (
@@ -376,6 +388,8 @@ export default function Home() {
         </Section>
       )}
 
+      <FindUs />
+
       {/* ---------------- DIRECTORY ---------------- */}
       <Section tint="cream">
         <SectionTitle eyebrow="Tembelea" title="Sehemu za tovuti" />
@@ -406,12 +420,13 @@ export default function Home() {
           <SectionTitle eyebrow="Matangazo" title="Yanayoendelea kanisani" />
           <div className="grid gap-5 md:grid-cols-3">
             {announcements.slice(0, 3).map((a, i) => (
-              <article
-                key={a.title}
+              <Link
+                to={a.slug ? `/habari/${a.slug}` : '/habari'}
+                key={a.slug || a.title}
                 className="flex flex-col overflow-hidden rounded-2xl border border-line bg-white transition-shadow hover:shadow-card"
               >
                 <img
-                  src={newsPhotos[i]}
+                  src={a.image || newsPhotos[i]}
                   alt={a.title}
                   loading="lazy"
                   className="aspect-[16/9] w-full object-cover"
@@ -419,14 +434,14 @@ export default function Home() {
                 <div className="flex flex-1 flex-col p-5">
                   <p className="text-[12px] font-semibold text-gold-700">{a.date}</p>
                   <h3 className="mt-1 text-base font-bold">{a.title}</h3>
-                  <p className="mt-1 flex-1 text-sm leading-relaxed text-soft">{a.text}</p>
+                  <p className="mt-1 line-clamp-3 flex-1 text-sm leading-relaxed text-soft">{a.text}</p>
                 </div>
-              </article>
+              </Link>
             ))}
           </div>
           <div className="mt-8">
-            <Link to="/matukio" className="btn-navy">
-              Matukio yote
+            <Link to="/habari" className="btn-navy">
+              Habari zote
               <Icon name="arrow" className="h-4 w-4" />
             </Link>
           </div>

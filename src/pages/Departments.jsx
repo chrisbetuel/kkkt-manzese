@@ -18,6 +18,9 @@ export default function Departments() {
 
       <Section tint="cream">
         <div className="space-y-6">
+          {departments.length === 0 && (
+            <p className="rounded-2xl border border-line bg-white p-6 text-sm text-soft">Orodha ya huduma inapakia…</p>
+          )}
           {departments.map((d, i) => (
             <div
               key={d.slug}
@@ -32,16 +35,25 @@ export default function Departments() {
               </div>
               <div>
                 <div className="flex flex-wrap items-baseline justify-between gap-2">
-                  <h3 className="text-xl font-semibold md:text-2xl">{d.name}</h3>
+                  <h3 className="text-xl font-semibold md:text-2xl">
+                    {d.slug ? (
+                      <Link to={`/idara/${d.slug}`} className="hover:text-gold-700">
+                        {d.name}
+                        {d.kind === 'choir' && <span className="ml-2 align-middle text-xs font-bold uppercase tracking-widest text-gold-700">Kwaya</span>}
+                      </Link>
+                    ) : d.name}
+                  </h3>
                   <span className="text-xs font-medium uppercase tracking-widest text-gold-700">
                     {d.meets}
                   </span>
                 </div>
                 <p className="mt-3 leading-relaxed text-navy-600">{d.text}</p>
-                <p className="mt-4 text-sm text-navy-500">
-                  <span className="font-semibold text-navy-800">Kiongozi:</span>{' '}
-                  {d.leader}
-                </p>
+                {d.leader && (
+                  <p className="mt-4 text-sm text-navy-500">
+                    <span className="font-semibold text-navy-800">Kiongozi:</span>{' '}
+                    {d.leader}
+                  </p>
+                )}
               </div>
             </div>
           ))}
