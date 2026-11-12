@@ -3,12 +3,13 @@
 Production: `https://kkkt.oweru.com` on the CloudPanel VPS. Laravel serves the API, `/admin` and the built React app.
 
 ## Normal deploy
+The backend repository has no GitHub remote, so production is deployed from this machine with **`sync.sh`** (tar over SSH, using the `kkkt` host alias):
 ```bash
-cd ../kkkt-backend && bash deploy.sh
+cd ../kkkt-backend && bash sync.sh
 ```
-The script does the following, in this order:
-1. **Backs up the production database** (`storage/app/private/backups/pre-deploy-*.sql.gz`). The deploy stops if the backup fails or is empty.
-2. `git pull` both repositories (`main`).
+`deploy.sh` (git-pull based) is kept for when the backend gets a remote. Both scripts do the following, in this order:
+1. **Back up the production database** (`storage/app/private/backups/pre-deploy-*.sql.gz`). The deploy stops if the backup fails or is empty.
+2. Upload the code (`sync.sh`) or `git pull` both repositories (`deploy.sh`).
 3. Builds the frontend with `VITE_API_URL=` (same origin) and copies `dist/` into `backend/public`.
 4. `composer install`, `php artisan migrate --force`, and caches (route cache stays off because of Livewire).
 5. Installs or refreshes the cron entry `* * * * * php artisan schedule:run`, which runs the notification queue, scheduled announcements, event reminders, the nightly backup and the pastoral retention rule.
