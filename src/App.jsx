@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import Layout from './components/Layout.jsx'
 import ScrollToTop from './components/ScrollToTop.jsx'
 import Home from './pages/Home.jsx'
@@ -23,7 +23,6 @@ const Involve = page(() => import('./pages/Involve.jsx'))
 const Baptism = page(() => import('./pages/Baptism.jsx'))
 const JoinTeam = page(() => import('./pages/JoinTeam.jsx'))
 const Volunteer = page(() => import('./pages/Volunteer.jsx'))
-const Testimonies = page(() => import('./pages/Testimonies.jsx'))
 const Prayer = page(() => import('./pages/Prayer.jsx'))
 const Register = page(() => import('./pages/Register.jsx'))
 const Partner = page(() => import('./pages/Partner.jsx'))
@@ -95,7 +94,8 @@ export default function App() {
             <Route path="/ubatizo" element={<Baptism />} />
             <Route path="/jiunge" element={<JoinTeam />} />
             <Route path="/kujitolea" element={<Volunteer />} />
-            <Route path="/ushuhuda" element={<Testimonies />} />
+            {/* sehemu ya ushuhuda imeondolewa — viungo vya zamani vinarudi mwanzo */}
+            <Route path="/ushuhuda" element={<Navigate to="/" replace />} />
             <Route path="/maombi" element={<Prayer />} />
             <Route path="/jisajili" element={<Register />} />
             <Route path="/ubia" element={<Partner />} />

@@ -7,9 +7,9 @@ Rate limits are named per route (one counter per IP for each limiter).
 ## Public reads
 | Method & path | Notes |
 |---|---|
-| GET /content | Settings, service times, ministries, upcoming events, public announcements, sermons, testimonies, giving methods, leaders (cached 60 s) |
+| GET /content | Settings, service times, ministries, upcoming events, public announcements, sermons, giving methods, leaders (cached 60 s) |
 | GET /gallery | Published albums (with `category`) |
-| GET /testimonies, /prayer-requests | Approved items only. The prayer wall shows consented, non-private requests only |
+| GET /prayer-requests | Approved items only. The prayer wall shows consented, non-private requests only |
 | GET /ministries · /ministries/{slug} | Active ministries (`key` is used in registration) · public profile plus upcoming events |
 | GET /jumuiya | Name, area and meeting time only |
 | GET /live | `isLive` is true only while a live URL is set **and** `live_until` is in the future |
@@ -27,7 +27,6 @@ Rate limits are named per route (one counter per IP for each limiter).
 |---|---|
 | POST /members (multipart; photo optional) | members 6/10 min |
 | POST /prayer-requests `{kind, body, consent_public, name?, contact?, category?, location?}` | prayers 10/10 min |
-| POST /testimonies (multipart) | testimonies 5/10 min |
 | POST /submissions `{type: contact\|baptism\|join_team\|volunteer\|partner\|sermon_upload\|visitor, …}` | submissions 10/10 min |
 | POST /events/{slug}/register `{name, phone, guests}` (fields optional when signed in) | submissions |
 | POST /prayer-requests/{id}/pray | pray 20/min |

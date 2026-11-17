@@ -272,9 +272,8 @@ function Overview({ p }) {
         ) : <p className="mt-3 text-sm text-soft">{t('Hujajisajili kwa tukio lolote bado.', 'You have not registered for any event yet.')}</p>}
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-3 lg:col-span-3">
+      <div className="grid gap-3 sm:grid-cols-2 lg:col-span-3">
         <Link to="/maombi" className="btn-navy"><Icon name="hands" className="h-4 w-4" />{t('Tuma ombi la maombi', 'Send a prayer request')}</Link>
-        <Link to="/ushuhuda" className="btn-navy"><Icon name="heart" className="h-4 w-4" />{t('Shiriki ushuhuda', 'Share a testimony')}</Link>
         <Link to="/mahubiri" className="btn-navy"><Icon name="play" className="h-4 w-4" />{t('Mahubiri', 'Sermons')}</Link>
       </div>
     </div>

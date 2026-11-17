@@ -9,7 +9,7 @@ Ingia kupitia **https://kkkt.oweru.com/admin**. Kila mtumiaji huona sehemu zinaz
 4. **Uongozi:** weka majina ya Halmashauri.
 5. **Huduma na Kwaya:** kagua orodha. Huduma mpya zilizoundwa kutokana na usajili zimefichwa tovutini ("Onyesha kwenye tovuti" imezimwa). Ziwashe au uziunganishe.
 6. **Jumuiya:** ongeza jumuiya rasmi, kisha pangia washirika kwa kitendo cha **Hamisha jumuiya**.
-7. **Ushuhuda:** shuhuda za mfano zimerudishwa "Inasubiri". Idhinisha zile za kweli tu.
+7. **Ushuhuda:** sehemu hii imeondolewa tovutini (17 Nov 2026). Shuhuda za zamani zimehifadhiwa na zinapatikana kwa kiungo `/admin/testimonies`.
 
 ## 2. Washirika
 - **Thibitisha** usajili mpya. Mshirika aliyethibitishwa anaweza kufungua akaunti kwenye `/akaunti` kwa kutumia namba ya usajili, simu na tarehe ya kuzaliwa.

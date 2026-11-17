@@ -81,7 +81,7 @@ The site never publishes invented information. The following must be entered in 
 - **Leaders:** names for the Parish Council positions.
 - **Service Times:** remove the duplicate and fix the "18:30am" entry.
 - **Departments and Ministries:** leader names. Also review the hidden ministries created by the migration.
-- **Testimonies:** approve real testimonies only.
+- **Testimonies:** the section was removed from the website on 17 Nov 2026 (page, links, public API). Existing records are kept and reachable at `/admin/testimonies`.
 - **Devotions and Reading Plans:** Bible verse text must be copied word for word from the Bible the parish uses. The system never writes or generates verses.
 
 ## 6. Not done, or limited

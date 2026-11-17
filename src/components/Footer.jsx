@@ -11,7 +11,6 @@ const FOOTER_PAGES = [
   { label: 'Idara na Vikundi', to: '/idara' },
   { label: 'Matukio', to: '/matukio' },
   { label: 'Mahubiri', to: '/mahubiri' },
-  { label: 'Ushuhuda', to: '/ushuhuda' },
   { label: 'Maombi', to: '/maombi' },
   { label: 'Wasiliana', to: '/wasiliana' },
 ]

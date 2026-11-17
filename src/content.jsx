@@ -44,7 +44,6 @@ const fallbackBundle = publicBundle({
   events: [],
   announcements: [],
   sermons: [],
-  testimonies: [],
   givingMethods: [],
   partnerWays: S.partnerWays,
   leadership: { clergy: [], council: [] },
@@ -97,11 +96,6 @@ function normalize(d) {
       link: x.link || '', youtubeId: x.youtube_id || '', thumbnail: x.thumbnail_url || '',
       audioUrl: x.audioUrl || '', docUrl: x.docUrl || '',
     })),
-    testimonies: nonEmpty(d.testimonies, []).map((x) => ({
-      name: x.name, role: x.role, type: x.type, text: x.body, date: x.year,
-      youtubeId: x.youtube_id || '', audioUrl: x.type === 'audio' ? x.mediaUrl : '',
-      mediaUrl: x.mediaUrl || '', link: x.link || '', thumbnail: x.thumbnail_url || '',
-    })),
     givingMethods: nonEmpty(d.givingMethods, []).map((x) => ({
       name: x.name, group: x.group_label, holder: x.holder, number: x.number, icon: x.icon,
     })),
@@ -142,10 +136,6 @@ export const useSite = () => useContext(ContentContext)
 // ---- form helpers (zote hupitia apiFetch: CSRF + kuki ya session) ----
 export function postSubmission(type, { name, email, phone, ...fields }) {
   return apiFetch('/submissions', { method: 'POST', body: { type, name, email, phone, fields } })
-}
-
-export function postTestimony(formData) {
-  return apiFetch('/testimonies', { method: 'POST', body: formData })
 }
 
 // ---- maombi (prayer wall) ----

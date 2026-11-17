@@ -43,7 +43,6 @@ export const navGroups = [
     sw: 'Habari', en: 'News', to: '/habari',
     items: [
       { sw: 'Habari na Matangazo', en: 'News & Announcements', to: '/habari' },
-      { sw: 'Ushuhuda', en: 'Testimonies', to: '/ushuhuda' },
       { sw: 'Picha na Video', en: 'Photos & Videos', to: '/matunzio' },
     ],
   },

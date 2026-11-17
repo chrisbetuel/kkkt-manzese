@@ -326,7 +326,6 @@ export const involveOptions = [
   { title: 'Jiandikishe kwa Ubatizo', text: 'Wewe au mtoto wako.', to: '/ubatizo', icon: 'cross' },
   { title: 'Jiunge na Kwaya / Kikundi', text: 'Tumia kipawa chako.', to: '/jiunge', icon: 'music' },
   { title: 'Jitolee Kuhudumu', text: 'Saidia katika huduma.', to: '/kujitolea', icon: 'hands' },
-  { title: 'Shiriki Ushuhuda', text: 'Simulia kazi ya Mungu.', to: '/ushuhuda', icon: 'heart' },
   { title: 'Toa Sadaka & Zaka', text: 'Changia kazi ya Injili.', to: '/michango', icon: 'hand' },
   { title: 'Ubia na Uwekezaji', text: 'Kuwa mshirika wa maendeleo.', to: '/ubia', icon: 'shield' },
   { title: 'Pakia Hubiri', text: 'Kwa timu ya media.', to: '/mahubiri/pakia', icon: 'play' },
@@ -419,32 +418,3 @@ export const baptismChecklist = [
   'Kupanga tarehe na ofisi ya kanisa',
 ]
 
-// =============================================================
-//  USHUHUDA — Testimonies (mifano; zitabadilishwa na halisi)
-// =============================================================
-
-export const testimonies = [
-  {
-    type: 'text',
-    name: '[JAZA jina]',
-    role: 'Mwanausharika',
-    date: '2025',
-    text: 'Mungu amenirudisha kwenye imani baada ya miaka mingi. Kupitia ushirika wa KKKT Manzese nimepata familia mpya ya kiroho na amani ya moyoni.',
-  },
-  {
-    type: 'video',
-    name: '[JAZA jina]',
-    role: 'Kiongozi wa Vijana',
-    date: '2025',
-    text: 'Jinsi Mungu alivyobadilisha maisha yangu kupitia kwaya ya vijana.',
-    youtubeId: '', // weka kitambulisho cha YouTube (mfano: dQw4w9WgXcQ)
-  },
-  {
-    type: 'audio',
-    name: '[JAZA jina]',
-    role: 'Mama wa nyumbani',
-    date: '2024',
-    text: 'Ushuhuda wa uponyaji na maombezi ya kanisa.',
-    audioUrl: '', // weka kiungo cha faili ya sauti (mp3)
-  },
-]
