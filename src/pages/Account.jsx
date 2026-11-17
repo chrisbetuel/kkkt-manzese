@@ -224,7 +224,7 @@ function Overview({ p }) {
           <ul className="mt-3 space-y-1.5">
             {p.ministries.map((m) => (
               <li key={m.slug} className="flex items-center justify-between gap-2 text-sm">
-                <Link to={`/idara/${m.slug}`} className="font-semibold hover:underline">{m.name}</Link>
+                {m.onSite ? <Link to={`/idara/${m.slug}`} className="font-semibold hover:underline">{m.name}</Link> : <span className="font-semibold">{m.name}</span>}
                 {m.role !== 'member' && <Badge>{m.role === 'leader' ? t('Kiongozi', 'Leader') : m.role === 'assistant' ? t('Msaidizi', 'Assistant') : m.role}</Badge>}
                 {m.voicePart && <Badge tone="navy">{m.voicePart}</Badge>}
               </li>
